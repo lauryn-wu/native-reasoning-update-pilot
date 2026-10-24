@@ -1,0 +1,42 @@
+{
+  "at": "2026-10-24T22:55:00.037879+00:00",
+  "case_count": 205,
+  "compiler_flags": [
+    "-std=c++17",
+    "-O3",
+    "-DNDEBUG",
+    "-Wall",
+    "-Wextra"
+  ],
+  "compiler_image": "gcc@sha256:5e927c284bf55a7dc796262e311a0703344f62f41f5621eb56843111b1d37e15",
+  "construction_evidence": {
+    "path": "references/coding/276/compiled/construction_campaign.json",
+    "sha256": "efe0d53108e36fa9bbc5daef984e53d642a3c4f2818025a6285fd0a836142d4f"
+  },
+  "construction_policy_sha256": "6e58e29c27e8d2207b32763b6bd4ba7503e33a0e184b52995e613c8653843ff6",
+  "construction_seconds": 160.68948404164985,
+  "full_independent_cases": 205,
+  "gold_asset": {
+    "path": "references/coding/276/compiled/gold_outputs.json",
+    "sha256": "7c2a8dfaa4d907a9b0b0096af99340e3689487013cd9869f47cc594a9c2f7170"
+  },
+  "independent_review": {
+    "evidence": {
+      "path": "references/coding/276/compiled/INDEPENDENT_REVIEW.md",
+      "sha256": "c53468c399222d57e2276b514f59b23b1f796208dd6581829d86b94b6429c4ab"
+    },
+    "reviewer": "grading_analysis",
+    "status": "passed"
+  },
+  "initial_independent_inputs_retained": 162,
+  "inputs_sha256": "03a02db5fb03453376ca6d384ab8e5ceaefda782c4c15fb01b180b518a4dd6b0",
+  "literal_oracle_cases_per_arithmetic_mode": 12142,
+  "outputs_sha256": "d5bfb4f846e9b4704447a8dcb01245e55aa220badec6b93f09cfb87448a73a6a",
+  "paid_calls": 0,
+  "passed": true,
+  "published_inputs_retained": 43,
+  "schema_version": 1,
+  "source_sha256": "3628ae7ebbeba3f413128bd78adb41de071d943ce445d59788e5de11faf07324",
+  "task_id": "livecodebench:276",
+  "tests_sha256": "b5c6010d6a56b96a890821634f0f623997f8a802f3f12b8acd1251c84f6b3ae3"
+}

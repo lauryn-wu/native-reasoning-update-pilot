@@ -1,89 +1,88 @@
-# Validation record — 2026-10-24 qualification update
+# Validation record — compiled reference qualification
 
-No paid model call was made. Real provider behavior, the three-call smoke, and
-the 200-response campaign remain untested and explicitly blocked. Reference
-construction and software checks are not experimental outcomes.
+No paid model call was made. The explicit user hold covers the protocol smoke,
+pilot, and retries, independently of source or software qualification.
 
-The review covers **22 math candidates** (14 verified references, 8 exclusions)
-and **64 coding candidates** (21 verified references, 42 exclusions, 1 pending).
-The deterministic resolved prefix supports **12 math + 9 coding**, a **3-coding
-shortfall**. Candidate 276 remains pending at one-based coding rank 45. Its exact
-minimum solver is not adequate for the full released suite. No new 24-case
-manifest or smoke/control assignment has been frozen.
+The source review covers 22 math candidates and 64 coding candidates. Fourteen
+math and 22 coding pairs have verified references; eight math and 42 coding
+candidates have documented exclusions. Candidate 276 is resolved by compiled
+exact finite-suite reference construction, without excluding it or changing its
+statement, correction, ordering, published inputs, or submitted-program limits.
+The unchanged selection supplies 12 math + 12 coding pairs and separate smoke
+case `livecodebench:337`. Exact IDs are in the audit and frozen manifest.
 
-## Checks actually performed
+## Candidate 276 evidence
 
-- Source acquisition and checksum audit: 43 pinned source artifacts; 1,401 released
-  rows parsed; 401 AIME/LiveCodeBench candidates retained in the unchanged order.
-- All 14 complete math references: exact derivations, independent review, and
-  correct/equivalent/wrong/stale grading checks. Eight exclusions have specific
-  contradictions or ambiguities and independent reviews.
-- The trigonometric pair: outward-rounded integer interval certification gives
-  1,244 initial and 385 updated intersections, with no unresolved intervals.
-  Independent higher precision and asymmetric subdivision reproduce both counts.
-- Coding: all 21 completed reference pairs have proof-based implementations,
-  pinned upstream matching, full published-input validation, and independent
-  exact tests. Test construction and every reference/oracle execution used
-  Docker. Per-case evidence is bound from `provenance/coding_review.json`.
-- An erroneous upstream label for candidate 258 is retained and explicitly
-  corrected after the published theorem and a separate 7,714-state exact minimax
-  agree. No test input is removed or silently relabeled.
-- Candidate 276: 9,999 exact small checks validate the initial interval recurrence;
-  its updated maximum reference passes all 43 published files. Full initial
-  validation is **not complete**: the largest published input has 4,736 items,
-  requiring 4,428,930,784 partner transitions for the known cubic algorithm.
-- Docker function adapter: correct/tuple-equivalent results accepted; wrong,
-  self-asserted-pass and boolean-as-number results rejected. Expected answers
-  remain outside the container. The original targeted command and output are
-  retained in `references/coding/function_adapter_validation_recovered.json`.
-- Final small stdin adapter follow-up: three fresh Python subprocesses/work
-  directories with `sys.exit(0)` pass; self-asserted-pass output fails. See
-  `references/coding/stdin_adapter_validation.json`.
-- The final offline suite passed **116 tests**. This includes bounded batch
-  retention, exact algebraic grading, source/evidence integrity, unchanged
-  review order, paid-execution holds, and infrastructure-deadline classification.
-  The full log is `REFERENCE_UNIT_TESTS.txt`; the consolidated record is
-  `REFERENCE_QUALIFICATION.json`.
+- The exact cubic recurrence, noncrossing-matching argument and old Python
+  implementation are preserved. The compiled source is independently reviewed
+  for indexing, odd survivors, checked 64-bit arithmetic and arbitrary-precision
+  fallback. No asymptotically faster algorithm or full-domain runtime claim is made.
+- Scaling is measured inside pinned GCC Docker at N=256,512,1024,2048,4096,4736.
+  The six-case scaling batch takes 8.533 seconds. All 43 published inputs plus
+  all 162 retained independent inputs produce exact initial gold in 17.124 seconds.
+- A separately authored square-table split-or-enclose DP reproduces all 205 gold
+  outputs in 130.221 seconds. All 162 previously stored initial answers agree.
+- Both automatic arithmetic and forced arbitrary precision match 12,142 literal
+  current-adjacency oracle cases, including exhaustive ternary sequences through
+  length eight, signed inputs, odd survivors and large-integer boundaries.
+- The construction campaign uses 160.690 seconds of its 1800-second budget,
+  including compilation, scaling, generation, oracle execution and independent
+  verification. Each invocation has a 600-second bound, one CPU and 2 GiB memory.
+  Submitted-program limits are unchanged. No reference-feasibility exclusion
+  amendment is applied.
+- Immutable gold binds every ordered input, output, full test suite, source,
+  compiler image/flags, budget policy and independent review. All executable
+  reference/oracle work occurs inside Docker; expected answers stay on the host.
 
-## Reproducibility and observed failures
+Detailed evidence is in `references/coding/276/compiled/`, especially
+`construction_campaign.json`, `gold_outputs.json`, `certificate.json`,
+`INDEPENDENT_REVIEW.md`, and `BENCHMARK.md`.
 
-The first complete asset-reconstruction rerun failed during Docker execution.
-The broader live stdin attempt also observed Docker latency and cleanup-command
-failure; its actual failed outputs are retained separately. Cleanup now kills the
-Docker client even if removal times out and reports infrastructure unavailability.
-The container-side hard deadline remains bounded; there is no host fallback.
-A separate small live retry passed. A reconstruction retry reached candidate 167
-before a timeout. Reference-construction batches now also have an eight-case
-bound, retaining every input and its order. The subsequent reconstruction
-**passed for all 21 coding pairs**, reproducing both variants’ reviewed fixture
-hashes in 135.581 seconds. Its result and previous failures are retained in
-`references/coding/asset_rebuild_validation.json`.
+## Integrated grading and freeze
 
-The full final integrated 35-candidate grader qualification has **not been
-completed**. This is separate from the completed proofs, reference executions,
-asset reconstruction, and targeted adapter checks. Its status is recorded in
-`REFERENCE_QUALIFICATION.json`. The ordered campaign qualification remains
-blocked by candidate 276 regardless of that integration result.
+`provenance/integrated_qualification.json` is the authoritative current integrated
+run record. It records the actual offline test count and log, Docker isolation
+checks, and complete correct/equivalent/wrong/stale checks for the 24 selected
+pairs and separate smoke case. Candidate 276's initial reference is freshly
+replayed under construction resources; its returned outputs use the same exact
+stdin comparator as submissions. Its updated Python reference executes under
+unchanged candidate limits against both full suites. It is never replaced by a
+lookup-table submission or credited as a fast Python solution.
 
-The prior 76-test/17-Docker-check baseline remains in `OFFLINE_QUALIFICATION.json`
-and `DOCKER_QUALIFICATION.json`. Those historical checks do not claim to validate
-later adapters. Current runtime is Python 3.12.13 on macOS arm64, Docker 29.8.2,
-with the image pinned in `sandbox/runner.py`. The host only parses data, compares
-outputs, and runs the trusted harness; submitted/reference/oracle code runs only
-inside Docker.
+Freezing requires every expected check to be true and binds the exact audit,
+implementation and required task IDs. Missing, stale, incomplete or failing
+qualification cannot produce a source-qualified manifest. The paid hold remains
+false in policy and manifest, regardless of passing qualification. A research
+report without paid outcomes remains inconclusive.
 
-## Commands for this checkout
+The provider enforces the explicit hold before accepting any client and again
+before every dispatch. Offline SDK tests patch only the private policy reader
+and use mocked transport. Regression checks cover injected clients and a hold
+reinstated after client construction. The interrupted integration attempt that
+prompted this fix is preserved in `INTEGRATED_QUALIFICATION_ATTEMPTS.json` and
+`INTEGRATED_QUALIFICATION_INTERRUPTED.txt`; it is not a passing qualification. A second serial attempt was superseded by
+bounded parallel offline qualification; its log is separately preserved.
+Parallelism runs at most four independent task checks at once, retains every
+input and check, and preserves per-container limits and deterministic aggregation.
+It does not change task selection or the frozen experimental call schedule.
+
+The historical source-only and pre-compiled checks remain in
+`OFFLINE_QUALIFICATION.json`, `DOCKER_QUALIFICATION.json`,
+`REFERENCE_QUALIFICATION_PRE_COMPILED.json`, and
+`HISTORICAL_VALIDATION_PRE_COMPILED.md`. Earlier Docker reconstruction failures
+and successful retries remain recorded. They are not relabeled as candidate
+model failures or erased by the later successful construction.
+
+## Reproduction in this checkout
 
 ```sh
 ../../work/provider/venv/bin/python -m unittest discover -s tests -v
 ../../work/provider/venv/bin/python -m native_pilot prepare-upstream --cache ../../work/source-cache
 ../../work/provider/venv/bin/python -m native_pilot review --cache ../../work/source-cache
-../../work/provider/venv/bin/python -m native_pilot --asset-cache ../../work/source-cache qualify-reviewed --docker
+../../work/provider/venv/bin/python -m native_pilot --asset-cache ../../work/source-cache qualify-reviewed --selected-only --docker --workers 4
 ```
 
-On a clean checkout use the virtual environment and default cache commands in
-README. `qualify-reviewed` validates completed candidate references; it cannot
-skip 276, freeze a complete sample, or authorize a paid call. A scalable exact
-initial reference for 276, independent review, and full retained-suite validation
-are required before selection can continue. The explicit user hold must remain
-in force throughout this work.
+The setup commands in README use a normal project virtual environment and default
+cache. The frozen manifest binds its integrated qualification record; modifying
+any bound code, evidence or provenance requires a new version and requalification.
+No command here makes a paid call or removes the hold.

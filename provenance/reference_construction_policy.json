@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-10-24",
+  "purpose": "Offline exact reference construction and verification only; never submitted-program grading",
+  "authorization": "User explicitly authorized compiled exact DP and separate bounded offline construction resources before any experiment.",
+  "uniform_limits": {
+    "cpus": 1,
+    "memory_mb": 2048,
+    "pids": 64,
+    "per_invocation_seconds": 600,
+    "total_campaign_seconds": 1800,
+    "output_bytes_per_stream": 4000000,
+    "source_bytes": 512000,
+    "input_bytes": 4000000,
+    "temporary_filesystem_mb": 256
+  },
+  "scope": "The construction campaign includes successful and failed compilation, small-oracle cross-checks, scaling benchmarks, full gold generation and independent verification. A later reproducibility run has the same documented bound. Bulk dependency acquisition is separately recorded setup, not reference execution.",
+  "compiler_image": "gcc@sha256:5e927c284bf55a7dc796262e311a0703344f62f41f5621eb56843111b1d37e15",
+  "compiler_image_id": "sha256:3a44f591405bf6dfaf2c26e2958bec7860c627c12d810c11ddaa0363f1df190a",
+  "compiler_version": "GCC 14.3.0",
+  "architecture": "arm64",
+  "compiler_flags": ["-std=c++17", "-O3", "-DNDEBUG", "-Wall", "-Wextra"],
+  "isolation": "No network or host credentials; unprivileged UID/GID65534; read-only root and source; dropped capabilities; no-new-privileges; bounded executable tmpfs; container PID1 hard timeout plus bounded host cleanup; no host execution fallback.",
+  "submission_limits_changed": false,
+  "test_inputs_may_be_removed": false,
+  "paid_execution_allowed": false,
+  "feasibility_exclusion_amendment": null
+}

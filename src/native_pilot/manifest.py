@@ -1,4 +1,5 @@
 """Content-addressed, immutable manifests; unavailable source evidence blocks payment."""
+import hashlib
 import json
 from pathlib import Path
 from .design import SEED, make_schedule, validate_design, original_identity
@@ -14,8 +15,65 @@ def implementation_hashes(root=ROOT):
     return {str(p.relative_to(root)): file_digest(p) for p in sorted(paths) if p.is_file()}
 
 
-def freeze(destination, version, root=ROOT, *, audit_path=None):
-    audit = json.loads(Path(audit_path or root/'provenance/audit.json').read_text())
+def _integrated_qualification(path, *, audit_sha256, tasks, implementation, root):
+    """Validate completed evidence for this exact source/implementation snapshot."""
+    if path is None:
+        return None, ['Completed integrated qualification is required before source-qualified freeze']
+    try:
+        path = Path(path).resolve()
+        raw = path.read_bytes()
+        qualification = json.loads(raw)
+        if not isinstance(qualification, dict):
+            raise ValueError('Expected a qualification object')
+    except (OSError, ValueError, TypeError) as exc:
+        return None, [f'Integrated qualification is missing or invalid: {exc}']
+    blockers = []
+    for check in ('offline_passed', 'docker_passed', 'source_reference_passed'):
+        if qualification.get(check) is not True:
+            blockers.append('Integrated qualification requires '+check)
+    if qualification.get('audit_sha256') != audit_sha256:
+        blockers.append('Integrated qualification belongs to a different source audit')
+    if qualification.get('implementation_hashes') != implementation:
+        blockers.append('Integrated qualification implementation is stale or missing')
+    covered = qualification.get('covered_task_ids')
+    if not isinstance(covered, list) or not all(isinstance(tid, str) for tid in covered):
+        covered = []
+    required_ids = {task['task_id'] for task in tasks}
+    missing = required_ids - set(covered)
+    if missing:
+        blockers.append('Integrated qualification omits required tasks: '+', '.join(sorted(missing)))
+    references = qualification.get('source_references')
+    if not isinstance(references, dict) or references.get('passed') is not True:
+        blockers.append('Integrated qualification source-reference report is not passing')
+    checks = references.get('checks', {}) if isinstance(references, dict) else {}
+    if not isinstance(checks, dict):
+        checks = {}
+    required_checks = {'original_reference', 'updated_reference', 'original_equivalent',
+                       'updated_equivalent', 'original_wrong_rejected',
+                       'updated_wrong_rejected', 'stale_rejected'}
+    for task in tasks:
+        expected = required_checks | {'changed_answer' if task['domain']=='math' else 'changed_behavior'}
+        task_checks = checks.get(task['task_id'])
+        if (not isinstance(task_checks, dict) or not expected.issubset(task_checks)
+                or not all(value is True for value in task_checks.values())):
+            blockers.append('Integrated qualification lacks completed passing reference checks: '+task['task_id'])
+    if blockers:
+        return None, blockers
+    root = root.resolve()
+    descriptor = {'path': str(path.relative_to(root)) if path.is_relative_to(root) else str(path),
+                  'sha256': hashlib.sha256(raw).hexdigest(),
+                  'audit_sha256': audit_sha256,
+                  'covered_task_ids': sorted(set(covered)),
+                  'implementation_hashes_sha256': digest(implementation)}
+    return descriptor, []
+
+
+def freeze(destination, version, root=ROOT, *, audit_path=None, qualification_path=None):
+    root = Path(root)
+    audit_path = Path(audit_path or root/'provenance/audit.json')
+    audit = json.loads(audit_path.read_text())
+    audit_sha256 = file_digest(audit_path)
+    implementation = implementation_hashes(root)
     from .data import select_tasks, SourceBlocked
     blockers = list(audit.get('blockers', []))
     tasks, smoke_task = [], None
@@ -58,6 +116,13 @@ def freeze(destination, version, root=ROOT, *, audit_path=None):
         blockers.append(str(exc))
     if not audit.get('pair_semantics_verified', False):
         blockers.append('No completed audit of unambiguous behavior-changing pairs and both graders')
+    integrated_qualification = None
+    if audit.get('status') == 'qualified':
+        integrated_qualification, qualification_blockers = _integrated_qualification(
+            qualification_path, audit_sha256=audit_sha256,
+            tasks=tasks + ([smoke_task] if smoke_task else []),
+            implementation=implementation, root=root)
+        blockers.extend(qualification_blockers)
     # Do not manufacture a 24-case selection from unqualified review candidates.
     if blockers:
         tasks, schedule, smoke_task = [], [], None
@@ -67,7 +132,8 @@ def freeze(destination, version, root=ROOT, *, audit_path=None):
     paid_allowed = policy_path.is_file() and json.loads(policy_path.read_text()).get('paid_execution_allowed') is True
     manifest = {
         'schema_version': 2, 'version': version, 'created_at': utcnow(),
-        'source_audit_sha256': file_digest(Path(audit_path or root/'provenance/audit.json')),
+        'source_audit_sha256': audit_sha256,
+        'integrated_qualification': integrated_qualification,
         'source_qualified': not bool(blockers),
         'paid_execution_allowed': bool(paid_allowed and not blockers),
         'execution_blockers': [] if paid_allowed else ['Explicit user hold: paid execution remains blocked, including smoke and retries'],
@@ -87,7 +153,7 @@ def freeze(destination, version, root=ROOT, *, audit_path=None):
                      'permutation':'exact sign-flip of paired task means, repeats kept together',
                      'bootstrap_seed':SEED,'bootstrap_repeats':10000,
                      'required':'valid manipulation and complete required outcomes'},
-        'provenance_hashes':provenance,'implementation_hashes':implementation_hashes(root),
+        'provenance_hashes':provenance,'implementation_hashes':implementation,
         'tasks_sha256':digest(tasks),'schedule_sha256':digest(schedule),
     }
     from .budget import RATES
@@ -112,6 +178,11 @@ def load_manifest(path, *, verify_files=True, root=ROOT):
                     raise ValueError(f'Frozen file changed: {name}; create a new manifest version')
         if implementation_hashes(root) != manifest['implementation_hashes']:
             raise ValueError('Implementation file set changed; create a new manifest version')
+        qualification = manifest.get('integrated_qualification')
+        if qualification:
+            path = root/qualification['path']
+            if not path.is_file() or file_digest(path) != qualification.get('sha256'):
+                raise ValueError('Frozen integrated qualification changed; create a new manifest version')
     if digest(manifest['tasks']) != manifest['tasks_sha256'] or digest(manifest['schedule']) != manifest['schedule_sha256']:
         raise ValueError('Frozen task/schedule hash mismatch')
     if manifest['status'] == 'frozen':

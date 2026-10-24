@@ -1,0 +1,44 @@
+{
+  "at": "2026-10-24T23:10:46.514103+00:00",
+  "files": {
+    "src/native_pilot/cli.py": "7709e622587916dd83b743eb35a4fd4c58c492665bbaf60703e05599d59057be",
+    "src/native_pilot/grading.py": "4c070009f150e5e8def27bc883a740018456802cb48fbf990e23cd2d179e2c97",
+    "src/native_pilot/provider.py": "fae9096b94a597577601aeb8380346aeb1e716cd8359fe57ea893103c9328955",
+    "tests/test_parallel_qualification.py": "e0fb260aee52ea95b378199c42de2593d3278647bf8995b9458fac6f8ea25ccf",
+    "tests/test_provider.py": "29005aadd164ca6efb5294214c237774e0a332b3c96cbca4c79c989db00991c4"
+  },
+  "findings": {
+    "all_checks_and_execution_evidence_retained": true,
+    "failure_propagation": true,
+    "input_order_aggregation": true,
+    "paid_hold_enforced_for_injected_clients_and_every_dispatch": true,
+    "per_container_limits_unchanged": true,
+    "same_complete_serial_checker_per_task": true,
+    "shared_injected_sandbox_rejected_in_parallel": true
+  },
+  "paid_calls": 0,
+  "reviewer": "provider sub-agent (independent of parallel implementation author grading_analysis)",
+  "scope": "Read-only review of bounded parallel qualification and paid-policy gate",
+  "source_audit_review": {
+    "all_selected_source_fields_and_asset_hashes_verified": true,
+    "assignments": 200,
+    "candidate276_input_count": 205,
+    "controls": 8,
+    "exact_selected_pairs": 24,
+    "repair_only_three_output_newlines": true,
+    "reviewer": "source_audit sub-agent",
+    "separate_smoke_id": "livecodebench:337",
+    "status": "passed"
+  },
+  "status": "passed",
+  "validation": {
+    "full_root_unit_suite": {
+      "count": 146,
+      "elapsed_seconds": 2.194,
+      "passed": true
+    },
+    "no_live_model_calls": true,
+    "parallel_tests_independently_rerun": 7,
+    "passed": true
+  }
+}

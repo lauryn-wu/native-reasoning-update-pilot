@@ -11,6 +11,7 @@ import importlib.metadata
 import json
 import logging
 import os
+from pathlib import Path
 from typing import Any, Mapping
 
 MODEL = "gpt-6.1-sol"
@@ -251,24 +252,33 @@ def _validate_dispatch_request(request: Mapping) -> None:
         raise ProtocolError("Frozen protocol disables cache breakpoints")
 
 
+def _read_execution_policy() -> dict:
+    policy_path = Path(__file__).resolve().parents[2] / "provenance/execution_policy.json"
+    try:
+        policy = json.loads(policy_path.read_text())
+    except (OSError, ValueError):
+        raise ProviderFailure("execution_policy_missing", uncertain_charge=False) from None
+    if not isinstance(policy, dict):
+        raise ProviderFailure("execution_policy_missing", uncertain_charge=False)
+    return policy
+
+
+def _require_paid_execution_policy() -> None:
+    if _read_execution_policy().get("paid_execution_allowed") is not True:
+        raise ProviderFailure("paid_execution_policy_hold", uncertain_charge=False)
+
+
 class OpenAIProvider:
     """Optional SDK backend with an explicit paid gate and no implicit retries."""
 
     def __init__(self, *, allow_paid: bool = False, client: Any = None):
         if allow_paid is not True:
             raise ProviderFailure("paid_execution_not_authorized", uncertain_charge=False)
-        if client is not None:  # Injection for offline tests; no SDK/network required.
+        # A user hold applies to every client, including injected SDK clients.
+        _require_paid_execution_policy()
+        if client is not None:
             self.client = client
             return
-        # An explicit user hold is stronger than the ordinary CLI opt-in.
-        from pathlib import Path
-        policy_path = Path(__file__).resolve().parents[2] / "provenance/execution_policy.json"
-        try:
-            policy = json.loads(policy_path.read_text())
-        except (OSError, ValueError):
-            raise ProviderFailure("execution_policy_missing", uncertain_charge=False) from None
-        if policy.get("paid_execution_allowed") is not True:
-            raise ProviderFailure("paid_execution_policy_hold", uncertain_charge=False)
         try:
             version = importlib.metadata.version("openai")
         except importlib.metadata.PackageNotFoundError:
@@ -294,6 +304,9 @@ class OpenAIProvider:
         )
 
     def create(self, request: Mapping) -> dict:
+        # Re-read before each dispatch so retaining an instance cannot bypass a
+        # hold that was reinstated after construction.
+        _require_paid_execution_policy()
         _validate_dispatch_request(request)
         try:
             response = self.client.responses.create(**copy.deepcopy(dict(request)))

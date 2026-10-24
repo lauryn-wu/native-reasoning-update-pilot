@@ -6,7 +6,7 @@ import sys
 import tarfile
 from pathlib import Path
 from .util import atomic_json, digest, file_digest, utcnow
-from .manifest import ROOT, freeze, load_manifest, paid_preflight
+from .manifest import ROOT, freeze, load_manifest, paid_preflight, implementation_hashes
 
 
 def show(value):
@@ -17,12 +17,17 @@ def read_json(path):
     return json.loads(Path(path).read_text())
 
 
-def qualification(manifest, *, docker=False, cache=None):
+def qualification(manifest, *, docker=False, cache=None, workers=1):
+    from .grading import validate_reference_workers
+    validate_reference_workers(workers)
+    implementation = implementation_hashes(ROOT)
     process = subprocess.run([sys.executable,'-m','unittest','discover','-s',str(ROOT/'tests'),'-v'],
                              cwd=ROOT, capture_output=True,text=True)
     result = {'manifest_sha256':manifest['manifest_sha256'], 'at':utcnow(),
               'offline_passed': process.returncode==0, 'test_output': process.stdout+process.stderr,
-              'docker_passed':False, 'source_reference_passed':False}
+              'docker_passed':False, 'source_reference_passed':False,
+              'implementation_hashes':implementation, 'covered_task_ids':[],
+              'reference_workers':workers}
     if docker:
         from .sandbox import qualify_docker
         from .grading import qualify_references
@@ -32,7 +37,8 @@ def qualification(manifest, *, docker=False, cache=None):
         if result['docker_passed']:
             tasks = manifest['tasks'] + ([manifest['smoke_task']] if manifest.get('smoke_task') else [])
             result['source_references'] = qualify_references(hydrate_tasks(tasks, cache or ROOT/'work/source-cache'),
-                progress=lambda task_id: print('Qualifying reference: '+task_id,file=sys.stderr,flush=True))
+                progress=lambda task_id: print('Qualifying reference: '+task_id,file=sys.stderr,flush=True),
+                workers=workers)
         else:
             result['source_references'] = {'status':'not_run','passed':False,
                                           'reason':'Docker software qualification did not pass'}
@@ -40,6 +46,10 @@ def qualification(manifest, *, docker=False, cache=None):
     else:
         result['docker'] = {'status':'not_run','passed':False}
         result['source_references'] = {'status':'not_run','passed':False}
+    result['covered_task_ids'] = sorted(result['source_references'].get('checks',{}))
+    if implementation_hashes(ROOT) != implementation:
+        result['offline_passed'] = False
+        result['implementation_changed_during_qualification'] = True
     return result
 
 
@@ -98,10 +108,18 @@ def main(argv=None):
     child.add_argument('--version',required=True)
     child.add_argument('--out',type=Path,required=True)
     child.add_argument('--audit',type=Path)
+    child.add_argument('--qualification',type=Path,
+                       help='Completed integrated qualification bound to the current audit and implementation')
     child=sub.add_parser('qualify')
     child.add_argument('--docker',action='store_true')
+    child.add_argument('--workers',type=int,choices=range(1,5),default=1,
+                       help='Concurrent offline reference tasks (1–4); per-container limits stay unchanged')
     child=sub.add_parser('qualify-reviewed')
     child.add_argument('--docker',action='store_true')
+    child.add_argument('--workers',type=int,choices=range(1,5),default=1,
+                       help='Concurrent offline reference tasks (1–4); per-container limits stay unchanged')
+    child.add_argument('--selected-only',action='store_true',
+                       help='Qualify exactly the deterministic 24-task selection and separate smoke task')
     sub.add_parser('dry-run')
     for name in ('smoke','run'):
         child=sub.add_parser(name)
@@ -130,16 +148,24 @@ def main(argv=None):
             show({k:v for k,v in audit.items() if k not in ('candidates','review_inventory')})
             return 0  # Successful audit can establish that the design is blocked.
         if args.command=='freeze':
-            m=freeze(args.out,args.version,audit_path=args.audit)
+            m=freeze(args.out,args.version,audit_path=args.audit,qualification_path=args.qualification)
             show({'manifest':str(args.out),'sha256':m['manifest_sha256'],'status':m['status'],'blockers':m['blockers']})
             return 0
         if args.command=='qualify-reviewed':
             audit_path=ROOT/'provenance/qualification_audit.json'
             audit=read_json(audit_path)
-            candidate_view={'manifest_sha256':file_digest(audit_path),
-                            'tasks':audit['qualified_tasks'],'smoke_task':None}
-            result=qualification(candidate_view,docker=args.docker,cache=args.asset_cache)
-            result['scope']='reviewed_candidates_only; not a frozen or authorized campaign'
+            if args.selected_only:
+                from .data import select_tasks
+                selection=select_tasks(audit)
+                candidate_view={'manifest_sha256':file_digest(audit_path),
+                                'tasks':selection['tasks'],'smoke_task':selection['smoke_task']}
+            else:
+                candidate_view={'manifest_sha256':file_digest(audit_path),
+                                'tasks':audit['qualified_tasks'],'smoke_task':None}
+            result=qualification(candidate_view,docker=args.docker,cache=args.asset_cache,workers=args.workers)
+            result['scope']=('selected_24_plus_separate_smoke; not a frozen or authorized campaign'
+                             if args.selected_only else
+                             'reviewed_candidates_only; not a frozen or authorized campaign')
             result['source_selection_complete']=audit['status']=='qualified'
             result['paid_execution_allowed']=False
             result['audit_sha256']=result.pop('manifest_sha256')
@@ -152,7 +178,7 @@ def main(argv=None):
         qpath=run_dir/f"qualification-{manifest['manifest_sha256']}.json"
         ledger_path=run_dir/'budget.sqlite'
         if args.command=='qualify':
-            result=qualification(manifest,docker=args.docker,cache=args.asset_cache)
+            result=qualification(manifest,docker=args.docker,cache=args.asset_cache,workers=args.workers)
             atomic_json(qpath,result)
             show({k:v for k,v in result.items() if k!='test_output'})
             print(result['test_output'],file=sys.stderr)
@@ -208,8 +234,15 @@ def main(argv=None):
         paths += [ROOT/'README.md',ROOT/'pyproject.toml',ROOT/'.gitignore',target,run_dir/'report.md']
         if qpath.exists():
             paths.append(qpath)
+        integrated=manifest.get('integrated_qualification')
+        if integrated:
+            qualification_path=(ROOT/integrated['path']).resolve()
+            if qualification_path.is_relative_to(ROOT.resolve()):
+                if not qualification_path.is_file() or file_digest(qualification_path)!=integrated['sha256']:
+                    raise ValueError('Frozen integrated qualification changed before archive')
+                paths.append(ROOT/qualification_path.relative_to(ROOT.resolve()))
         with tarfile.open(archive,'w:gz') as bundle:
-            for path in sorted(paths):
+            for path in sorted(set(paths)):
                 bundle.add(path,arcname=path.relative_to(ROOT),recursive=False)
         show({'archive':str(archive),'sha256':file_digest(archive),'contains_private_reasoning':False})
         return 0

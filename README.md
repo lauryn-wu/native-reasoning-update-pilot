@@ -7,21 +7,22 @@ reasoning; this pilot instead corrects a completed response in a new user turn.
 
 **Paid execution is explicitly blocked. No paid model calls have been made.**
 
-The current ordered review supports **12 math + 9 coding pairs**. The coding
-shortfall is **3**: `livecodebench:276` (Adjacent Delete), at one-based coding
-review rank 45, remains pending. Its minimum-score initial variant has a proved
-exact interval algorithm and 9,999 small checks, but no verified implementation
-covering the large released tests within the sandbox bounds. It is not excluded
-for difficulty, and later validated references do not replace it. No new 24-case
-manifest, control assignment, smoke assignment, or 200-call schedule is frozen.
+Candidate **276 is resolved** with a compiled version of the proved exact cubic
+DP and immutable gold outputs. The unchanged deterministic order supplies
+**12 math + 12 coding pairs**, plus separate smoke case `livecodebench:337`.
+No reference-feasibility exclusion amendment is applied. All statements,
+corrections, earlier attempts and published inputs are preserved.
 
-The historical [v1 manifest](manifests/pilot-v1.json) and baseline source audit
-are preserved. They describe the earlier source-only inspection, before verified
-reference construction was authorized. Current evidence is in
-[qualification audit](provenance/qualification_audit.json),
-[math review](provenance/math_review.json), [coding review](provenance/coding_review.json),
-and [validation](docs/VALIDATION.md). The existing deterministic order and seed
-are unchanged. Selection never reads experimental model outcomes.
+The current [v2 manifest](manifests/pilot-v2.json) freezes all 24 pairs, separate
+smoke case, eight controls, and the 200-response schedule. Its
+[integrated qualification](provenance/integrated_qualification.json) binds passing
+offline, Docker, and reference checks to this exact implementation and source audit.
+The historical [v1 manifest](manifests/pilot-v1.json) is unchanged. Paid execution
+remains blocked. See [validation](docs/VALIDATION.md) and
+[offline reference construction](docs/REFERENCE_CONSTRUCTION.md).
+
+The recorded run passes **146 unit tests**, **24 Docker software checks**,
+and all eight reference checks for each of the **25 qualified pairs**.
 
 ## References and grading
 
@@ -55,35 +56,46 @@ source .venv/bin/activate
 python -m pip install -e '.[data,paid]'
 open -a Docker
 docker pull python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+docker pull gcc@sha256:5e927c284bf55a7dc796262e311a0703344f62f41f5621eb56843111b1d37e15
 native-pilot prepare
 native-pilot prepare-upstream
-native-pilot review
-native-pilot qualify-reviewed --docker
 ```
 
 `paid` installs the SDK only; these commands require no API key and make no paid
 calls. Source/test downloads use ignored `work/source-cache`. To reuse another
 cache, pass `--cache PATH` to preparation/review and `--asset-cache PATH` before
-`qualify-reviewed`. Candidate qualification is separate from completed sample
-qualification; the result records that the ordered selection is still blocked.
+`qualify-reviewed`. Reference qualification establishes grader readiness before experimental execution;
+the explicit paid hold remains active after it passes.
 
 `review` rebuilds the current audit from pinned sources, reference assets, exact
-math grading checks, and independent review records. `qualify-reviewed` runs the
-offline suite, Docker isolation checks, and correct/equivalent/wrong/stale checks
-on all completed candidate references. Results are saved under ignored `runs/`.
+math grading checks, and independent review records. `qualify-reviewed --selected-only` runs the offline suite, Docker isolation
+checks, and correct/equivalent/wrong/stale checks on the 24 selected pairs and
+separate smoke case. Omit `--selected-only` to check every completed reference. Results are saved under ignored `runs/`.
 The committed validation record states what was actually run.
 
 ## Freezing and execution gates
 
-After the pending source/reference work is genuinely resolved, use a new version:
+The committed v2 snapshot is already source-qualified. Inspect it, or repeat
+qualification without changing its bound evidence:
 
 ```sh
-native-pilot review
-native-pilot freeze --version pilot-v2 --out manifests/pilot-v2.json --audit provenance/qualification_audit.json
-native-pilot --manifest manifests/pilot-v2.json qualify --docker
 native-pilot --manifest manifests/pilot-v2.json dry-run
 native-pilot --manifest manifests/pilot-v2.json report
 native-pilot --manifest manifests/pilot-v2.json archive
+native-pilot --manifest manifests/pilot-v2.json qualify --docker --workers 4
+```
+
+Four workers run independent offline task checks; each retains the same complete
+suites and per-container limits. The default is one worker. This option does not
+change the experimental call schedule.
+
+To deliberately rebuild the audit and freeze a revised snapshot, choose an unused
+version. Rebuilding the audit changes a bound file and requires the new freeze:
+
+```sh
+native-pilot review
+native-pilot qualify-reviewed --selected-only --docker --workers 4
+native-pilot freeze --version pilot-v3 --out manifests/pilot-v3.json --audit provenance/qualification_audit.json --qualification runs/reviewed-candidate-qualification.json
 ```
 
 A blocked audit cannot produce a 24-case schedule. Existing manifests cannot be

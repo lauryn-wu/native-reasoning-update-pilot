@@ -1,0 +1,54 @@
+{
+  "attempts": [
+    {
+      "at": "2026-10-24T22:59:56.563970+00:00",
+      "attempt": 1,
+      "command": "native-pilot --asset-cache ../../work/source-cache qualify-reviewed --selected-only --docker",
+      "completed_reference_checks_claimed": false,
+      "exit_code": 130,
+      "last_announced_candidate": "livecodebench:258",
+      "log": {
+        "path": "docs/INTEGRATED_QUALIFICATION_INTERRUPTED.txt",
+        "sha256": "f73b137378a6f635ece762bdbecbe2d803e6dd41845801ffb075daa2ee24832b"
+      },
+      "paid_calls_made": 0,
+      "passed": false,
+      "reason": "Final read-only review found that an injected provider client bypassed execution_policy. Stopped this run before freezing, fixed gate, and scheduled a new full integrated run against stable final implementation.",
+      "status": "interrupted_before_completion",
+      "submitted_program_limits_changed": false,
+      "tests_removed": false
+    },
+    {
+      "at": "2026-10-24T23:08:03.374883+00:00",
+      "attempt": 2,
+      "exit_code": 130,
+      "last_announced_candidate": "livecodebench:258",
+      "log": {
+        "path": "docs/INTEGRATED_QUALIFICATION_SERIAL_INTERRUPTED.txt",
+        "sha256": "1e954339abf49c2a03943c6a4142269653dbc576e0159f8b6406c34630bb4e3f"
+      },
+      "paid_calls_made": 0,
+      "passed": false,
+      "reason": "Replaced serial whole-suite qualification with bounded independent task parallelism on Docker8CPU/8GiB. Every grader check, input and per-program limit is retained; no partial results are credited.",
+      "status": "interrupted_before_completion",
+      "submitted_program_limits_changed": false,
+      "tests_removed": false
+    },
+    {
+      "at": "2026-10-24T23:10:30.868193+00:00",
+      "attempt": 3,
+      "completed_at": "2026-10-24T23:57:48.505579+00:00",
+      "covered_task_count": 25,
+      "paid_calls_made": 0,
+      "passed": true,
+      "qualification": {
+        "path": "provenance/integrated_qualification.json",
+        "sha256": "ffbccceb93ac048c9c64f4dedef87980732446ba6350d3d21cb4e2faad1f4441"
+      },
+      "reference_check_count": 200,
+      "scope": "selected_24_plus_separate_smoke; not a frozen or authorized campaign",
+      "status": "passed",
+      "unit_test_count": 146
+    }
+  ]
+}

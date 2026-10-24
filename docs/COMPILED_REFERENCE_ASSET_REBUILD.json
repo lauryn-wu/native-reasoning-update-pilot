@@ -1,0 +1,20 @@
+{
+  "assets": {
+    "original": {
+      "path": "lcb/qualified/276-original.json",
+      "sha256": "814bb1d0ad1ee81b9773af0fa7ba5c865cb106ba90abb951dff39d4cfc622501"
+    },
+    "updated": {
+      "path": "lcb/qualified/276-updated.json",
+      "sha256": "2dfb8e79f6ce28b5d740b743be9f204ce91646c072d0fef94442a049e1168b9e"
+    }
+  },
+  "at": "2026-10-24T23:02:02.068749+00:00",
+  "elapsed_seconds": 16.665170332882553,
+  "paid_calls": 0,
+  "passed": true,
+  "prepared_task_ids": [
+    "livecodebench:276"
+  ],
+  "source_tests_host_executed": false
+}

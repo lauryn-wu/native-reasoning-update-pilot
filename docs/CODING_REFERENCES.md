@@ -56,7 +56,15 @@ Compressed private tests are decoded only in a pinned Docker image, without netw
 
 ## Independence and limits
 
-The first nine qualified candidates in the unchanged ranking occur before task 276 (one-based review rank 45). Task 276 changes maximum to minimum adjacent-pair deletion cost. Its minimum variant needs a scalable independently verified reference; exact cubic interval DP on small inputs does not qualify the full released suite. It remains **pending**, and later qualified candidates must not fill its place by skipping the unresolved earlier candidate. This is a source/reference blocker, not an observed model failure. Extra independently reviewed LeetCode tasks remain available as evidence but are not silently substituted into a frozen pilot.
+Candidate 276 (one-based review rank 45) is now reference-qualified with the
+proved cubic DP compiled under the separately bounded offline construction
+policy. All 43 published and 162 retained initial inputs have immutable exact
+gold, independently reproduced by a separate DP; 12,142 literal-oracle cases
+validate both arithmetic paths. No scalability claim at N=300000 is made, and
+submitted-program limits are unchanged. See `REFERENCE_CONSTRUCTION.md` and
+`references/coding/276/compiled/`. Its earlier pending record and small Python
+reference are preserved. No feasibility exclusion amendment or skipped candidate
+is needed: the unchanged order supplies 12 coding pairs and separate smoke337.
 
 For task 258, acquired case index 20 is `N=10`, `A=[7,16,3,3,9,8,16,12,8,3]`. The upstream label is Snuke. There are five odd entries, so the published proof gives first-player Fennec after correction. A separate literal minimax, without assuming the parity theorem, visits 7,714 states and gives the same answer. `references/coding/258/adjudication.json` and `adjudication_execution.json` preserve the original input, original label, corrected label, proof and actual isolated run. The hashed grading suite retains this input at the same position and changes its expected output with this explicit adjudication. No other upstream answer was changed to fit a reference.
 

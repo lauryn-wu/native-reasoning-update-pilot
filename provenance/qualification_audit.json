@@ -1,24 +1,26 @@
 {
-  "at": "2026-10-24T22:27:29.454096+00:00",
-  "blockers": [
-    "Earlier candidate unresolved: livecodebench:276"
+  "at": "2026-10-24T23:02:03.578574+00:00",
+  "blockers": [],
+  "control_task_ids": [
+    "aime2024:1016",
+    "aime2025:1053",
+    "aime2024:1012",
+    "aime2024:1019",
+    "livecodebench:191",
+    "livecodebench:268",
+    "livecodebench:258",
+    "livecodebench:269"
   ],
-  "first_unresolved_by_domain": [
-    {
-      "domain": "coding",
-      "reason": "The exact initial minimum-cost interval DP has a declared n<=240 resource bound; the full retained published suite reaches n=4736 and the corrected constraint is n<=300000. A scalable, independently verified initial reference is unresolved. This candidate remains pending and cannot be skipped.",
-      "task_id": "livecodebench:276"
-    }
-  ],
+  "first_unresolved_by_domain": [],
   "ordered_eligible_counts": {
-    "coding": 9,
+    "coding": 12,
     "math": 12
   },
   "paid_calls_made": 0,
   "paid_execution_allowed": false,
   "pair_semantics_verified": true,
   "qualified_counts": {
-    "coding": 21,
+    "coding": 22,
     "math": 14
   },
   "qualified_tasks": [
@@ -1397,6 +1399,70 @@
     },
     {
       "changed_tokens": 2,
+      "correction_prompt": "Correction: Find the maximum possible total score obtained, not the minimum.\nKindly review the test cases and specifications provided below.\n\nConstraints\n\n- 2 \\le N \\le 3 \\times 10^5\n- 1 \\le A_i \\le 10^9\n- All input values are integers.\n\n\nSample Input 1\n\n4\n1 2 5 3\n\nSample Output 1\n\n5\n\nFirst, remove A_2 and A_3. The score obtained is |A_2 - A_3| = 3.\nNext, remove A_1 and A_4. Note that, because of the previous operation, these two numbers are now adjacent. The score obtained is |A_1 - A_4| = 2.\nHence, the total score obtained is 5.\nIt is impossible to achieve a total score of 6 or greater, so print 5.\n\nSample Input 2\n\n7\n3 1 4 1 5 9 2\n\nSample Output 2\n\n14\n\nSample Input 3\n\n5\n1 1 1 1 1\n\nSample Output 3\n\n0",
+      "correction_prompt_sha256": "861aedc1e5e6d27dc954cd1c41c49957cbee076a804e4202ad51eac12ccafba1",
+      "domain": "coding",
+      "memory_mb": 768,
+      "original": {
+        "gold_asset": {
+          "path": "references/coding/276/compiled/gold_outputs.json",
+          "sha256": "7c2a8dfaa4d907a9b0b0096af99340e3689487013cd9869f47cc594a9c2f7170"
+        },
+        "mode": "stdin",
+        "offline_reference": {
+          "certificate_asset": {
+            "path": "references/coding/276/compiled/certificate.json",
+            "sha256": "30c34fe85aebf06ec6996229e861214a6225ef54cea642977b208899751b85e1"
+          },
+          "kind": "compiled_gold_v1",
+          "source_asset": {
+            "path": "references/coding/276/compiled/reference.cpp",
+            "sha256": "3628ae7ebbeba3f413128bd78adb41de071d943ce445d59788e5de11faf07324"
+          }
+        },
+        "test_asset": {
+          "path": "lcb/qualified/276-original.json",
+          "sha256": "814bb1d0ad1ee81b9773af0fa7ba5c865cb106ba90abb951dff39d4cfc622501"
+        }
+      },
+      "original_identity": "b92f20023c12899a7666397dfd6a329f712dd570689f4f3457dba4c4aa0f7338",
+      "original_prompt": "You are given a length-N sequence A = (A_1, A_2, \\ldots, A_N).\nYou will repeatedly perform the following operation until the sequence has length at most 1: choose two adjacent numbers and remove both from the sequence.\nThe score obtained in one operation is the absolute difference of the two chosen numbers.\nFind the minimum possible total score obtained.\n\nInput\n\nThe input is given from Standard Input in the following format:\nN\nA_1 A_2 \\ldots A_N\n\nOutput\n\nPrint the minimum possible total score obtained.",
+      "output_instructions": "Return exactly one complete Python 3.12 program that reads standard input and writes the requested standard output.",
+      "output_limit": 4000000,
+      "published_difficulty": "hard",
+      "qualification_blockers": [],
+      "qualification_evidence_sha256": "04031f57d8f8dd2d1f8b5a71e150090bd282e5adfcd19b04bbda4260e42c3b94",
+      "qualified": true,
+      "released_fields": {
+        "original_problem": "You are given a length-N sequence A = (A_1, A_2, \\ldots, A_N).\nYou will repeatedly perform the following operation until the sequence has length at most 1: choose two adjacent numbers and remove both from the sequence.\nThe score obtained in one operation is the absolute difference of the two chosen numbers.\nFind the maximum possible total score obtained.\n\nInput\n\nThe input is given from Standard Input in the following format:\nN\nA_1 A_2 \\ldots A_N\n\nOutput\n\nPrint the maximum possible total score obtained.\n",
+        "original_starter_code": "",
+        "revised_problem": "You are given a length-N sequence A = (A_1, A_2, \\ldots, A_N).\nYou will repeatedly perform the following operation until the sequence has length at most 1: choose two adjacent numbers and remove both from the sequence.\nThe score obtained in one operation is the absolute difference of the two chosen numbers.\nFind the minimum possible total score obtained.\n\nInput\n\nThe input is given from Standard Input in the following format:\nN\nA_1 A_2 \\ldots A_N\n\nOutput\n\nPrint the minimum possible total score obtained.",
+        "revised_starter_code": "",
+        "update": "Correction: Find the maximum possible total score obtained, not the minimum.\nKindly review the test cases and specifications provided below.\n\nConstraints\n\n- 2 \\le N \\le 3 \\times 10^5\n- 1 \\le A_i \\le 10^9\n- All input values are integers.\n\n\nSample Input 1\n\n4\n1 2 5 3\n\nSample Output 1\n\n5\n\nFirst, remove A_2 and A_3. The score obtained is |A_2 - A_3| = 3.\nNext, remove A_1 and A_4. Note that, because of the previous operation, these two numbers are now adjacent. The score obtained is |A_1 - A_4| = 2.\nHence, the total score obtained is 5.\nIt is impossible to achieve a total score of 6 or greater, so print 5.\n\nSample Input 2\n\n7\n3 1 4 1 5 9 2\n\nSample Output 2\n\n14\n\nSample Input 3\n\n5\n1 1 1 1 1\n\nSample Output 3\n\n0"
+      },
+      "review_rank": 45,
+      "source": "livecodebench",
+      "source_id": 276,
+      "source_original_prompt_sha256": "e20fdcf9d1bf66c6d740b20a792dd996a38a6a7f4f7fadc5ce908abb08b5dfc3",
+      "source_revised_prompt_sha256": "d7f1a9911c76afa45ec7d55daaa93d7f753056bf110e5a2b769fd775cfe0afcd",
+      "source_row_sha256": "ef7326ff43fac98d6e0dff30ea30fc2a7ba11a6519b24baadc95f6febe6b9fcf",
+      "task_id": "livecodebench:276",
+      "timeout_seconds": 60,
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/276/updated.py",
+          "sha256": "a4685759a65552c8ca70ba79f640111325c146a8e7a1ca1cabdc915500ae89ac"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/276-updated.json",
+          "sha256": "2dfb8e79f6ce28b5d740b743be9f204ce91646c072d0fef94442a049e1168b9e"
+        }
+      },
+      "updated_prompt": "You are given a length-N sequence A = (A_1, A_2, \\ldots, A_N).\nYou will repeatedly perform the following operation until the sequence has length at most 1: choose two adjacent numbers and remove both from the sequence.\nThe score obtained in one operation is the absolute difference of the two chosen numbers.\nFind the maximum possible total score obtained.\n\nInput\n\nThe input is given from Standard Input in the following format:\nN\nA_1 A_2 \\ldots A_N\n\nOutput\n\nPrint the maximum possible total score obtained.\n\n\nReleased correction and supplemental specifications:\nCorrection: Find the maximum possible total score obtained, not the minimum.\nKindly review the test cases and specifications provided below.\n\nConstraints\n\n- 2 \\le N \\le 3 \\times 10^5\n- 1 \\le A_i \\le 10^9\n- All input values are integers.\n\n\nSample Input 1\n\n4\n1 2 5 3\n\nSample Output 1\n\n5\n\nFirst, remove A_2 and A_3. The score obtained is |A_2 - A_3| = 3.\nNext, remove A_1 and A_4. Note that, because of the previous operation, these two numbers are now adjacent. The score obtained is |A_1 - A_4| = 2.\nHence, the total score obtained is 5.\nIt is impossible to achieve a total score of 6 or greater, so print 5.\n\nSample Input 2\n\n7\n3 1 4 1 5 9 2\n\nSample Output 2\n\n14\n\nSample Input 3\n\n5\n1 1 1 1 1\n\nSample Output 3\n\n0"
+    },
+    {
+      "changed_tokens": 2,
       "correction_prompt": "Correction: The price of a pair formed by cakes a_i and b_i should be \\max(X_{a_i} + X_{b_i},\\, Y_{a_i} + Y_{b_i},\\, Z_{a_i} + Z_{b_i}).\nHere are the test cases and specifications you should review.\nConstraints\n\n\n- 1\\leq T\\leq 1000\n- 2\\leq N \\leq 10^5\n- The sum of N over all test cases in each input file is at most 10^5.\n- 1\\leq K \\leq \\lfloor \\frac{N}{2}\\rfloor (For a real number x, \\lfloor x\\rfloor denotes the greatest integer not exceeding x.)\n- 0\\leq X_i,Y_i,Z_i \\leq 10^9\n- All input values are integers.\n\nSample Input 1\n\n1\n3 1\n6 3 8\n3 5 0\n2 7 3\n\nSample Output 1\n\n12\n\nWe form one pair out of three cakes.\nIf we pair cake 1 with cake 2, the price is \\max(6+3,\\,3+5,\\,8+0) = 9.\nIf we pair cake 1 with cake 3, the price is \\max(6+2,\\,3+7,\\,8+3) = 11.\nIf we pair cake 2 with cake 3, the price is \\max(3+2,\\,5+7,\\,0+3) = 12.\nHence, pairing cake 2 with cake 3 gives the highest price, which is 12.\n\nSample Input 2\n\n2\n5 2\n1 2 3\n1 2 3\n1 2 3\n1 2 3\n100 100 200\n6 2\n21 74 25\n44 71 80\n46 28 96\n1 74 24\n81 83 16\n55 31 1\n\nSample Output 2\n\n209\n333\n\nNote that each cake can appear in at most one pair.\nAlso note that there can be different cakes with identical values of beauty, tastiness, and popularity.\nFor the first test case, pairing cake 1 with cake 2 gives a price of 6, pairing cake 3 with cake 5 gives a price of 203, and choosing these two pairs yields a total price of 209, which is the maximum.  \nFor the second test case, pairing cake 2 with cake 3 gives a price of 176, pairing cake 4 with cake 5 gives a price of 157, and choosing these two pairs yields a total price of 333, which is the maximum.",
       "correction_prompt_sha256": "d4731ad4d900482daabfdeb6c360fb9505b5a852d37ea2398544a067be32b7b9",
       "domain": "coding",
@@ -2569,7 +2635,7 @@
     }
   ],
   "review_hashes": {
-    "provenance/coding_review.json": "269330c2e824a796a60f27b74adb52eb2f8fffe9537ea7b6614f10a2bac7d54e",
+    "provenance/coding_review.json": "bd54755a1cf44fec615620b8a42e009f598591bc7a63e650c442a0b37b221bd5",
     "provenance/math_review.json": "cd5311369c34680e404e52468c4baa59b63ba7cdfb9a82fa2edc892c97d0e908"
   },
   "reviewed_candidates": [
@@ -5346,34 +5412,136 @@
       }
     },
     {
+      "asset_serialization_repair": {
+        "path": "docs/COMPILED_REFERENCE_ASSET_REBUILD_REPAIR.json",
+        "reason": "Use exact reproduced reference stdout; no numeric gold value or input changed.",
+        "sha256": "61166c5d43e9a6c69cceaa40b1bf72768a513fb2f3aae099c7d1900a0935de08"
+      },
       "changed_tokens": 2,
       "correction_prompt_sha256": "861aedc1e5e6d27dc954cd1c41c49957cbee076a804e4202ad51eac12ccafba1",
+      "independent_cases_asset": {
+        "path": "references/coding/276/independent_cases.json",
+        "sha256": "1d7be8146289873fc19ec66195e3a33de7906287fbd1a2f13066186a12d5375e"
+      },
       "independent_review": {
         "evidence": {
-          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
-          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+          "path": "references/coding/276/compiled/INDEPENDENT_REVIEW.md",
+          "sha256": "de429cf059c4f346dc805a4701c59606bde5fecdebbc49cb33fc609cc4ddb2f1"
         },
-        "method": "Exact small-instance proof verified, scalable full-suite initial reference unresolved.",
-        "reviewer": "root",
-        "status": "pending"
+        "machine_evidence": {
+          "path": "references/coding/276/compiled/independent_review.json",
+          "sha256": "b4af63729a534c4e61e2cf0862feaad9c0411f75fd750e99730633f5d74fcb2c"
+        },
+        "reviewer": "grading_analysis",
+        "status": "passed"
+      },
+      "matching": {
+        "join_key": [
+          "atcoder",
+          "arc196",
+          "Adjacent Delete"
+        ],
+        "line_number": 111,
+        "raw_line_sha256": "94df22623ba85e2fe0ef627c3a085f252a521166922a4ecd307b0e5ef825e4ed",
+        "source_file": "test6.jsonl"
+      },
+      "memory_mb": 768,
+      "original": {
+        "gold_asset": {
+          "path": "references/coding/276/compiled/gold_outputs.json",
+          "sha256": "7c2a8dfaa4d907a9b0b0096af99340e3689487013cd9869f47cc594a9c2f7170"
+        },
+        "mode": "stdin",
+        "offline_reference": {
+          "certificate_asset": {
+            "path": "references/coding/276/compiled/certificate.json",
+            "sha256": "30c34fe85aebf06ec6996229e861214a6225ef54cea642977b208899751b85e1"
+          },
+          "kind": "compiled_gold_v1",
+          "source_asset": {
+            "path": "references/coding/276/compiled/reference.cpp",
+            "sha256": "3628ae7ebbeba3f413128bd78adb41de071d943ce445d59788e5de11faf07324"
+          }
+        },
+        "test_asset": {
+          "path": "lcb/qualified/276-original.json",
+          "sha256": "814bb1d0ad1ee81b9773af0fa7ba5c865cb106ba90abb951dff39d4cfc622501"
+        }
       },
       "original_identity": "b92f20023c12899a7666397dfd6a329f712dd570689f4f3457dba4c4aa0f7338",
+      "output_limit": 4000000,
       "partial_evidence": {
         "path": "references/coding/276/validation.json",
         "sha256": "3a77a16a78618f835365da3fdf5de4e2606d4c400434f1d5e86ba629b2b08b8c"
       },
       "platform": "atcoder",
+      "previous_review": {
+        "changed_tokens": 2,
+        "correction_prompt_sha256": "861aedc1e5e6d27dc954cd1c41c49957cbee076a804e4202ad51eac12ccafba1",
+        "independent_review": {
+          "evidence": {
+            "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+            "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+          },
+          "method": "Exact small-instance proof verified, scalable full-suite initial reference unresolved.",
+          "reviewer": "root",
+          "status": "pending"
+        },
+        "original_identity": "b92f20023c12899a7666397dfd6a329f712dd570689f4f3457dba4c4aa0f7338",
+        "partial_evidence": {
+          "path": "references/coding/276/validation.json",
+          "sha256": "3a77a16a78618f835365da3fdf5de4e2606d4c400434f1d5e86ba629b2b08b8c"
+        },
+        "platform": "atcoder",
+        "published_difficulty": "hard",
+        "question_title": "Adjacent Delete",
+        "rank_zero_based": 44,
+        "reason": "The exact initial minimum-cost interval DP has a declared n<=240 resource bound; the full retained published suite reaches n=4736 and the corrected constraint is n<=300000. A scalable, independently verified initial reference is unresolved. This candidate remains pending and cannot be skipped.",
+        "review_rank": 45,
+        "source_id": 276,
+        "source_original_prompt_sha256": "e20fdcf9d1bf66c6d740b20a792dd996a38a6a7f4f7fadc5ce908abb08b5dfc3",
+        "source_revised_prompt_sha256": "d7f1a9911c76afa45ec7d55daaa93d7f753056bf110e5a2b769fd775cfe0afcd",
+        "source_row_sha256": "ef7326ff43fac98d6e0dff30ea30fc2a7ba11a6519b24baadc95f6febe6b9fcf",
+        "status": "pending",
+        "task_id": "livecodebench:276"
+      },
       "published_difficulty": "hard",
       "question_title": "Adjacent Delete",
       "rank_zero_based": 44,
-      "reason": "The exact initial minimum-cost interval DP has a declared n<=240 resource bound; the full retained published suite reaches n=4736 and the corrected constraint is n<=300000. A scalable, independently verified initial reference is unresolved. This candidate remains pending and cannot be skipped.",
+      "reason": "Compiled exact cubic DP constructs immutable gold for all 205 retained inputs within the separate offline construction budget. Independently verified; candidate grading limits, source statements and correction unchanged.",
       "review_rank": 45,
       "source_id": 276,
       "source_original_prompt_sha256": "e20fdcf9d1bf66c6d740b20a792dd996a38a6a7f4f7fadc5ce908abb08b5dfc3",
       "source_revised_prompt_sha256": "d7f1a9911c76afa45ec7d55daaa93d7f753056bf110e5a2b769fd775cfe0afcd",
       "source_row_sha256": "ef7326ff43fac98d6e0dff30ea30fc2a7ba11a6519b24baadc95f6febe6b9fcf",
-      "status": "pending",
-      "task_id": "livecodebench:276"
+      "status": "qualified",
+      "task_id": "livecodebench:276",
+      "timeout_seconds": 60,
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/276/updated.py",
+          "sha256": "a4685759a65552c8ca70ba79f640111325c146a8e7a1ca1cabdc915500ae89ac"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/276-updated.json",
+          "sha256": "2dfb8e79f6ce28b5d740b743be9f204ce91646c072d0fef94442a049e1168b9e"
+        }
+      },
+      "validation_evidence": [
+        {
+          "path": "references/coding/276/compiled/certificate.json",
+          "sha256": "30c34fe85aebf06ec6996229e861214a6225ef54cea642977b208899751b85e1"
+        },
+        {
+          "path": "references/coding/276/compiled/construction_campaign.json",
+          "sha256": "efe0d53108e36fa9bbc5daef984e53d642a3c4f2818025a6285fd0a836142d4f"
+        },
+        {
+          "path": "references/coding/276/compiled/PROOF.md",
+          "sha256": "ecb431f05ae90ab3609788339591ea0f4c20799e1322a6dd65dc7e4a4a8b8152"
+        }
+      ]
     },
     {
       "changed_tokens": 2,
@@ -6803,6 +6971,32 @@
     }
   ],
   "schema_version": 2,
+  "selected_task_ids": [
+    "aime2024:1004",
+    "aime2024:1027",
+    "aime2024:1003",
+    "aime2024:1024",
+    "aime2025:1030",
+    "aime2025:1044",
+    "aime2025:1042",
+    "aime2024:1012",
+    "aime2024:1016",
+    "aime2025:1053",
+    "aime2024:1019",
+    "aime2025:1057",
+    "livecodebench:124",
+    "livecodebench:258",
+    "livecodebench:167",
+    "livecodebench:299",
+    "livecodebench:158",
+    "livecodebench:269",
+    "livecodebench:218",
+    "livecodebench:268",
+    "livecodebench:233",
+    "livecodebench:276",
+    "livecodebench:250",
+    "livecodebench:191"
+  ],
   "selection_rule": {
     "controls": "Four per domain using SHA256 of seed:control:task_id among selected tasks",
     "deduplication": "Whitespace-normalized source original prompt SHA256 plus source identity; reject duplicate originals",
@@ -6819,9 +7013,10 @@
   },
   "selection_uses_experimental_outcomes": false,
   "shortfall": {
-    "coding": 3,
+    "coding": 0,
     "math": 0
   },
+  "smoke_task_id": "livecodebench:337",
   "source_lock_sha256": "7ef4249ecc1c3ae361781d67bc80ffa5e809f2e795c39f7a5621e52fbdae7218",
-  "status": "blocked"
+  "status": "qualified"
 }

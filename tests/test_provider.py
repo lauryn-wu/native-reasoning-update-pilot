@@ -2,7 +2,7 @@ import copy
 import importlib.util
 import json
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from native_pilot.provider import (
     DEFAULT_SETTINGS, OpenAIProvider, ProtocolError, ProviderFailure,
@@ -132,14 +132,37 @@ class ProviderTests(unittest.TestCase):
         self.assertFalse(caught.exception.uncertain_charge)
         client.responses.create.assert_not_called()
 
-    def test_mock_provider_serializes_without_losing_output_metadata(self):
+    def test_actual_policy_hold_blocks_injected_callable_client(self):
+        # Do not patch or modify the actual user policy in this regression.
+        client = Mock()
+        client.responses.create.return_value = response()
+        with self.assertRaises(ProviderFailure) as caught:
+            OpenAIProvider(allow_paid=True, client=client).create(build_request(TASK, "initial"))
+        self.assertEqual(caught.exception.kind, "paid_execution_policy_hold")
+        self.assertFalse(caught.exception.uncertain_charge)
+        client.responses.create.assert_not_called()
+
+    def test_reinstated_hold_blocks_an_existing_injected_client(self):
+        client = Mock()
+        with patch("native_pilot.provider._read_execution_policy", side_effect=[
+                {"paid_execution_allowed": True}, {"paid_execution_allowed": False}]):
+            provider = OpenAIProvider(allow_paid=True, client=client)
+            with self.assertRaises(ProviderFailure) as caught:
+                provider.create(build_request(TASK, "initial"))
+        self.assertEqual(caught.exception.kind, "paid_execution_policy_hold")
+        self.assertFalse(caught.exception.uncertain_charge)
+        client.responses.create.assert_not_called()
+
+    @patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": True})
+    def test_mock_provider_serializes_without_losing_output_metadata(self, _policy):
         client = Mock()
         client.responses.create.return_value = response()
         provider = OpenAIProvider(allow_paid=True, client=client)
         self.assertEqual(provider.create(build_request(TASK, "initial")), response())
         client.responses.create.assert_called_once()
 
-    def test_forbidden_parameters_block_before_dispatch(self):
+    @patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": True})
+    def test_forbidden_parameters_block_before_dispatch(self, _policy):
         client = Mock()
         provider = OpenAIProvider(allow_paid=True, client=client)
         request = build_request(TASK, "initial")
@@ -148,7 +171,8 @@ class ProviderTests(unittest.TestCase):
             provider.create(request)
         client.responses.create.assert_not_called()
 
-    def test_safe_transport_failure_and_no_sdk_retry(self):
+    @patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": True})
+    def test_safe_transport_failure_and_no_sdk_retry(self, _policy):
         client = Mock()
         client.responses.create.side_effect = ConnectionError("SECRET api key body")
         provider = OpenAIProvider(allow_paid=True, client=client)
@@ -159,7 +183,8 @@ class ProviderTests(unittest.TestCase):
         self.assertNotIn("SECRET", str(caught.exception))
         client.responses.create.assert_called_once()
 
-    def test_invalid_request_status_is_protocol_failure_without_retry(self):
+    @patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": True})
+    def test_invalid_request_status_is_protocol_failure_without_retry(self, _policy):
         class APIError(Exception):
             status_code = 400
         client = Mock()
@@ -171,7 +196,8 @@ class ProviderTests(unittest.TestCase):
         self.assertNotIn("Sensitive", str(caught.exception))
 
     @unittest.skipUnless(importlib.util.find_spec("openai"), "optional pinned SDK not installed")
-    def test_actual_pinned_sdk_serialization_with_offline_http_transport(self):
+    @patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": True})
+    def test_actual_pinned_sdk_serialization_with_offline_http_transport(self, _policy):
         import openai
         import httpx2
         self.assertEqual(openai.__version__, "3.37.0")

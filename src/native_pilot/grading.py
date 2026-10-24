@@ -201,13 +201,60 @@ def grade_response(task: dict[str, Any], variant: str, text: str,
             "old_tests": old_result}
 
 
-def qualify_references(tasks: list[dict], *, sandbox=None, progress=None) -> dict:
+def validate_reference_workers(workers: int) -> int:
+    """Bound offline task concurrency independently of candidate limits."""
+    if type(workers) is not int or not 1 <= workers <= 4:
+        raise ValueError("reference workers must be an integer from 1 to 4")
+    return workers
+
+
+def qualify_references(tasks: list[dict], *, sandbox=None, progress=None,
+                       workers: int = 1) -> dict:
+    """Run each full serial task checker, optionally across bounded threads.
+
+    A caller-owned sandbox cannot be shared across concurrent tasks. Individual
+    grading calls retain their normal Docker construction and resource limits.
+    Results, including blockers and execution evidence, follow input order even
+    when tasks complete out of order. Progress callbacks run on worker threads.
+    """
+    validate_reference_workers(workers)
+    if workers > 1 and sandbox is not None:
+        raise ValueError("parallel reference qualification cannot share a caller sandbox")
+    if workers == 1 or not tasks:
+        result = _qualify_references_serial(tasks, sandbox=sandbox, progress=progress)
+    else:
+        from concurrent.futures import ThreadPoolExecutor
+
+        def check(task):
+            return _qualify_references_serial([task], progress=progress)
+
+        # map yields in input order and propagates unexpected worker failures;
+        # expected grading failures remain blocked results from the same checker.
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            results = list(pool.map(check, tasks))
+        result = {"checks": {}, "blockers": [], "reference_methods": {},
+                  "reference_executions": {}}
+        ids = [task.get("task_id") for task in tasks]
+        if None in ids or len(set(ids)) != len(ids):
+            result["blockers"].append("Missing or duplicate task IDs")
+        for item in results:
+            for key in ("checks", "reference_methods", "reference_executions"):
+                result[key].update(item[key])
+            result["blockers"].extend(item["blockers"])
+        result["passed"] = all(item["passed"] is True for item in results) and not result["blockers"]
+        result["status"] = "passed" if result["passed"] else "blocked"
+    result["reference_workers"] = workers
+    return result
+
+
+def _qualify_references_serial(tasks: list[dict], *, sandbox=None, progress=None) -> dict:
     """Validate both authoritative variants; missing assets always block.
 
     This function does not establish provenance or resolve ambiguous updates.
     Those are independent source-audit gates. All coding execution uses Docker.
     """
     checks, blockers = {}, []
+    reference_methods, reference_executions = {}, {}
     if not tasks:
         blockers.append("No source-qualified tasks with original and updated grading assets")
     ids = [task.get("task_id") for task in tasks]
@@ -231,15 +278,24 @@ def qualify_references(tasks: list[dict], *, sandbox=None, progress=None) -> dic
                     task_checks[variant + "_wrong_rejected"] = grade_response(task, variant, str(answer + 1))["status"] != "correct"
                 task_checks["stale_rejected"] = grade_response(task, "updated", str(old))["status"] == "old_answer_match"
             elif task.get("domain") == "coding":
-                for variant in ("original", "updated"):
-                    reference = task[variant]["reference_solution"]
-                    task_checks[variant + "_reference"] = grade_response(task, variant, reference, sandbox=sandbox)["status"] == "correct"
-                    task_checks[variant + "_wrong_rejected"] = grade_response(task, variant, "raise RuntimeError('deliberately wrong')", sandbox=sandbox)["status"] != "correct"
-                    # Source-preserving whitespace is an equivalent program;
-                    # output-whitespace equivalence is separately unit-tested.
-                    task_checks[variant + "_equivalent"] = grade_response(task, variant, "\n" + reference + "\n", sandbox=sandbox)["status"] == "correct"
-                task_checks["stale_rejected"] = grade_response(task, "updated", task["original"]["reference_solution"], sandbox=sandbox)["status"] == "old_answer_match"
-                task_checks["changed_behavior"] = not grade_response(task, "original", task["updated"]["reference_solution"], sandbox=sandbox)["correct"]
+                if task.get("original", {}).get("offline_reference"):
+                    from .gold_qualification import qualify_compiled_gold
+                    reference_methods[task_id] = {"original": "compiled_gold_v1_offline_replay",
+                                                  "updated": "python_candidate_sandbox"}
+                    reference_executions[task_id] = []
+                    task_checks = qualify_compiled_gold(task, lambda variant, reference:
+                        grade_response(task, variant, reference, sandbox=sandbox),
+                        execution_records=reference_executions[task_id])
+                else:
+                    for variant in ("original", "updated"):
+                        reference = task[variant]["reference_solution"]
+                        task_checks[variant + "_reference"] = grade_response(task, variant, reference, sandbox=sandbox)["status"] == "correct"
+                        task_checks[variant + "_wrong_rejected"] = grade_response(task, variant, "raise RuntimeError('deliberately wrong')", sandbox=sandbox)["status"] != "correct"
+                        # Source-preserving whitespace is an equivalent program;
+                        # output-whitespace equivalence is separately unit-tested.
+                        task_checks[variant + "_equivalent"] = grade_response(task, variant, "\n" + reference + "\n", sandbox=sandbox)["status"] == "correct"
+                    task_checks["stale_rejected"] = grade_response(task, "updated", task["original"]["reference_solution"], sandbox=sandbox)["status"] == "old_answer_match"
+                    task_checks["changed_behavior"] = not grade_response(task, "original", task["updated"]["reference_solution"], sandbox=sandbox)["correct"]
             else:
                 raise ValueError("Unknown domain")
             if not task_checks or not all(task_checks.values()):
@@ -248,4 +304,5 @@ def qualify_references(tasks: list[dict], *, sandbox=None, progress=None) -> dic
             blockers.append(f"{task_id}: missing or unqualified grading assets ({exc})")
         checks[task_id] = task_checks
     return {"passed": bool(tasks) and not blockers, "status": "passed" if tasks and not blockers else "blocked",
-            "checks": checks, "blockers": blockers}
+            "checks": checks, "blockers": blockers, "reference_methods": reference_methods,
+            "reference_executions": reference_executions}

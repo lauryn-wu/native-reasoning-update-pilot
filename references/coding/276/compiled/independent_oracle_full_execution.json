@@ -1,0 +1,10 @@
+{
+  "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+  "source_sha256": "6feb067d4f290e35a284e335661eb2971a3d8a4dca58c89832fc24d3c9126773",
+  "status": "completed",
+  "returncode": 0,
+  "stderr": "",
+  "elapsed_seconds": 0.7543511250987649,
+  "stdout_sha256": "ef146da024ea6b239cf0f267e961948e5dba4c235504b576506dcda4aa05db85",
+  "cases": 12142
+}

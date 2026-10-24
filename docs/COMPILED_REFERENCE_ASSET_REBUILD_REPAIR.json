@@ -1,0 +1,36 @@
+{
+  "actual_docker_reference_regeneration": {
+    "after_sha256": "2dfb8e79f6ce28b5d740b743be9f204ce91646c072d0fef94442a049e1168b9e",
+    "all162_independent_cases_unchanged": true,
+    "all_inputs_unchanged": true,
+    "all_outputs_exact_token_equivalent": true,
+    "before_sha256": "36c1b37194c983e0abcc4cd6732598f5d3768273a302f82c4bb4b6f2feb74ca0",
+    "case_count": 43,
+    "changes": [
+      {
+        "after": "5\n",
+        "before": "5",
+        "case": 0
+      },
+      {
+        "after": "14\n",
+        "before": "14",
+        "case": 1
+      },
+      {
+        "after": "0\n",
+        "before": "0",
+        "case": 2
+      }
+    ],
+    "elapsed_seconds": 1.105371416080743,
+    "passed": true
+  },
+  "at": "2026-10-24T23:01:21.958991+00:00",
+  "initial_rebuild_attempt": {
+    "cause": "Three published sample expected outputs lacked the trailing newline emitted by the verified reference. Exact token values and all input bytes were unchanged.",
+    "error": "Rebuilt test asset differs from independently reviewed hash",
+    "passed": false
+  },
+  "paid_calls": 0
+}

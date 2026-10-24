@@ -8,6 +8,16 @@ from __future__ import annotations
 import json
 
 
+def compare_stdin(actual: str, expected: str, *, case_insensitive=False) -> bool:
+    """The shared authoritative comparison for candidates and offline gold."""
+    if not isinstance(actual, str) or not isinstance(expected, str) or type(case_insensitive) is not bool:
+        raise ValueError("Text outputs and an explicit boolean case flag are required")
+    actual, expected = " ".join(actual.split()), " ".join(expected.split())
+    if case_insensitive:
+        actual, expected = actual.casefold(), expected.casefold()
+    return actual == expected
+
+
 def invocation_program(code: str, *, case_timeout: float, output_limit: int) -> str:
     # This string is executable only within Docker. The read-only mount carries
     # both harness and candidate; no mutable program file is shared by cases.
@@ -114,10 +124,8 @@ def evaluate_stdin(sandbox, code, tests, *, case_insensitive=False):
             return [{**failure, "status": "invalid_stdin_output"}]
         results = []
         for answer, test in zip(answers, group):
-            actual, expected = " ".join(answer["stdout"].split()), " ".join(test["stdout"].split())
-            if case_insensitive:
-                actual, expected = actual.casefold(), expected.casefold()
-            results.append({"passed": answer["status"] == "completed" and answer["returncode"] == 0 and actual == expected,
+            results.append({"passed": answer["status"] == "completed" and answer["returncode"] == 0
+                            and compare_stdin(answer["stdout"], test["stdout"], case_insensitive=case_insensitive),
                             "status": answer["status"], "returncode": answer["returncode"]})
         return results
 

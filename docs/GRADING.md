@@ -10,8 +10,8 @@ grader's last-number extraction is too permissive for exact scoring.
 The released initial problem is the **revised** problem; the correction changes
 it back to the source **original** problem. The release omits the initial revised
 math answers and omits the coding test assets needed for both variants. Verified reference construction now supplies separately reviewed initial answers
-and tests; the baseline audit remains historical evidence. Candidate276 still
-prevents completing the ordered coding sample. Software fixtures never replace
+and tests; the baseline audit remains historical evidence. Candidate 276 now has compiled exact finite-suite gold under a separate
+offline construction budget; see `REFERENCE_CONSTRUCTION.md`. Software fixtures never replace
 pilot cases. The explicit user policy blocks all paid execution, independently
 of whether source qualification eventually passes.
 
@@ -129,3 +129,12 @@ p-value, and interval are null rather than silently restricting to complete
 cases. Per-problem observations and separate availability counts remain visible.
 Returned truncations/invalid output still count as unsuccessful operational
 responses; they must not be labeled semantic stale-reasoning errors.
+
+## Offline compiled gold
+
+Compiled finite-suite reference construction uses its separately pinned policy.
+It never relaxes submitted Python limits. Qualification freshly replays the
+compiled oracle and checks exact/whitespace/wrong/stale outputs through the shared
+stdin comparator; the corrected Python reference still runs under submission
+limits on both full suites. The manifest requires completed integrated evidence
+for every selected pair and the smoke case before a source-qualified freeze.

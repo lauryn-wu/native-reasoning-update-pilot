@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "status": "blocked_by_unresolved_rank45_initial_reference",
+  "status": "references_qualified_pending_current_integrated_checks",
   "seed": 20261024,
   "paid_calls": 0,
   "selection_basis": "Exact original ranking; no model-performance-based exclusions. First12qualifiedcoding plus13th smoke after every earlier candidate is adjudicated.",
@@ -151,7 +151,7 @@
       "review_rank": 6,
       "rank_zero_based": 5,
       "platform": "atcoder",
-      "question_title": "Max × Sum",
+      "question_title": "Max \u00d7 Sum",
       "status": "excluded",
       "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
       "independent_review": {
@@ -1806,20 +1806,122 @@
       "rank_zero_based": 44,
       "platform": "atcoder",
       "question_title": "Adjacent Delete",
-      "status": "pending",
-      "reason": "The exact initial minimum-cost interval DP has a declared n<=240 resource bound; the full retained published suite reaches n=4736 and the corrected constraint is n<=300000. A scalable, independently verified initial reference is unresolved. This candidate remains pending and cannot be skipped.",
+      "status": "qualified",
+      "reason": "Compiled exact cubic DP constructs immutable gold for all 205 retained inputs within the separate offline construction budget. Independently verified; candidate grading limits, source statements and correction unchanged.",
       "partial_evidence": {
         "path": "references/coding/276/validation.json",
         "sha256": "3a77a16a78618f835365da3fdf5de4e2606d4c400434f1d5e86ba629b2b08b8c"
       },
       "independent_review": {
-        "status": "pending",
-        "reviewer": "root",
-        "method": "Exact small-instance proof verified, scalable full-suite initial reference unresolved.",
         "evidence": {
-          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
-          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+          "path": "references/coding/276/compiled/INDEPENDENT_REVIEW.md",
+          "sha256": "de429cf059c4f346dc805a4701c59606bde5fecdebbc49cb33fc609cc4ddb2f1"
+        },
+        "reviewer": "grading_analysis",
+        "status": "passed",
+        "machine_evidence": {
+          "path": "references/coding/276/compiled/independent_review.json",
+          "sha256": "b4af63729a534c4e61e2cf0862feaad9c0411f75fd750e99730633f5d74fcb2c"
         }
+      },
+      "previous_review": {
+        "task_id": "livecodebench:276",
+        "source_id": 276,
+        "source_row_sha256": "ef7326ff43fac98d6e0dff30ea30fc2a7ba11a6519b24baadc95f6febe6b9fcf",
+        "original_identity": "b92f20023c12899a7666397dfd6a329f712dd570689f4f3457dba4c4aa0f7338",
+        "source_original_prompt_sha256": "e20fdcf9d1bf66c6d740b20a792dd996a38a6a7f4f7fadc5ce908abb08b5dfc3",
+        "source_revised_prompt_sha256": "d7f1a9911c76afa45ec7d55daaa93d7f753056bf110e5a2b769fd775cfe0afcd",
+        "correction_prompt_sha256": "861aedc1e5e6d27dc954cd1c41c49957cbee076a804e4202ad51eac12ccafba1",
+        "published_difficulty": "hard",
+        "changed_tokens": 2,
+        "review_rank": 45,
+        "rank_zero_based": 44,
+        "platform": "atcoder",
+        "question_title": "Adjacent Delete",
+        "status": "pending",
+        "reason": "The exact initial minimum-cost interval DP has a declared n<=240 resource bound; the full retained published suite reaches n=4736 and the corrected constraint is n<=300000. A scalable, independently verified initial reference is unresolved. This candidate remains pending and cannot be skipped.",
+        "partial_evidence": {
+          "path": "references/coding/276/validation.json",
+          "sha256": "3a77a16a78618f835365da3fdf5de4e2606d4c400434f1d5e86ba629b2b08b8c"
+        },
+        "independent_review": {
+          "status": "pending",
+          "reviewer": "root",
+          "method": "Exact small-instance proof verified, scalable full-suite initial reference unresolved.",
+          "evidence": {
+            "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+            "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+          }
+        }
+      },
+      "independent_cases_asset": {
+        "path": "references/coding/276/independent_cases.json",
+        "sha256": "1d7be8146289873fc19ec66195e3a33de7906287fbd1a2f13066186a12d5375e"
+      },
+      "timeout_seconds": 60,
+      "memory_mb": 768,
+      "output_limit": 4000000,
+      "validation_evidence": [
+        {
+          "path": "references/coding/276/compiled/certificate.json",
+          "sha256": "30c34fe85aebf06ec6996229e861214a6225ef54cea642977b208899751b85e1"
+        },
+        {
+          "path": "references/coding/276/compiled/construction_campaign.json",
+          "sha256": "efe0d53108e36fa9bbc5daef984e53d642a3c4f2818025a6285fd0a836142d4f"
+        },
+        {
+          "path": "references/coding/276/compiled/PROOF.md",
+          "sha256": "ecb431f05ae90ab3609788339591ea0f4c20799e1322a6dd65dc7e4a4a8b8152"
+        }
+      ],
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 111,
+        "raw_line_sha256": "94df22623ba85e2fe0ef627c3a085f252a521166922a4ecd307b0e5ef825e4ed",
+        "join_key": [
+          "atcoder",
+          "arc196",
+          "Adjacent Delete"
+        ]
+      },
+      "original": {
+        "mode": "stdin",
+        "test_asset": {
+          "path": "lcb/qualified/276-original.json",
+          "sha256": "814bb1d0ad1ee81b9773af0fa7ba5c865cb106ba90abb951dff39d4cfc622501"
+        },
+        "offline_reference": {
+          "kind": "compiled_gold_v1",
+          "source_asset": {
+            "path": "references/coding/276/compiled/reference.cpp",
+            "sha256": "3628ae7ebbeba3f413128bd78adb41de071d943ce445d59788e5de11faf07324"
+          },
+          "certificate_asset": {
+            "path": "references/coding/276/compiled/certificate.json",
+            "sha256": "30c34fe85aebf06ec6996229e861214a6225ef54cea642977b208899751b85e1"
+          }
+        },
+        "gold_asset": {
+          "path": "references/coding/276/compiled/gold_outputs.json",
+          "sha256": "7c2a8dfaa4d907a9b0b0096af99340e3689487013cd9869f47cc594a9c2f7170"
+        }
+      },
+      "updated": {
+        "mode": "stdin",
+        "test_asset": {
+          "path": "lcb/qualified/276-updated.json",
+          "sha256": "2dfb8e79f6ce28b5d740b743be9f204ce91646c072d0fef94442a049e1168b9e"
+        },
+        "reference_asset": {
+          "path": "references/coding/276/updated.py",
+          "sha256": "a4685759a65552c8ca70ba79f640111325c146a8e7a1ca1cabdc915500ae89ac"
+        }
+      },
+      "asset_serialization_repair": {
+        "path": "docs/COMPILED_REFERENCE_ASSET_REBUILD_REPAIR.json",
+        "sha256": "61166c5d43e9a6c69cceaa40b1bf72768a513fb2f3aae099c7d1900a0935de08",
+        "reason": "Use exact reproduced reference stdout; no numeric gold value or input changed."
       }
     },
     {
@@ -3262,5 +3364,10 @@
   ],
   "blockers": [
     "Rank45 livecodebench:276 has no scalable verified initial grader; later qualified candidates cannot be substituted past this unresolved rank. Only9coding tasks qualify in the resolved prefix, short of12."
-  ]
+  ],
+  "reference_feasibility_exclusion_amendment": null,
+  "construction_policy": {
+    "path": "provenance/reference_construction_policy.json",
+    "sha256": "6e58e29c27e8d2207b32763b6bd4ba7503e33a0e184b52995e613c8653843ff6"
+  }
 }

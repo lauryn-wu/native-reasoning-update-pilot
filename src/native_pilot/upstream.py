@@ -157,8 +157,26 @@ def prepare_coding_assets(cache_dir, review_path=None, *, progress=None):
             initial = copy.deepcopy(updated)
         else:
             raise SourceBlocked('Unsupported reviewed coding interface')
+        case_fixture = independent.get(str(source_id))
+        if entry.get('independent_cases_asset'):
+            from .assets import checked_path
+            case_fixture=json.loads(checked_path(ROOT,entry['independent_cases_asset']).read_text())
+        if case_fixture is None:
+            raise SourceBlocked('Missing independent fixtures')
         for variant, tests in [('original', initial), ('updated', updated)]:
             spec = entry[variant]
+            if spec.get('offline_reference'):
+                from .reference_construction import apply_gold_outputs, replay_reference
+                tests.extend(case_fixture[variant])
+                tests=apply_gold_outputs(tests,spec['gold_asset'])
+                if not replay_reference(spec,tests)['passed']:
+                    raise SourceBlocked('Offline compiled reference fails immutable gold')
+                encoded=(json.dumps(tests,separators=(',', ':'),ensure_ascii=False)+'\n').encode()
+                if hashlib.sha256(encoded).hexdigest()!=spec['test_asset']['sha256']:
+                    raise SourceBlocked('Rebuilt immutable gold asset differs from reviewed hash')
+                destination=cache/spec['test_asset']['path']
+                destination.parent.mkdir(parents=True,exist_ok=True);destination.write_bytes(encoded)
+                continue
             code_path = ROOT/spec['reference_asset']['path']
             code_bytes = code_path.read_bytes()
             if hashlib.sha256(code_bytes).hexdigest() != spec['reference_asset']['sha256']:
@@ -179,7 +197,7 @@ def prepare_coding_assets(cache_dir, review_path=None, *, progress=None):
                         raise SourceBlocked('Reference fails official or proof-adjudicated tests')
                 for test, output in zip(tests, outputs):
                     test['stdout'] = output
-            tests.extend(independent[str(source_id)][variant])
+            tests.extend(case_fixture[variant])
             encoded = (json.dumps(tests, separators=(',', ':'), ensure_ascii=False)+'\n').encode()
             expected = spec['test_asset']['sha256']
             if hashlib.sha256(encoded).hexdigest() != expected:

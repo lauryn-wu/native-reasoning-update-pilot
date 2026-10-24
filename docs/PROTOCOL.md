@@ -15,14 +15,19 @@ inspection, retained byte-for-byte. The current review constructs references wit
 checkable proofs, exact calculations, upstream-test matching, and independent
 validation. It preserves all released statements, starters, and corrections.
 
-The ordered review supports12 math and9 coding pairs before the unresolved
-coding candidate276 (one-based coding rank45). The minimum-score initial variant
-has no verified solver covering the complete released test sizes. It remains
-pending, not excluded. Later independently validated pairs cannot silently
-replace it. The precise coding shortfall is3; no new24-case manifest is frozen.
-The separate smoke reference is available among reviewed extra cases, but no
-smoke case or schedule is assigned before complete selection. Paid execution is
-also held by `provenance/execution_policy.json`, even with `--allow-paid`.
+The ordered review now supplies 12 math and 12 coding pairs plus separate smoke
+case `livecodebench:337`. Candidate 276 remains at its original rank: a compiled
+version of the proved cubic DP generates exact gold for all retained inputs
+within a separately documented offline construction budget. Candidate grading
+limits and all published inputs are unchanged. This is a resource separation,
+not a reference-feasibility exclusion amendment; no such exclusion was needed.
+The initial small Python reference and earlier pending evidence are preserved.
+See `REFERENCE_CONSTRUCTION.md` for the policy and qualification distinction.
+
+A new source-qualified manifest requires current, completed integrated checks
+for all 24 selected pairs and the smoke case. Audit, implementation, test,
+reference, and qualification hashes are bound before freeze. Paid execution is
+separately held by `provenance/execution_policy.json`, even with `--allow-paid`.
 
 ## Selection fixed before outputs
 

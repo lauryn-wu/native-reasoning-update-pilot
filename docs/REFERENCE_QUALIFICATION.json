@@ -1,114 +1,202 @@
 {
-  "at": "2026-10-24T22:27:29.531998+00:00",
-  "scope": "Reference construction and software validation; no experimental model outcomes",
-  "status": "blocked",
-  "paid_calls_made": 0,
-  "paid_execution_allowed": false,
-  "ordered_eligible_counts": {
-    "coding": 9,
-    "math": 12
-  },
-  "shortfall": {
-    "coding": 3,
-    "math": 0
-  },
-  "reference_qualified_counts": {
-    "coding": 21,
-    "math": 14
-  },
-  "reviewed_counts": {
-    "math": 22,
-    "coding": 64
-  },
-  "excluded_counts": {
-    "math": 8,
-    "coding": 42
-  },
-  "pending_task_ids": [
-    "livecodebench:276"
-  ],
-  "new_manifest_frozen": false,
-  "smoke_task_assigned": false,
-  "controls_assigned": false,
-  "unit_tests": {
-    "passed": true,
-    "count": 116,
-    "elapsed_seconds": 2.508,
-    "path": "docs/REFERENCE_UNIT_TESTS.txt",
-    "sha256": "a638483170f41cfc784167c750b40700d28314bd835af902ac38d9ce7d587e35"
-  },
-  "evidence_integrity": {
-    "status": "passed",
-    "paid_calls": 0,
-    "evidence_records": {
-      "math": 22,
-      "coding": 64
+  "at": "2026-10-24T23:57:48.951966+00:00",
+  "candidate_276": {
+    "arithmetic_modes_checked": 2,
+    "campaign_path": "references/coding/276/compiled/construction_campaign.json",
+    "campaign_sha256": "efe0d53108e36fa9bbc5daef984e53d642a3c4f2818025a6285fd0a836142d4f",
+    "construction_budget_seconds": 1800,
+    "construction_seconds": 160.68948404164985,
+    "gold_case_count": 205,
+    "independent_full_gold_matches": 205,
+    "independent_inputs_retained": 162,
+    "literal_oracle_cases": 12142,
+    "published_inputs_retained": 43,
+    "rebuild": {
+      "path": "docs/COMPILED_REFERENCE_ASSET_REBUILD.json",
+      "sha256": "399209329a577e65eb0f42d270dd622f35e4a7fc7c47f73b7670e7b4dcc55abe"
     },
-    "preserved_sources": {
-      "math": {
-        "path": "references/math/source_pairs.json",
-        "sha256": "f547d9408b786ce98acbdd9f3da52ded36bdac434641c91db8df8e4e5ce230a1",
-        "type": "list",
-        "entries": 22,
-        "byte_preserved_fields_match_pinned_release": true,
-        "matches_every_reviewed_source_row_hash": true
-      },
-      "coding": {
-        "path": "references/coding/source_pairs.json",
-        "sha256": "4620f30dc0e449b8ba6e3a2c266d5a18ff3d234bda73da3e3b5ace1b1573597e",
-        "type": "list",
-        "entries": 64,
-        "byte_preserved_fields_match_pinned_release": true,
-        "matches_every_reviewed_source_row_hash": true
-      }
+    "reference_feasibility_exclusion_amendment": null,
+    "status": "qualified",
+    "submitted_program_limits_changed": false,
+    "within_budget": true
+  },
+  "coding_suite_case_counts": {
+    "livecodebench:124": {
+      "original": 97,
+      "updated": 97
+    },
+    "livecodebench:158": {
+      "original": 174,
+      "updated": 174
+    },
+    "livecodebench:167": {
+      "original": 910,
+      "updated": 910
+    },
+    "livecodebench:191": {
+      "original": 822,
+      "updated": 438
+    },
+    "livecodebench:218": {
+      "original": 260,
+      "updated": 260
+    },
+    "livecodebench:233": {
+      "original": 297,
+      "updated": 297
+    },
+    "livecodebench:250": {
+      "original": 310,
+      "updated": 310
+    },
+    "livecodebench:258": {
+      "original": 252,
+      "updated": 252
+    },
+    "livecodebench:268": {
+      "original": 110,
+      "updated": 110
+    },
+    "livecodebench:269": {
+      "original": 61,
+      "updated": 61
+    },
+    "livecodebench:276": {
+      "original": 205,
+      "updated": 205
+    },
+    "livecodebench:299": {
+      "original": 245,
+      "updated": 245
+    },
+    "livecodebench:337": {
+      "original": 137,
+      "updated": 137
     }
   },
-  "exact_math_grader": {
-    "passed": true,
-    "pairs": 14,
-    "path": "references/math/grader-qualification.json",
-    "sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+  "coding_variant_cases_retained": 7376,
+  "control_task_ids": [
+    "aime2024:1016",
+    "aime2025:1053",
+    "aime2024:1012",
+    "aime2024:1019",
+    "livecodebench:191",
+    "livecodebench:268",
+    "livecodebench:258",
+    "livecodebench:269"
+  ],
+  "docker_software": {
+    "checks": {
+      "correct_accept": true,
+      "cpu_limit": true,
+      "equivalent_accept": true,
+      "function_boolean_numeric_rejected": true,
+      "function_self_asserted_pass_rejected": true,
+      "function_tuple_and_diagnostics": true,
+      "function_wrong_rejected": true,
+      "memory_limit": true,
+      "network_denied": true,
+      "no_credentials": true,
+      "old_reference_accept": true,
+      "only_program_mounted": true,
+      "output_bounded": true,
+      "process_limit": true,
+      "program_readonly": true,
+      "root_readonly": true,
+      "runtime_bounded": true,
+      "stale_reject_update": true,
+      "stdin_batches_preserve_cases_and_sys_exit": true,
+      "stdin_fresh_process_and_workdir": true,
+      "stdin_per_case_timeout_preserves_next_case": true,
+      "unprivileged": true,
+      "updated_reference_fails_original": true,
+      "wrong_reject": true
+    },
+    "passed": true
   },
-  "small_live_stdin_adapter": {
-    "passed": true,
-    "path": "references/coding/stdin_adapter_validation.json",
-    "sha256": "7596e9d004d1377d0265f1cfef7b0bc4a456d66137bb04d499fe0decd2dddb9c"
-  },
-  "full_asset_rebuild": {
-    "passed": true,
-    "path": "references/coding/asset_rebuild_validation.json",
-    "sha256": "4e7893be7a6f06c2927561c571912d2d7a6006e0418a88cc353d609389277b9c"
-  },
-  "full_final_integrated_candidate_grader": {
-    "status": "not_run",
-    "passed": false,
-    "reason": "Not completed in this update. Per-reference proof, upstream, exact independent tests and small adapter checks are separately recorded; they do not imply this integration passed."
-  },
-  "campaign_qualification": {
-    "status": "blocked",
-    "reason": [
-      "Earlier candidate unresolved: livecodebench:276"
-    ],
-    "required_initial_reference_work": "A scalable exact initial solver for livecodebench:276, independent derivation review, and full retained-suite validation are unresolved. The n<=240 implementation cannot verify the released input of n=4736. Do not skip this candidate."
-  },
-  "qualification_audit": {
-    "path": "provenance/qualification_audit.json",
-    "sha256": "4b4af65158c0491a4d3c09d90e830a9591936e183d38eb41e03b6a5590a1f918"
+  "excluded_counts": {
+    "coding": 42,
+    "math": 8
   },
   "execution_policy": {
     "path": "provenance/execution_policy.json",
     "sha256": "33c98fc564477d40683aac0132a6824b65b99e0ecec848e0f7864134db0746a5"
   },
-  "historical_manifest": {
-    "path": "manifests/pilot-v1.json",
-    "sha256": "e90d27da28ccc68440a7186acd3a33ad627891950bc14710aa0337030fa28b40",
-    "preserved_unchanged": true
-  },
-  "historical_targeted_live_function_adapter": {
+  "experimental_status": "No paid smoke or pilot execution; no experimental results or performance claims",
+  "full_final_integrated_candidate_grader": {
+    "check_count": 200,
     "passed": true,
-    "checks": 4,
-    "path": "references/coding/function_adapter_validation_recovered.json",
-    "sha256": "a44b801e55f9d026600db0dca7193daef783d60ba72c8adf96bb1b71c8016f0c",
-    "limitation": "Recovered exact earlier execution record; not current full candidate grader integration."
+    "path": "provenance/integrated_qualification.json",
+    "sha256": "ffbccceb93ac048c9c64f4dedef87980732446ba6350d3d21cb4e2faad1f4441",
+    "task_count": 25
+  },
+  "manifest": {
+    "manifest_sha256": "2e9ecea4e6c363e7797372fc855246318fab14ab4e4223044d1ef13adab85f26",
+    "path": "manifests/pilot-v2.json",
+    "sha256": "ceb17380a97d6c14a505f24a1f5e23b8b0a62e8b37c5ea490de6dd8ece9e4fe7"
+  },
+  "new_manifest_frozen": true,
+  "ordered_eligible_counts": {
+    "coding": 12,
+    "math": 12
+  },
+  "paid_calls_made": 0,
+  "paid_execution_allowed": false,
+  "pending_task_ids": [],
+  "qualification_audit": {
+    "path": "provenance/qualification_audit.json",
+    "sha256": "5c39bb414946028a0614042be9bab3c63489039ec599c1d2240dc8ad7a5b3088"
+  },
+  "reference_qualified_counts": {
+    "coding": 22,
+    "math": 14
+  },
+  "remaining_blockers": [
+    "Explicit user hold: paid execution remains blocked, including smoke and retries"
+  ],
+  "reviewed_counts": {
+    "coding": 64,
+    "math": 22
+  },
+  "scope": "Verified released references and integrated offline graders; no experimental outcomes",
+  "selected_task_ids": [
+    "aime2024:1004",
+    "aime2024:1027",
+    "aime2024:1003",
+    "aime2024:1024",
+    "aime2025:1030",
+    "aime2025:1044",
+    "aime2025:1042",
+    "aime2024:1012",
+    "aime2024:1016",
+    "aime2025:1053",
+    "aime2024:1019",
+    "aime2025:1057",
+    "livecodebench:124",
+    "livecodebench:258",
+    "livecodebench:167",
+    "livecodebench:299",
+    "livecodebench:158",
+    "livecodebench:269",
+    "livecodebench:218",
+    "livecodebench:268",
+    "livecodebench:233",
+    "livecodebench:276",
+    "livecodebench:250",
+    "livecodebench:191"
+  ],
+  "selection_uses_experimental_outcomes": false,
+  "shortfall": {
+    "coding": 0,
+    "math": 0
+  },
+  "smoke_task_id": "livecodebench:337",
+  "status": "source_qualified_frozen_paid_hold",
+  "unit_tests": {
+    "count": 146,
+    "elapsed_seconds": 2.125,
+    "passed": true,
+    "path": "docs/COMPILED_UNIT_TESTS.txt",
+    "sha256": "c9a302010476ba2fa5aeb2a915f8809bf7d2135cd8e0f66f31da34f2cfc1ba24"
   }
 }
