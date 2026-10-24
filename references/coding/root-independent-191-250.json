@@ -1,0 +1,6 @@
+{
+  "status": "completed",
+  "returncode": 0,
+  "stdout": "{\"191_all_signed_order_statistics\": 5832, \"250_all_label_assignment_cases\": 80, \"passed\": true}\n",
+  "stderr": ""
+}

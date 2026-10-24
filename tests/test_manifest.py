@@ -67,3 +67,35 @@ class ManifestTests(unittest.TestCase):
                     code=main(['--manifest',str(self.path),'smoke','--allow-paid'])
         self.assertEqual(code,2)
         provider.assert_not_called()
+
+class ExplicitHoldTests(unittest.TestCase):
+    def test_source_qualification_does_not_remove_user_hold(self):
+        with self.assertRaisesRegex(ValueError,'explicit user policy'):
+            paid_preflight({'paid_execution_allowed':True,'status':'frozen','blockers':[]},
+                           {'offline_passed':True,'docker_passed':True,'source_reference_passed':True})
+    def test_real_provider_initialization_cannot_override_hold(self):
+        from native_pilot.provider import OpenAIProvider, ProviderFailure
+        with self.assertRaises(ProviderFailure) as result:
+            OpenAIProvider(allow_paid=True)
+        self.assertEqual(result.exception.kind,'paid_execution_policy_hold')
+
+class StaleReviewTests(unittest.TestCase):
+    def test_stale_qualified_audit_cannot_freeze_current_changed_reviews(self):
+        from native_pilot.util import file_digest
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            shutil.copytree(ROOT/'provenance',root/'provenance')
+            shutil.copy(ROOT/'pyproject.toml',root/'pyproject.toml')
+            bindings={name:file_digest(root/name) for name in
+                      ('provenance/math_review.json','provenance/coding_review.json')}
+            audit={'status':'qualified','blockers':[], 'review_hashes':bindings,
+                   'source_lock_sha256':file_digest(root/'provenance/source_lock.json'),
+                   'pair_semantics_verified':True}
+            audit_path=root/'audit.json';audit_path.write_text(json.dumps(audit))
+            (root/'provenance/math_review.json').write_text('{"candidates":[]}')
+            selection={'tasks':[], 'smoke_task':{'task_id':'unit-smoke'}}
+            with patch('native_pilot.data.select_tasks',return_value=selection):
+                frozen=freeze(root/'new.json','unit',root,audit_path=audit_path)
+            self.assertEqual(frozen['status'],'blocked')
+            self.assertEqual(frozen['tasks'],[])
+            self.assertTrue(any('review changed' in item for item in frozen['blockers']))

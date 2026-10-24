@@ -140,7 +140,7 @@ def grade_response(task: dict[str, Any], variant: str, text: str,
                    response_status: str = "completed", *, sandbox=None) -> dict[str, Any]:
     """Grade only returned responses; provider/protocol failures belong upstream.
 
-    Coding tests support stdin/stdout Python programs only. Missing grading
+    Coding tests support stdin/stdout and explicitly named Python functions. Missing grading
     assets fail closed; test pass/fail is determined outside the container.
     """
     if variant not in ("original", "updated"):
@@ -154,15 +154,16 @@ def grade_response(task: dict[str, Any], variant: str, text: str,
     if domain == "math":
         if "answer" not in spec:
             raise ValueError("Missing authoritative math answer")
-        expected = exact_answer(str(spec["answer"]))
+        from .exact_math import parse_exact, exact_equal
+        expected = parse_exact(str(spec["answer"]))
         try:
-            answer = exact_answer(text)
+            answer = parse_exact(text)
         except InvalidAnswer as exc:
             return {"status": "invalid_output", "correct": False, "detail": str(exc)}
-        status = "correct" if answer == expected else "incorrect"
+        status = "correct" if exact_equal(answer, expected) else "incorrect"
         if status == "incorrect" and variant == "updated" and "answer" in task.get("original", {}):
-            old = exact_answer(str(task["original"]["answer"]))
-            if old != expected and answer == old:
+            old = parse_exact(str(task["original"]["answer"]))
+            if not exact_equal(old, expected) and exact_equal(answer, old):
                 status = "old_answer_match"
         return {"status": status, "correct": status == "correct", "parsed_answer": str(answer)}
     if domain != "coding":
@@ -176,19 +177,31 @@ def grade_response(task: dict[str, Any], variant: str, text: str,
         return {"status": "invalid_output", "correct": False, "detail": str(exc)}
     if sandbox is None:
         from .sandbox import DockerSandbox
-        sandbox = DockerSandbox()
-    result = sandbox.evaluate(code, tests)
+        sandbox = DockerSandbox(timeout=task.get("timeout_seconds", 5.0),
+                                memory_mb=task.get("memory_mb",256),
+                                output_limit=task.get("output_limit",1_000_000))
+
+    def evaluate_variant(which):
+        grading_spec = task[which]
+        if grading_spec.get("mode", "stdin") == "stdin":
+            if grading_spec.get("case_insensitive") is True:
+                return sandbox.evaluate(code, grading_spec["tests"], case_insensitive=True)
+            return sandbox.evaluate(code, grading_spec["tests"])
+        return sandbox.evaluate(code, grading_spec["tests"], mode=grading_spec["mode"],
+                                entrypoint=grading_spec.get("entrypoint"))
+
+    result = evaluate_variant(variant)
     status = "correct" if result["passed"] else "incorrect"
     old_result = None
     if status != "correct" and variant == "updated" and task.get("original", {}).get("tests"):
-        old_result = sandbox.evaluate(code, task["original"]["tests"])
+        old_result = evaluate_variant("original")
         if old_result["passed"]:
             status = "old_answer_match"
     return {"status": status, "correct": status == "correct", "tests": result,
             "old_tests": old_result}
 
 
-def qualify_references(tasks: list[dict], *, sandbox=None) -> dict:
+def qualify_references(tasks: list[dict], *, sandbox=None, progress=None) -> dict:
     """Validate both authoritative variants; missing assets always block.
 
     This function does not establish provenance or resolve ambiguous updates.
@@ -202,15 +215,18 @@ def qualify_references(tasks: list[dict], *, sandbox=None) -> dict:
         blockers.append("Missing or duplicate task IDs")
     for task in tasks:
         task_id = task.get("task_id", "unknown")
+        if progress is not None:
+            progress(task_id)
         task_checks = {}
         try:
             if task.get("domain") == "math":
-                old = exact_answer(str(task["original"]["answer"]))
-                new = exact_answer(str(task["updated"]["answer"]))
-                task_checks["changed_answer"] = old != new
+                from .exact_math import parse_exact, exact_equal
+                old = parse_exact(str(task["original"]["answer"]))
+                new = parse_exact(str(task["updated"]["answer"]))
+                task_checks["changed_answer"] = not exact_equal(old,new)
                 for variant, answer in (("original", old), ("updated", new)):
                     task_checks[variant + "_reference"] = grade_response(task, variant, str(answer))["status"] == "correct"
-                    equiv = f"\\boxed{{\\frac{{{answer.numerator * 2}}}{{{answer.denominator * 2}}}}}"
+                    equiv = f"(({answer})*2)/2"
                     task_checks[variant + "_equivalent"] = grade_response(task, variant, equiv)["status"] == "correct"
                     task_checks[variant + "_wrong_rejected"] = grade_response(task, variant, str(answer + 1))["status"] != "correct"
                 task_checks["stale_rejected"] = grade_response(task, "updated", str(old))["status"] == "old_answer_match"

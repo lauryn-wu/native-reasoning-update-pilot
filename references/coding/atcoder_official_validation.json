@@ -1,0 +1,66 @@
+[
+  {
+    "source_id": 218,
+    "official_cases": 44,
+    "variants": {
+      "updated": {
+        "passed_official": true,
+        "cases": 44
+      },
+      "original": {
+        "passed_official": false,
+        "cases": 44
+      }
+    },
+    "different_outputs": 44,
+    "seconds": 0.7318930625915527
+  },
+  {
+    "source_id": 233,
+    "official_cases": 43,
+    "variants": {
+      "updated": {
+        "passed_official": true,
+        "cases": 43
+      },
+      "original": {
+        "passed_official": false,
+        "cases": 43
+      }
+    },
+    "different_outputs": 39,
+    "seconds": 0.47127413749694824
+  },
+  {
+    "source_id": 268,
+    "official_cases": 42,
+    "variants": {
+      "updated": {
+        "passed_official": true,
+        "cases": 42
+      },
+      "original": {
+        "passed_official": false,
+        "cases": 42
+      }
+    },
+    "different_outputs": 11,
+    "seconds": 0.3356339931488037
+  },
+  {
+    "source_id": 269,
+    "official_cases": 43,
+    "variants": {
+      "updated": {
+        "passed_official": true,
+        "cases": 43
+      },
+      "original": {
+        "passed_official": false,
+        "cases": 43
+      }
+    },
+    "different_outputs": 21,
+    "seconds": 0.3220860958099365
+  }
+]

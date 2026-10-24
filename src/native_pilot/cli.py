@@ -17,7 +17,7 @@ def read_json(path):
     return json.loads(Path(path).read_text())
 
 
-def qualification(manifest, *, docker=False):
+def qualification(manifest, *, docker=False, cache=None):
     process = subprocess.run([sys.executable,'-m','unittest','discover','-s',str(ROOT/'tests'),'-v'],
                              cwd=ROOT, capture_output=True,text=True)
     result = {'manifest_sha256':manifest['manifest_sha256'], 'at':utcnow(),
@@ -26,9 +26,16 @@ def qualification(manifest, *, docker=False):
     if docker:
         from .sandbox import qualify_docker
         from .grading import qualify_references
+        from .assets import hydrate_tasks
         result['docker'] = qualify_docker()
         result['docker_passed'] = result['docker'].get('passed') is True
-        result['source_references'] = qualify_references(manifest['tasks'] + ([manifest['smoke_task']] if manifest.get('smoke_task') else []))
+        if result['docker_passed']:
+            tasks = manifest['tasks'] + ([manifest['smoke_task']] if manifest.get('smoke_task') else [])
+            result['source_references'] = qualify_references(hydrate_tasks(tasks, cache or ROOT/'work/source-cache'),
+                progress=lambda task_id: print('Qualifying reference: '+task_id,file=sys.stderr,flush=True))
+        else:
+            result['source_references'] = {'status':'not_run','passed':False,
+                                          'reason':'Docker software qualification did not pass'}
         result['source_reference_passed'] = result['source_references'].get('passed') is True
     else:
         result['docker'] = {'status':'not_run','passed':False}
@@ -44,7 +51,8 @@ def dry_run(manifest):
         request=build_request(task,'initial',settings=manifest['settings'])
         initials.append({'task_id':task['task_id'],**reservation(request)})
     return {'manifest_sha256':manifest['manifest_sha256'],'status':manifest['status'],
-            'blockers':manifest['blockers'],'planned_counts':manifest['planned_counts'],
+            'blockers':manifest['blockers'],'execution_blockers':manifest.get('execution_blockers',[]),
+            'paid_execution_allowed':manifest.get('paid_execution_allowed',False),'planned_counts':manifest['planned_counts'],
             'actual_frozen_tasks':len(manifest['tasks']),'assignments':manifest['schedule'],
             'pair_difference':'Only reasoning.context: all_turns versus current_turn; same complete initial checkpoint',
             'initial_reservations':initials,
@@ -81,14 +89,18 @@ def report(manifest, ledger_path):
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--manifest',type=Path,default=ROOT/'manifests/pilot-v1.json')
+    parser.add_argument('--asset-cache',type=Path,default=ROOT/'work/source-cache')
     sub=parser.add_subparsers(dest='command',required=True)
-    for name in ('prepare','audit'):
+    for name in ('prepare','audit','prepare-upstream','review'):
         child=sub.add_parser(name)
         child.add_argument('--cache',type=Path,default=ROOT/'work/source-cache')
     child=sub.add_parser('freeze')
     child.add_argument('--version',required=True)
     child.add_argument('--out',type=Path,required=True)
+    child.add_argument('--audit',type=Path)
     child=sub.add_parser('qualify')
+    child.add_argument('--docker',action='store_true')
+    child=sub.add_parser('qualify-reviewed')
     child.add_argument('--docker',action='store_true')
     sub.add_parser('dry-run')
     for name in ('smoke','run'):
@@ -98,6 +110,16 @@ def main(argv=None):
     sub.add_parser('archive')
     args=parser.parse_args(argv)
     try:
+        if args.command in ('prepare-upstream','review'):
+            if args.command=='prepare-upstream':
+                from .upstream import prepare_coding_assets
+                show(prepare_coding_assets(args.cache))
+            else:
+                from .qualification import build_qualification_audit
+                audit=build_qualification_audit(args.cache)
+                atomic_json(ROOT/'provenance/qualification_audit.json',audit)
+                show({k:v for k,v in audit.items() if k!='qualified_tasks'})
+            return 0
         if args.command in ('prepare','audit'):
             from .data import prepare_sources, audit_sources
             if args.command=='prepare':
@@ -108,15 +130,29 @@ def main(argv=None):
             show({k:v for k,v in audit.items() if k not in ('candidates','review_inventory')})
             return 0  # Successful audit can establish that the design is blocked.
         if args.command=='freeze':
-            m=freeze(args.out,args.version)
+            m=freeze(args.out,args.version,audit_path=args.audit)
             show({'manifest':str(args.out),'sha256':m['manifest_sha256'],'status':m['status'],'blockers':m['blockers']})
             return 0
+        if args.command=='qualify-reviewed':
+            audit_path=ROOT/'provenance/qualification_audit.json'
+            audit=read_json(audit_path)
+            candidate_view={'manifest_sha256':file_digest(audit_path),
+                            'tasks':audit['qualified_tasks'],'smoke_task':None}
+            result=qualification(candidate_view,docker=args.docker,cache=args.asset_cache)
+            result['scope']='reviewed_candidates_only; not a frozen or authorized campaign'
+            result['source_selection_complete']=audit['status']=='qualified'
+            result['paid_execution_allowed']=False
+            result['audit_sha256']=result.pop('manifest_sha256')
+            atomic_json(ROOT/'runs/reviewed-candidate-qualification.json',result)
+            show({k:v for k,v in result.items() if k not in ('test_output','source_references')})
+            print(result['test_output'],file=sys.stderr)
+            return 0 if result['offline_passed'] and (not args.docker or (result['docker_passed'] and result['source_reference_passed'])) else 2
         manifest=load_manifest(args.manifest)
         run_dir=ROOT/'runs'
         qpath=run_dir/f"qualification-{manifest['manifest_sha256']}.json"
         ledger_path=run_dir/'budget.sqlite'
         if args.command=='qualify':
-            result=qualification(manifest,docker=args.docker)
+            result=qualification(manifest,docker=args.docker,cache=args.asset_cache)
             atomic_json(qpath,result)
             show({k:v for k,v in result.items() if k!='test_output'})
             print(result['test_output'],file=sys.stderr)
@@ -141,9 +177,11 @@ def main(argv=None):
                         if any(o.get('protocol_valid') is not True for o in smoke_outcomes):
                             raise ValueError('Run/resume the separately labeled three-call protocol smoke first')
                     provider=OpenAIProvider(allow_paid=True)
+                    from .assets import hydrate_tasks
+                    grading_tasks=hydrate_tasks([manifest['smoke_task']] if args.command=='smoke' else manifest['tasks'],args.asset_cache)
                     result=execute(manifest,ledger,provider,
                         schedule=smoke_calls if args.command=='smoke' else None,
-                        tasks=[manifest['smoke_task']] if args.command=='smoke' else None)
+                        tasks=grading_tasks)
                     atomic_json(run_dir/f"{args.command}-{manifest['manifest_sha256']}.json",result)
                     show({'kind':args.command,'stop_reason':result['stop_reason'],
                           'attempts':result['attempts'],'accounted_usd':result['accounted_usd']})
@@ -165,7 +203,7 @@ def main(argv=None):
         # Explicit allowlist: no raw responses, opaque reasoning, ledger, secrets,
         # source downloads, or paid output archives enter the shareable review.
         paths=[]
-        for folder in ('src','tests','docs','provenance','manifests'):
+        for folder in ('src','tests','docs','provenance','manifests','references'):
             paths.extend(p for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts)
         paths += [ROOT/'README.md',ROOT/'pyproject.toml',ROOT/'.gitignore',target,run_dir/'report.md']
         if qpath.exists():

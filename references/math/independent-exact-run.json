@@ -1,0 +1,7 @@
+{
+  "status": "completed",
+  "returncode": 0,
+  "stdout": "{\"cyclic_determinants\": [177542, 8321], \"digit_values\": [5624, 5694], \"direct_pair_cube_counts\": [10174168, 885735], \"other_checks\": \"exact identities passed; written independent proofs cover domain/geometry and exclusions\", \"roots_2\": [110, 134, 155, 179], \"roots_3\": [399, 1022, 3891, 4514], \"updated_recurrence_sum\": 248}\n",
+  "stderr": "",
+  "checker_sha256": "6e98c2dd0f3686f86445ac2c0bdd1397e00c705eee1343b733069e32b1a44852"
+}

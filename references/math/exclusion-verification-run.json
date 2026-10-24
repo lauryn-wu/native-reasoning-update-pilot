@@ -1,0 +1,9 @@
+{
+  "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+  "result": {
+    "status": "completed",
+    "returncode": 0,
+    "stdout": "{\n  \"aime2024:1006\": {\n    \"monic_cubic_rational_roots\": [],\n    \"squared_diagonal_quadratic_identity_verified\": true\n  }\n}\n",
+    "stderr": ""
+  }
+}

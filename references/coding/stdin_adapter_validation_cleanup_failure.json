@@ -1,0 +1,8 @@
+{
+  "scope": "software_stdin_adapter_broad_followup",
+  "paid_calls": 0,
+  "status": "incomplete_infrastructure_failure",
+  "exception_type": "subprocess.TimeoutExpired",
+  "detail": "Docker rm -f for the named qualification container exceeded15 seconds during the timeout-continuation check. The attempt terminated before its final report/assertions. Cleanup was subsequently hardened; no pass is inferred from this attempt.",
+  "result_scope": "Earlier checks completed but are not promoted into an aggregate pass because this attempt did not persist their results before failure."
+}

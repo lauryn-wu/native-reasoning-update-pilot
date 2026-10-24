@@ -7,7 +7,7 @@ name = "native-reasoning-update-pilot"
 version = "0.1.0"
 description = "Fail-closed exploratory native reasoning retention pilot"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = ["sympy==1.14.0"]
 
 [project.optional-dependencies]
 paid = ["openai==3.37.0"]

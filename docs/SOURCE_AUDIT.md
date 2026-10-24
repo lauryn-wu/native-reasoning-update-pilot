@@ -1,5 +1,10 @@
 # Source audit — 2026-10-24
 
+> Historical baseline inspection. The later authorized reference-construction
+> review is recorded in `provenance/qualification_audit.json`, `MATH_REFERENCES.md`,
+> and `CODING_REFERENCES.md`. Its current ordered sample is blocked at coding276;
+> the baseline zero-reference findings below are not the current reference count.
+
 The pinned release does **not** support a qualified 12 AIME + 12 coding pilot under this protocol. Paid execution remains blocked. The release supplies 60 AIME pairs and 341 coding pairs, but none has the complete initial-grading evidence required here. No substitute problems, invented updates, inferred answers, or provisional assignments have been inserted into the frozen campaign.
 
 ## Revisions and actual inspection

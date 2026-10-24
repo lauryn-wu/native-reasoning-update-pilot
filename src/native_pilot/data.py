@@ -2,7 +2,8 @@
 
 The source's ``revised_problem`` is the pilot's *initial* problem. Its update
 returns to ``original_problem``. Never mistake ``original_answer`` for an
-answer to the initial problem. The pinned release cannot qualify this design.
+answer to the initial problem. The release alone omits initial references; the separate verified-reference
+review can establish qualification without changing these source bytes.
 """
 from __future__ import annotations
 

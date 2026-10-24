@@ -1,0 +1,3266 @@
+{
+  "schema_version": 2,
+  "status": "blocked_by_unresolved_rank45_initial_reference",
+  "seed": 20261024,
+  "paid_calls": 0,
+  "selection_basis": "Exact original ranking; no model-performance-based exclusions. First12qualifiedcoding plus13th smoke after every earlier candidate is adjudicated.",
+  "preserve_source_prompts": true,
+  "bulk_tests_location": "User cache, never committed",
+  "independent_cases_sha256": "3fb415ce6990cccb50826090cab214e878674d1a91d0e93f57c1035b7483da95",
+  "reviewed_candidates": [
+    {
+      "task_id": "livecodebench:103",
+      "source_id": 103,
+      "source_row_sha256": "1b14009ffd614883dd63b0976ab34c5886967945279808a2efd5676ea20677a2",
+      "original_identity": "bd09f1bfb5a93726ac8d1b7c0ffe76a5e36b9532923a8518f1232ce87d24844f",
+      "source_original_prompt_sha256": "05b9cb7d6cd98c12a2a8d5c821ea4781930699e4fd5e78ce7dfae345ca480031",
+      "source_revised_prompt_sha256": "05b9cb7d6cd98c12a2a8d5c821ea4781930699e4fd5e78ce7dfae345ca480031",
+      "correction_prompt_sha256": "821d2c7983b553178fc9f714bc4f4d0643ca090ecebff4b6e636a9a83f0f0451",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 1,
+      "rank_zero_based": 0,
+      "platform": "atcoder",
+      "question_title": "Minimize Sum",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:80",
+      "source_id": 80,
+      "source_row_sha256": "17b9dcb110246de97df9349d0f32a31a98cd964be9fc882f80c53841aa2d6ed1",
+      "original_identity": "6c755aa5ae333c8257c515052f95ab21ff388021e8cbb2f3d7e6706d79107d86",
+      "source_original_prompt_sha256": "76bacb699d251df3d617b3ec874dfd212b056e807b38c80f0a42e87eaf32e3e3",
+      "source_revised_prompt_sha256": "76bacb699d251df3d617b3ec874dfd212b056e807b38c80f0a42e87eaf32e3e3",
+      "correction_prompt_sha256": "a7953e94661b0fa96f28d20113b2bfa88426b342d6a616917e798bf87520f616",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 2,
+      "rank_zero_based": 1,
+      "platform": "atcoder",
+      "question_title": "Maximize XOR",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:60",
+      "source_id": 60,
+      "source_row_sha256": "93727f052e07b9e02a94bee062dba884cd88a8be108d41e133bfdebee161435c",
+      "original_identity": "d2bd1ae7a4b881ed99d854121fbf07154b826f2a4c737c0fb06420384337ad4e",
+      "source_original_prompt_sha256": "86983a6b4426cdddaa55a120414296f278eecf1a1b8303ed2ab65f08a59d5528",
+      "source_revised_prompt_sha256": "86983a6b4426cdddaa55a120414296f278eecf1a1b8303ed2ab65f08a59d5528",
+      "correction_prompt_sha256": "88f3b658ea36022d4ed89f4a53494fe5d132316e1fbd229762f23e1d29e507dd",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 3,
+      "rank_zero_based": 2,
+      "platform": "atcoder",
+      "question_title": "Tile Distance 3",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:64",
+      "source_id": 64,
+      "source_row_sha256": "ad620fee10a8f6a2403f8f5ab6ee1438f00c35f4a25d00f1e996071bf4ad1962",
+      "original_identity": "2143217811573e21111ec836bbccac19bb52f30dbb343f8adb82714cd3ad8830",
+      "source_original_prompt_sha256": "1ccc2172743d7219343a6d278072056d9d6bf47fcdc4bfe2c192423e86d46151",
+      "source_revised_prompt_sha256": "1ccc2172743d7219343a6d278072056d9d6bf47fcdc4bfe2c192423e86d46151",
+      "correction_prompt_sha256": "ad4a25bbe221d7f96e5bab58aa7819972ae7bfba39a8401d42172bcb2ce171a1",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 4,
+      "rank_zero_based": 3,
+      "platform": "atcoder",
+      "question_title": "Sum of Max Matching",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:15",
+      "source_id": 15,
+      "source_row_sha256": "a7a72188975f8b94340f3e01af4d7ac8f06057e867c2b289dfdb3fc06d5161d5",
+      "original_identity": "3ea3799b69ed6fb3d54bfc0255152c668e6763467a5d8e6674d771aca3857eed",
+      "source_original_prompt_sha256": "84a3615ce332898da3d307abf85a0c8d48b6361031432148b06435563460f282",
+      "source_revised_prompt_sha256": "84a3615ce332898da3d307abf85a0c8d48b6361031432148b06435563460f282",
+      "correction_prompt_sha256": "ed7d73372a1c6d465b6ebad44b16a907880d867c713d246cf4409ea3bdf46284",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 5,
+      "rank_zero_based": 4,
+      "platform": "atcoder",
+      "question_title": "Road Blocked",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:22",
+      "source_id": 22,
+      "source_row_sha256": "6c764ec79403795c9802c770d41e976803290cc232446d8754904935113c0006",
+      "original_identity": "8ab0b79237cc4f54868dd5709e7e8733b8efedb9ba976bdd0ebfc2673331f690",
+      "source_original_prompt_sha256": "13ef243fceeb5a01595ab6512ad0c4062601d375828c1dbd05aba7c9c159a8f0",
+      "source_revised_prompt_sha256": "13ef243fceeb5a01595ab6512ad0c4062601d375828c1dbd05aba7c9c159a8f0",
+      "correction_prompt_sha256": "ebb22a68ae683d0720daf0119b61a8549286f79a3e396927c4c899e44274cea2",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 6,
+      "rank_zero_based": 5,
+      "platform": "atcoder",
+      "question_title": "Max × Sum",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:89",
+      "source_id": 89,
+      "source_row_sha256": "a69c366da32c2c686f07cdb49eab4427d82a3183a967a711d114ece5936560a7",
+      "original_identity": "296d5ca88a0f8b2c0af2647a6c02579d885147cec948ac511dc6785cffcdd317",
+      "source_original_prompt_sha256": "bb23fcd76e5142af783bfdea758133cb0973942700d9b0c8742de47c7dd45856",
+      "source_revised_prompt_sha256": "bb23fcd76e5142af783bfdea758133cb0973942700d9b0c8742de47c7dd45856",
+      "correction_prompt_sha256": "21b15c847b1e7552107090d3000a698b0535cc824982daa8d6a84306270cd719",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 7,
+      "rank_zero_based": 6,
+      "platform": "atcoder",
+      "question_title": "Random Walk on Tree",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:77",
+      "source_id": 77,
+      "source_row_sha256": "a2e023e93c5001842db1a839157ccd14dacae74e0a65f1ca4f2471dd9dc8ea1c",
+      "original_identity": "4f9cb377cac4477cefed33ef7402a23bc1a5b3df2a5ce04ee45bb0fd805bcd1d",
+      "source_original_prompt_sha256": "2057821a67d5257c5cfcc0074d5b8569cffbd9f2f46ac65e6d9d8f41cabc0a4e",
+      "source_revised_prompt_sha256": "2057821a67d5257c5cfcc0074d5b8569cffbd9f2f46ac65e6d9d8f41cabc0a4e",
+      "correction_prompt_sha256": "44141c1bf4cb1dff25b4ec8690324895104c2ddee8bca96408db0c77ddc90b39",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 8,
+      "rank_zero_based": 7,
+      "platform": "atcoder",
+      "question_title": "Santa Claus 2",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:90",
+      "source_id": 90,
+      "source_row_sha256": "12621149f7bf4ff3a9c747a0770791ecc9cb008278905f507fd5d76b77ade367",
+      "original_identity": "0a12334fea02eaf1f15746f0fa8be3bb900e473e4a28c2c2a450d5841efc7098",
+      "source_original_prompt_sha256": "10684540c69cc3e034e67eba1adaf12538f16a8645cfdb87d8ae4ce5bcd8862c",
+      "source_revised_prompt_sha256": "10684540c69cc3e034e67eba1adaf12538f16a8645cfdb87d8ae4ce5bcd8862c",
+      "correction_prompt_sha256": "a53c27109beedada806499ef5780a74827cbf7d65abfd2e3e38447111260d6c1",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 9,
+      "rank_zero_based": 8,
+      "platform": "atcoder",
+      "question_title": "Underclued",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:86",
+      "source_id": 86,
+      "source_row_sha256": "b9eb116709f47ff17ea8115a10e646a8fbdb9178897e8eee039056ac178cb1a1",
+      "original_identity": "17c03c6fe4f94cecafb14bed16acf8bd7d6daadcce48018cd3868e6f20cf3473",
+      "source_original_prompt_sha256": "952747b8f1046177dc7351182396b7b240e21c63252de5b84bb7f307868b5085",
+      "source_revised_prompt_sha256": "952747b8f1046177dc7351182396b7b240e21c63252de5b84bb7f307868b5085",
+      "correction_prompt_sha256": "37c3b0c7f4ae56442fe6309853f214b686b69472d3d80f5d988c05f91ec45e8e",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 10,
+      "rank_zero_based": 9,
+      "platform": "atcoder",
+      "question_title": "Sum of Three Integers",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:71",
+      "source_id": 71,
+      "source_row_sha256": "c7f2bbbde743d86abb68d6ada06c2914ee5e2350e7d6407b8a9ba4bf2ab9dfdd",
+      "original_identity": "6d0fc6931cdafcd1bacfc1402b95021e943c91fea2ccf24a03df4491a82fdf65",
+      "source_original_prompt_sha256": "d8d4200b920458bc4d6d74b9fbf37922d0f80e1b2942503096e447c3100dfd9b",
+      "source_revised_prompt_sha256": "d8d4200b920458bc4d6d74b9fbf37922d0f80e1b2942503096e447c3100dfd9b",
+      "correction_prompt_sha256": "65146cdf0fb948a14a0df6d8441764ebaffc752a54a620830394d5bfabb27c5c",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 11,
+      "rank_zero_based": 10,
+      "platform": "atcoder",
+      "question_title": "Takahashi is Slime 2",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:74",
+      "source_id": 74,
+      "source_row_sha256": "dad4f1624c527893ad309eb0383e104b61299c58b2e22c308c0daffd2881de2d",
+      "original_identity": "5c65a754b796efbef212cad90726ac4981883c2bc1e3837546e62f665dd1dd2f",
+      "source_original_prompt_sha256": "bc898b3e24c7ad91ced3dc1812f11ba7f44aac413bdb7b1d63326071d63dfaf5",
+      "source_revised_prompt_sha256": "bc898b3e24c7ad91ced3dc1812f11ba7f44aac413bdb7b1d63326071d63dfaf5",
+      "correction_prompt_sha256": "e91137e5c69793787bda8c0add1e375018f601ee6c6a1b1fd05871c3c6567ca8",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 12,
+      "rank_zero_based": 11,
+      "platform": "atcoder",
+      "question_title": "Visible Buildings",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:30",
+      "source_id": 30,
+      "source_row_sha256": "45a34f18e15c9b987cfeefd492b09569bb07fcc52b42c4adea46c79a3270afd2",
+      "original_identity": "af3feaf1c95464d6f4dde56430c6b635dad6e9cf8d68cfe8229480e4983faf84",
+      "source_original_prompt_sha256": "ec184a4cfe56cba8c65116463446625df52839a210f3634ecbeba53f5895f6a2",
+      "source_revised_prompt_sha256": "ec184a4cfe56cba8c65116463446625df52839a210f3634ecbeba53f5895f6a2",
+      "correction_prompt_sha256": "55985cae42fadf06da2f48d59b25a9f18366be278084fb0ecebedef521d26e37",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 13,
+      "rank_zero_based": 12,
+      "platform": "atcoder",
+      "question_title": "Mod Sigma Problem",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:55",
+      "source_id": 55,
+      "source_row_sha256": "46bccef2fa7b486740f947c601f3c1109667853f4264dc1b91038d90f8d4f7a7",
+      "original_identity": "10099d9dfc328f1a0804c5518595855779baaf60a237727237fb82d8dc747ae4",
+      "source_original_prompt_sha256": "93d11874e7a2d593f174005610ba6e39ecf053b74fda4337bf291834c586cf41",
+      "source_revised_prompt_sha256": "93d11874e7a2d593f174005610ba6e39ecf053b74fda4337bf291834c586cf41",
+      "correction_prompt_sha256": "1c0cb5d01d069bfef2239193846be9a713f420f86b59907645d19e110711c91f",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 14,
+      "rank_zero_based": 13,
+      "platform": "atcoder",
+      "question_title": "1122 Substring",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:78",
+      "source_id": 78,
+      "source_row_sha256": "e9880c61466ba19246089fb4b163c0a329231b92422762acfb574838f08190d0",
+      "original_identity": "b3c0309c90f97f1a4cdfd6960abd79b51c10ac75ddcca9ad80774f9da7527834",
+      "source_original_prompt_sha256": "2535097eb4d6b3524c7bbedcbf71a90c696f0c487ce89d79d67dda2fe66e20e7",
+      "source_revised_prompt_sha256": "2535097eb4d6b3524c7bbedcbf71a90c696f0c487ce89d79d67dda2fe66e20e7",
+      "correction_prompt_sha256": "cfcd5fa12590284411c446d58243b07307612ed36fe054c4527e71b7f33b5ad0",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 15,
+      "rank_zero_based": 14,
+      "platform": "atcoder",
+      "question_title": "Snowflake Tree",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:72",
+      "source_id": 72,
+      "source_row_sha256": "f73a510926c7b4718e80dc11dc6bb90cfa8392c0bfa14365ce7cbd3ef11e2e32",
+      "original_identity": "e739031265a2878f10c7d50a153bd2cbf378f2b71ae01a3bfdee68151452143e",
+      "source_original_prompt_sha256": "55ac4ee0fad19f191ee3fcf2e195a387e662ee1e6be0d5c125eca214cfbb7a8c",
+      "source_revised_prompt_sha256": "55ac4ee0fad19f191ee3fcf2e195a387e662ee1e6be0d5c125eca214cfbb7a8c",
+      "correction_prompt_sha256": "9c9d8d2ff9ed76b353c69890d96a7690b73f46db74e4f5e437d539e7fa4b3a41",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 16,
+      "rank_zero_based": 15,
+      "platform": "atcoder",
+      "question_title": "Double Sum 2",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:34",
+      "source_id": 34,
+      "source_row_sha256": "1288f8353f9472aba5a421043f40177cba2664404d7446d91f32870ea771c7e2",
+      "original_identity": "f437355937c1f46e97febb7b5c2372b5026bcb8ad326e636bff6a1c20f275913",
+      "source_original_prompt_sha256": "a2cbba0075adcfc407c98a0976d2b5152e9bf45c37ce9665857daae178201d75",
+      "source_revised_prompt_sha256": "a2cbba0075adcfc407c98a0976d2b5152e9bf45c37ce9665857daae178201d75",
+      "correction_prompt_sha256": "f653957553fd578be84c36745b90aee03a5c24a925c4fc24bc7ae78bb64788dd",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 17,
+      "rank_zero_based": 16,
+      "platform": "atcoder",
+      "question_title": "Everlasting LIDS",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:52",
+      "source_id": 52,
+      "source_row_sha256": "591a25739093e9041ca0b24e187f334127ca3c1f330ae76b7735d559997b5732",
+      "original_identity": "4734e9c9997a0143ae36394941c041c3a3340055b45b1140eac54e623702731f",
+      "source_original_prompt_sha256": "a91165bcf4e24aedc6b52556d3731ffc8c9f9c6580f046581289f3efec39d1d2",
+      "source_revised_prompt_sha256": "a91165bcf4e24aedc6b52556d3731ffc8c9f9c6580f046581289f3efec39d1d2",
+      "correction_prompt_sha256": "65c0614e3a9d189c90b9631b4437a2be11d689e92458f65b9048f095be3c3e9a",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 18,
+      "rank_zero_based": 17,
+      "platform": "atcoder",
+      "question_title": "11/22 Subsequence",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:42",
+      "source_id": 42,
+      "source_row_sha256": "32b457cec7f288ec2ef6c0a7fa6aa321ba768380cf9c9f9dcc9f1af3b24541db",
+      "original_identity": "eebcc2c0a82c87531bc42422d040f3a49be2cf8f4f256d3fa7711635037fe2f9",
+      "source_original_prompt_sha256": "1db496a3b9500124224942f2ab9c2d88d4a011b383cd73a8234306f7f6f292fb",
+      "source_revised_prompt_sha256": "1db496a3b9500124224942f2ab9c2d88d4a011b383cd73a8234306f7f6f292fb",
+      "correction_prompt_sha256": "569b01a76eef027e1903113958d0bdc581f31ea82d8454fb0c8ef400ee920988",
+      "published_difficulty": "hard",
+      "changed_tokens": 0,
+      "review_rank": 19,
+      "rank_zero_based": 18,
+      "platform": "atcoder",
+      "question_title": "Buildings 2",
+      "status": "excluded",
+      "reason": "Released initial core statement and starter are identical to restored core statement and starter; adding constraints/examples alone is not a genuine task update.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:261",
+      "source_id": 261,
+      "source_row_sha256": "f462c4beda7a42531f8d2b2149738dbeedff1f17bfe71bd1f93910bd2fc4433e",
+      "original_identity": "d96d9c98f2d93f2423613e249c368661ac04c04bad772f1a0828097c87b8717b",
+      "source_original_prompt_sha256": "05a4d7954765ea0d774b111386dd32ab0c740c5c0d5d4e54f7731e81c832394f",
+      "source_revised_prompt_sha256": "4e65f1aa6badb6e15b0a7a2c4ae744ed19a7c508c3bd0ad6c2c529f523bd8c78",
+      "correction_prompt_sha256": "065d78ef80c87ccb11571c01237a503cfd85676309de8c5f21a059284973472e",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 20,
+      "rank_zero_based": 19,
+      "platform": "atcoder",
+      "question_title": "Broken Wheel",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:265",
+      "source_id": 265,
+      "source_row_sha256": "7d9820aa12fe4ef84775cebb1f9c9c3bacf9707d3d4417f7324dd94aa90fa049",
+      "original_identity": "ca3e40be3a8930e785c5d973c043e3bb4f567f01fe12bb8e8bae113433765dda",
+      "source_original_prompt_sha256": "759880cb01d5e902ac62887c00f44087f6df1f7ae81832dd43ad2ee0bb62b7a8",
+      "source_revised_prompt_sha256": "9a8715751bac842245b37c18bb2207915cc513be4ae0883828029939c48a6f03",
+      "correction_prompt_sha256": "8f3483a98e00d8de8ec166a3d80dbfcee70b041ccab36e808a8bc8b69e210e50",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 21,
+      "rank_zero_based": 20,
+      "platform": "atcoder",
+      "question_title": "Minimum Cost Sort",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:124",
+      "source_id": 124,
+      "source_row_sha256": "669a0b5255f4d3525d8efb8e638623e206c56ad6ad2b07b044810b4483c71cb1",
+      "original_identity": "b6ec9269f10e07d909e01cebb0dd48630318fa6c82b05a038b7ad734655893d6",
+      "source_original_prompt_sha256": "6e68a2e8a71c09ea411039e6940a955d529c241b4bf13f4f6083d7f7ff1ebf08",
+      "source_revised_prompt_sha256": "6e68a2e8a71c09ea411039e6940a955d529c241b4bf13f4f6083d7f7ff1ebf08",
+      "correction_prompt_sha256": "50d6af25814881f273904c40e92e895e3579e9936cbbf30a305d1dfc5ccfa555",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 22,
+      "rank_zero_based": 21,
+      "platform": "leetcode",
+      "question_title": "maximize-sum-of-weights-after-edge-removals",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test5.jsonl",
+        "line_number": 126,
+        "raw_line_sha256": "913412ab56b73b8bd392c709c5a6821e8fad8e793fee9253707e09bf3e8abee0",
+        "join_key": [
+          "leetcode",
+          "weekly-contest-425",
+          "maximize-sum-of-weights-after-edge-removals"
+        ],
+        "upstream_question_id": "3675",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 42,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/124/original.py",
+          "sha256": "78b00b56c1cedc2d9de6b4bac0478fbb5b27f9ad4754db2a4b53fd2d36732d4d"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/124-original.json",
+          "sha256": "4fe0d9c22ad894815301fb77000472faeb1780208f62d547ecd0b64ec3c8bdfa"
+        },
+        "test_count": 97,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "maximizeSumWeights"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/124/updated.py",
+          "sha256": "9e85eb6046cea1690a4b2c84fa19eaac84e5a9039f2f0458e719a864658e582e"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/124-updated.json",
+          "sha256": "4fe0d9c22ad894815301fb77000472faeb1780208f62d547ecd0b64ec3c8bdfa"
+        },
+        "test_count": 97,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "maximizeSumOfWeights"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:175",
+      "source_id": 175,
+      "source_row_sha256": "d4d95bf62cdc61ec4a1ceb27d28cfc5ad7ccb18027b98359cc56df559aca2a78",
+      "original_identity": "37c5ac031120602df873ba66fca367ed6b5effc5b55aa8c34ff44cafdde5150f",
+      "source_original_prompt_sha256": "7aba9b2fb9fecc9715c2bb5dc37356bff588df84837d03deeb813bf70be47886",
+      "source_revised_prompt_sha256": "883eaa636c5497f8037f0cb6a3fdd8bf2dbf50e74930f2f17d4ab3f80e0a3619",
+      "correction_prompt_sha256": "d7715ce9c1ebe53d9067105574c69d9e592ae338154183f61fca7497bae66cf7",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 23,
+      "rank_zero_based": 22,
+      "platform": "atcoder",
+      "question_title": "Dangerous Sugoroku",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:257",
+      "source_id": 257,
+      "source_row_sha256": "8dcc6455cb8c69870f66da1e546f47632918def54f712e57e50d5ec77fa559de",
+      "original_identity": "83f878aa3ebc745c25280e77e6dee5c85892780d5e874359bf50402aa9bfba19",
+      "source_original_prompt_sha256": "cfd403019af8fd87d2175e931707241602b141beb18948692e95ffb03f1fc88f",
+      "source_revised_prompt_sha256": "3c6ea0bd333786dd44dde6ebd2730737dc81c1fdf07f7e992c5c44ace59e82e9",
+      "correction_prompt_sha256": "df9ebccb7bee2146c8b7ceb94c083014b4a533ac5e8dadd53faf855433940269",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 24,
+      "rank_zero_based": 23,
+      "platform": "atcoder",
+      "question_title": "Snuke's Kyoto Trip",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:184",
+      "source_id": 184,
+      "source_row_sha256": "ddedb5c8b246406c78a4fbe2a3b4e37532c81dc7623ec3b0011fe9a1f987c565",
+      "original_identity": "c1d9bcb0169827c84f7fb066babb23d8462c613476cf7fba425767fce3a7b2a8",
+      "source_original_prompt_sha256": "9c34fbcfb04b74897c00d219a434b42338746d24ebb669dee562359cfd9049af",
+      "source_revised_prompt_sha256": "d0e46c45287f8c68fca78e8123e7c41b08bb05fc4c17471864ca76cfc68e63e4",
+      "correction_prompt_sha256": "6ba08c392e89475ecdbaa59b918ccb958214f443e7c11c2040496a6bb1bad462",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 25,
+      "rank_zero_based": 24,
+      "platform": "atcoder",
+      "question_title": "Permutation Concatenation",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:259",
+      "source_id": 259,
+      "source_row_sha256": "0123e3d421a319d5ea14b585ea9d9a4a406ff653d719bcd738d9cf37d07b2bea",
+      "original_identity": "e1b9304bba21696b918110cd13ec11bac0ee19e48b292279314ebd4c3996a731",
+      "source_original_prompt_sha256": "7f8b5d946beea60ecba6edd38587a700c7b1e86f0f15ca871ece0aa9c9cab285",
+      "source_revised_prompt_sha256": "e4e16a89695ce4d4674a133d5c616259678e51ae2d70fe9f3bb56ed087448dae",
+      "correction_prompt_sha256": "c470dd7cbe4c95f7942a6344412a76c6081eb041c953bf7d8506402b0d9a9d10",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 26,
+      "rank_zero_based": 25,
+      "platform": "atcoder",
+      "question_title": "Fraction Line",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:194",
+      "source_id": 194,
+      "source_row_sha256": "52942cdb71a61d2aefb40240eed9ab1d30df5b1bbc4afff59c0506380dcc8819",
+      "original_identity": "fda9c5f43b066e3d8152b078621d8db54efd230fb2d81a9ba979c7c552470ce7",
+      "source_original_prompt_sha256": "ca05c2d39f6a0e5179575d7e875e9ecdf0af307fa3e72cf793dcdb925d758c3b",
+      "source_revised_prompt_sha256": "7f4d4713bb3fa248b2f7ab7b96b756c9a691b17afd7841991413777e0e7edaeb",
+      "correction_prompt_sha256": "f4bf8ebd6b67a440366177df0e1e7043a058c545ec539610ab994c3d963e8cc6",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 27,
+      "rank_zero_based": 26,
+      "platform": "atcoder",
+      "question_title": "Many LCS",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:258",
+      "source_id": 258,
+      "source_row_sha256": "a98da398c0927a2901d95a28ffe2b9a5eff8abdcf62fb6448ee73886c8a7ab6e",
+      "original_identity": "9edb39286309a96cbb08c06d5bff76cc4ec84d4068f97688e90f2a6729e09375",
+      "source_original_prompt_sha256": "9118ab51acc7b8417bfd9339ac6e089c3ca44f3c26c38a1f82210c5dec11e08f",
+      "source_revised_prompt_sha256": "82dd89fbf59cac9cdbbc5742c1c5872b79343e264f91dca93103f1b4c0a01640",
+      "correction_prompt_sha256": "9dc394817d5d02792f53c5fd941182f8a7d1a98b972e2288d8dc75b205028498",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 28,
+      "rank_zero_based": 27,
+      "platform": "atcoder",
+      "question_title": "Fennec VS. Snuke 2",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 93,
+        "raw_line_sha256": "06f3bf247712d2c9ce6ff423bf494d6c94e41b054a5a8abfc798848f8fba6abb",
+        "join_key": [
+          "atcoder",
+          "arc192",
+          "Fennec VS. Snuke 2"
+        ],
+        "upstream_question_id": "arc192_b",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "source_audit",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 43,
+      "original": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/258/original.py",
+          "sha256": "3258925d56ddcb98a55b810efbef088b6087022fb39c03a63d89987aef343ee1"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/258-original.json",
+          "sha256": "4ebc880495e5e5284fe7f50893744714693f9b9e905755f37f9b7673e3099d2d"
+        },
+        "test_count": 252,
+        "timeout_seconds": 60,
+        "case_insensitive": true,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_additional_validation.json",
+            "sha256": "6fab3848d8e8f1d164dc2221595d440073c3a37c3b7280f32634a1ef8cd9a7dd",
+            "scope": "All retained published inputs evaluated for both variants; only explicitly adjudicated source discrepancy258."
+          },
+          {
+            "path": "references/coding/atcoder_agent_validation.json",
+            "sha256": "97f9fb1207f4c705d4b2105099b00729fd3822b2738f6d02e521fb0f181887b3",
+            "scope": "Independent literal/minimax/assignment verification for both variants."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/258/updated.py",
+          "sha256": "e34c093fb9f125a9d61b686a9d4877becd16c3711a0c4284e322cd834b80c76d"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/258-updated.json",
+          "sha256": "1e244b3c1a4ec200d3cef3f9480a547957e4424733ebc25061f2279733e7ce1f"
+        },
+        "test_count": 252,
+        "timeout_seconds": 60,
+        "case_insensitive": true,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_additional_validation.json",
+            "sha256": "6fab3848d8e8f1d164dc2221595d440073c3a37c3b7280f32634a1ef8cd9a7dd",
+            "scope": "All retained published inputs evaluated for both variants; only explicitly adjudicated source discrepancy258."
+          },
+          {
+            "path": "references/coding/atcoder_agent_validation.json",
+            "sha256": "97f9fb1207f4c705d4b2105099b00729fd3822b2738f6d02e521fb0f181887b3",
+            "scope": "Independent literal/minimax/assignment verification for both variants."
+          }
+        ]
+      },
+      "test_adjudications": [
+        {
+          "source_case_index": 20,
+          "upstream_case_sha256": "e267118d6b1df3e8774d48dfe9c3d79d28a47ae50b89877d713fe49159b0810e",
+          "upstream_expected": "Snuke\n",
+          "corrected_stdout": "Fennec\n",
+          "stdin": "10\n7 16 3 3 9 8 16 12 8 3",
+          "proof": {
+            "path": "references/coding/258/adjudication.json",
+            "sha256": "0082620b7a4a8eb50101afeaa2eff3930220c1cdbd7f42b3e45a449017edc790",
+            "scope": "Published mathematical proof and exact independent minimax for the preserved contradictory input."
+          },
+          "execution": {
+            "path": "references/coding/258/adjudication_execution.json",
+            "sha256": "f456b057b4eb774dd1c1b2b7927cb81155b58c3bd0c4dd3336dd4931b29e0156",
+            "scope": "Actual isolated independent minimax execution:7714states."
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "livecodebench:306",
+      "source_id": 306,
+      "source_row_sha256": "372bdfe982d553ef0e81461d3eddc2af98c3c396930c58891613236d1d46176c",
+      "original_identity": "9a0e3c05e90be3bb131bc5fdd7a32ca2f2f31d65d6bb0695cb636e21dc48ce47",
+      "source_original_prompt_sha256": "4173ce61a9d80efeb12c35eb79fd54dc9ac32db8a5a277ee3b3fe3c415655232",
+      "source_revised_prompt_sha256": "58b196925c63bd95b2fa8ba600aa51b7496ab8a3df86909bbab490959fbe6a47",
+      "correction_prompt_sha256": "69dd946698b8701e2f1fcbd6d877bff8af0d5fb8dc83a606960c8a33a45dbe3e",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 29,
+      "rank_zero_based": 28,
+      "platform": "leetcode",
+      "question_title": "lexicographically-smallest-generated-string",
+      "status": "excluded",
+      "reason": "The initial statement asks for the lexicographically largest generated string without restricting its alphabet; the alphabet restriction appears only in the correction. A determinate initial optimum is not specified.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:167",
+      "source_id": 167,
+      "source_row_sha256": "36caedd9128cacee4a3edabd9b7c8a600a77a690ab81334f822068a5cc7475f2",
+      "original_identity": "b8532feaea3edc558e3f0684a5afca7a6bbdf90311563e2d417b5d6c25009114",
+      "source_original_prompt_sha256": "9864599023e75d8c976dbd7aaaa0ca3ae23149ba87c0ba5115144cabe20cc608",
+      "source_revised_prompt_sha256": "4eb362eea5d688253610bb3e7a113695d6536f6bcd1ffcb72e1d0010d79fdcff",
+      "correction_prompt_sha256": "d245bd10bf91309c1460ced716ecae41ccd6c430f6202cfcb52420fc129d23ef",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 30,
+      "rank_zero_based": 29,
+      "platform": "atcoder",
+      "question_title": "Count Arrays",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 2,
+        "raw_line_sha256": "024c72c870de2299df506ab92147d84d9a7234ad77f037b1285f7dd83ad49fc8",
+        "join_key": [
+          "atcoder",
+          "abc387",
+          "Count Arrays"
+        ],
+        "upstream_question_id": "abc387_f",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "source_audit",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 43,
+      "original": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/167/original.py",
+          "sha256": "5d166a624f958b743146317b1db31deaa8f8f80e556e7a727cca423a5185d706"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/167-original.json",
+          "sha256": "f28b8bb690dcab1f189bddb75fc7b07a04ab2f517528bfcd54ce4c91c672198b"
+        },
+        "test_count": 910,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_additional_validation.json",
+            "sha256": "6fab3848d8e8f1d164dc2221595d440073c3a37c3b7280f32634a1ef8cd9a7dd",
+            "scope": "All retained published inputs evaluated for both variants; only explicitly adjudicated source discrepancy258."
+          },
+          {
+            "path": "references/coding/atcoder_agent_validation.json",
+            "sha256": "97f9fb1207f4c705d4b2105099b00729fd3822b2738f6d02e521fb0f181887b3",
+            "scope": "Independent literal/minimax/assignment verification for both variants."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/167/updated.py",
+          "sha256": "57f74b51d381b49b958d21309ec4a8906889b2b37b8caba2ed1b12af7b5697e1"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/167-updated.json",
+          "sha256": "161c90f9cce5578f34b12155ac781508d26b014ea8052403fbf366ae1f7ed4b9"
+        },
+        "test_count": 910,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_additional_validation.json",
+            "sha256": "6fab3848d8e8f1d164dc2221595d440073c3a37c3b7280f32634a1ef8cd9a7dd",
+            "scope": "All retained published inputs evaluated for both variants; only explicitly adjudicated source discrepancy258."
+          },
+          {
+            "path": "references/coding/atcoder_agent_validation.json",
+            "sha256": "97f9fb1207f4c705d4b2105099b00729fd3822b2738f6d02e521fb0f181887b3",
+            "scope": "Independent literal/minimax/assignment verification for both variants."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:299",
+      "source_id": 299,
+      "source_row_sha256": "67f3f9a26b282442d45f803e4fa0db153f468e0635b52648660202b2efb415ee",
+      "original_identity": "6ec585fb6ca09ea90ba9e9462022dbf4d10e3f2181d49ad21e348151f9b1166f",
+      "source_original_prompt_sha256": "14655460a1a4d219e9ebd34a1e2d5978a8beaa958323e42fa9c46c4bcdbe0dd0",
+      "source_revised_prompt_sha256": "9d5d8f2230e381d079ec52afbecc5db84770c61e6c6a41bd09565d9beb59834e",
+      "correction_prompt_sha256": "9c4fcae5afbacdac0bd9c60afe3872fd76a4fffd7182ea4d328b788a33f39573",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 31,
+      "rank_zero_based": 30,
+      "platform": "leetcode",
+      "question_title": "length-of-longest-v-shaped-diagonal-segment",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 134,
+        "raw_line_sha256": "de0657238e4c67c720091dec8b7486d2ddd8b9a18a36a42bc6c7413b3d2b39e4",
+        "join_key": [
+          "leetcode",
+          "weekly-contest-437",
+          "length-of-longest-v-shaped-diagonal-segment"
+        ],
+        "upstream_question_id": "3733",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 44,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/299/original.py",
+          "sha256": "8cb92f8880fdb05d794f0372bc74257b2b2b9e36b0bec9ce01f37ef40154bc1e"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/299-original.json",
+          "sha256": "55e3c9e9b79644ea68bff916ec30fd2c6a6ee4d94473dc8b85f7d221db4341d6"
+        },
+        "test_count": 245,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "lenOfVDiagonal"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/299/updated.py",
+          "sha256": "8eccfd4a3040e228c183535a7eb5c770f256f3070e10125fde891236e9af3c3d"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/299-updated.json",
+          "sha256": "277a9e7b0655c7d8b7316b91a06b28b8d1498b2939f6faaf2b9fbd8c5e105706"
+        },
+        "test_count": 245,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "lenOfVDiagonal"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:270",
+      "source_id": 270,
+      "source_row_sha256": "0bcdc0323e922411cc236a4b0ccad752b9e0d6fbae8a1d6bdb8468d4eda45ff5",
+      "original_identity": "146f066fbc78914aee94e8b5e3e4b94fbc51e20485456c26e93ba69f19f485d2",
+      "source_original_prompt_sha256": "e0de68018277415eafd8275de47d0af4ee70d9eab1df0865785142c7dfe22637",
+      "source_revised_prompt_sha256": "d211a9c03058c6d0e4dd41d8128be7f2b41c8e7e5bf18517b2f293b765bcb70c",
+      "correction_prompt_sha256": "683ce8a5cdb5f65a8cdfdf454e3d03693a89d230ef6785dcf4c1b50cc39c86bc",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 32,
+      "rank_zero_based": 31,
+      "platform": "atcoder",
+      "question_title": "Uniform Sum",
+      "status": "excluded",
+      "reason": "Rearranging A or B leaves the attainable pairwise matchings and the existence of a common target sum identical. No required output/interface behavior changes.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:115",
+      "source_id": 115,
+      "source_row_sha256": "b286dd8c4e91cbc63a5a8d6ee62cadb80a834bc7f0a3a8a1f0526af8239e5186",
+      "original_identity": "e9633f93ec3e71b1fce0001a5b508e7248f6a84ced8bfc14b09f8f3b4d889762",
+      "source_original_prompt_sha256": "ad4092783581f0cfb3e456100b9b7b4ebd7510f0bd7436cfcd1440dac3b248ef",
+      "source_revised_prompt_sha256": "ad4092783581f0cfb3e456100b9b7b4ebd7510f0bd7436cfcd1440dac3b248ef",
+      "correction_prompt_sha256": "34fb6450904d48f7207c9f92224fb887dea12be6d13300821a786b5a6821b7b2",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 33,
+      "rank_zero_based": 32,
+      "platform": "leetcode",
+      "question_title": "count-number-of-balanced-permutations",
+      "status": "excluded",
+      "reason": "The initial statement defines a balanced string but never requests a count/output or modulus. The correction adds the missing objective. Inferring a requested result would repair the initial prompt.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:238",
+      "source_id": 238,
+      "source_row_sha256": "dece17dd213d487cf34ea546dae968e23640d5a9c8a65b8549a774f0eb2188b0",
+      "original_identity": "68c193076e9464f6e0a0a9c7a73ac7ca0a1370ab9fd553dc4e50ff92f8f2c4bb",
+      "source_original_prompt_sha256": "d0e8fdea612753bac38d57831ad420341dab39d1996dfa733943ba08f10da070",
+      "source_revised_prompt_sha256": "ce6c0f3c687b3bc4618300c191e3577f0c79f232d84963ae0d8ade710d0dc5b5",
+      "correction_prompt_sha256": "74f49890e355bf25834d8f2463fc9372a5f18f80136c72cee1e4e59ceeb606ab",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 34,
+      "rank_zero_based": 33,
+      "platform": "atcoder",
+      "question_title": "Not Only Tree Game",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:275",
+      "source_id": 275,
+      "source_row_sha256": "3a829a40017d09ac7d41bc57239df3211183cbc8edcdc0f728a2a162f601460f",
+      "original_identity": "5f2220988163f764a3882c72bb9c8fcad638e90df62798f5fdbf5871a66ca5b3",
+      "source_original_prompt_sha256": "8876f130deb5e3f6346658d62368e594f7959fff679d69b11bd68dac65311fe9",
+      "source_revised_prompt_sha256": "4ad0607faed984537801ce7491d21575f7108c910f5a87f4dca4abb0dd6f1b76",
+      "correction_prompt_sha256": "8d4e48fbfd18a41b65d87e763126fad50ecef9a425f60bc0124c94ad1145050e",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 35,
+      "rank_zero_based": 34,
+      "platform": "atcoder",
+      "question_title": "Strongly Connected",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:219",
+      "source_id": 219,
+      "source_row_sha256": "7b9ff4c33cecfeb3508f5a4830ab23acb3fec40f21f19d604da28597ecea74eb",
+      "original_identity": "cc867397b54dfc987bf70be5056c0de6f33319d1d231941bec6dfd5059d62665",
+      "source_original_prompt_sha256": "29d6dd1f004be3cd41881bb4058945316d1771509a03bb6391bab0e5bb0b7ff1",
+      "source_revised_prompt_sha256": "89a0e85c34a39f21aeab1a907e9329ec6345ac987aae20e92ea4969368ec0a36",
+      "correction_prompt_sha256": "5b863fb832b5a8811a149d4a0272427f972ab133278f9c19b8abe613a5a0c488",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 36,
+      "rank_zero_based": 35,
+      "platform": "atcoder",
+      "question_title": "Flip Row or Col",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:215",
+      "source_id": 215,
+      "source_row_sha256": "f7a2cb0f4309aa7ea38d1e6413fecedf09c32621bc6913cc4e83a79337019d52",
+      "original_identity": "688801e75af3892b3864870e5cd909c445ea1ba384ff880f493a95f3851fb6af",
+      "source_original_prompt_sha256": "f5f90e58f1bce2d7363836a32f9aa175674d3a5a94b3052171c50df1285b9d7f",
+      "source_revised_prompt_sha256": "9bf5cb27aacb846cf64adc959746de52036660b5f062d14479b5e724f4b354a7",
+      "correction_prompt_sha256": "d8c3fbe3e2e3bb938ffe6ad2d8e8a83b30d40ca6d23c0ff28ecc1526582d4abb",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 37,
+      "rank_zero_based": 36,
+      "platform": "atcoder",
+      "question_title": "Smooth Occlusion",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:158",
+      "source_id": 158,
+      "source_row_sha256": "e67690edb6ff09704b3501b638ee5db123feb814709ddfcb7ac8d60ce140a4c5",
+      "original_identity": "eb789b87a8f5665a66e5d7700ddd89a1e86bf15e383bd03d893e14ee81184763",
+      "source_original_prompt_sha256": "56fec7860cef07088923fbdab0edaad10f2cf0e185f7bfb7830cda6019390dfc",
+      "source_revised_prompt_sha256": "58bba554f370be8f02ed3d9e76ac965c6df9e4fdb80ddd54867be3e7b3326b45",
+      "correction_prompt_sha256": "da2063e99a28eb05a039a55252c63b7701bdc34748f480d38e87f7463b757714",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 38,
+      "rank_zero_based": 37,
+      "platform": "leetcode",
+      "question_title": "subsequences-with-a-unique-middle-mode-i",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test5.jsonl",
+        "line_number": 160,
+        "raw_line_sha256": "25092a08d311057814f35c2c8dcac5f41b4a8e48b97df2d22666ede1552f06e5",
+        "join_key": [
+          "leetcode",
+          "biweekly-contest-146",
+          "subsequences-with-a-unique-middle-mode-i"
+        ],
+        "upstream_question_id": "3700",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 43,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/158/original.py",
+          "sha256": "a100b156e99c09a743e054883ae4164768b904dcbce40a341df0c2a6c630a63f"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/158-original.json",
+          "sha256": "cb7e4293ea04e95226343f85f99d31596edc9492a701b3649cf450e5defe66de"
+        },
+        "test_count": 174,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "subsequencesWithMiddleMode"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/158/updated.py",
+          "sha256": "e3e676072f7b975ff03d19f46190852abf97c0874f2d72d2c480cde0dfbc147a"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/158-updated.json",
+          "sha256": "d07208802faea8fd3f49cf3b1c93016ec95ec78b6bc318ff993d8bcc9efecb4a"
+        },
+        "test_count": 174,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "subsequencesWithMiddleMode"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:251",
+      "source_id": 251,
+      "source_row_sha256": "acb0a59c6993db165f247345c4f29a081e127653c0e73e75a287a19fbd27b8c1",
+      "original_identity": "0ec402a46ac8c930b9d486914901bcb555d01487def2ed71401cad2d1f403efc",
+      "source_original_prompt_sha256": "617e9b8ce048b793d0690bd337c2821154b4b1e140128db1dc4e68d4737c1808",
+      "source_revised_prompt_sha256": "fe53dc3a644592ffd2940770cda435538d88bf1aa9b89c507eea16743be96e12",
+      "correction_prompt_sha256": "d89e1353d7177e3982524a5b0081db2732c12cdaee313be5ad8bd218b85db821",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 39,
+      "rank_zero_based": 38,
+      "platform": "atcoder",
+      "question_title": "Basic Grid Problem with Updates",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:269",
+      "source_id": 269,
+      "source_row_sha256": "74a9a7cd7d1a96b702612e024c3e4a3267f8f524d2a34bba7d4b1b58a6f1f64e",
+      "original_identity": "ff98591a3b15d08177f5d535373014aa8ddbd4206ed5aba4d1ece2a09d1f9887",
+      "source_original_prompt_sha256": "0b8961d5ae37198a611f2c85781b012f7eb52b40673ffa023cce5cf8dea63bcb",
+      "source_revised_prompt_sha256": "1c22dfb955c037e5f269d267781a77b558817ae2f85e337096545e66072b375c",
+      "correction_prompt_sha256": "9f86f9b90cdf9edcc0da182b0238e37b0ae99c8ffa16d37a4530988405a98d56",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 40,
+      "rank_zero_based": 39,
+      "platform": "atcoder",
+      "question_title": "Random Tree Distance",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 104,
+        "raw_line_sha256": "0cbce288aeec80fcf2523d2201afc0d3f5f1fbeafd80132ed4b2e771b3065993",
+        "join_key": [
+          "atcoder",
+          "arc195",
+          "Random Tree Distance"
+        ],
+        "upstream_question_id": "arc195_e",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs.",
+        "root_review_evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      },
+      "official_cases": 43,
+      "original": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/269/original.py",
+          "sha256": "250cc3a371b49e8bd362dd85d4d27aab7a85256493d17ed57a6290e0180611ac"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/269-original.json",
+          "sha256": "0569800a2d1b0e15eee766895fbbdf20c13d35eca1101c2df454e2732f8e3390"
+        },
+        "test_count": 61,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_official_validation.json",
+            "sha256": "305dcb54e8c175ef5bb5364b6767d8b6219b8b7d7cfdbbc37130f9a9c3d5f4ee",
+            "scope": "Corrected reference passed every published test; initial expected values generated in Docker."
+          },
+          {
+            "path": "references/coding/atcoder_independent_validation.json",
+            "sha256": "a047cf0ea6d22104791c7266833bf1a122116bd1f6ae532383e179266f6f0884",
+            "scope": "Both variant references passed different literal/exhaustive exact oracles; independent agent reviewed algorithms."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/269/updated.py",
+          "sha256": "0e574bcc1a846d3cafe125b6826f296057d212154a692abfe9fb87d3099a80ac"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/269-updated.json",
+          "sha256": "85a7de0fac4af8203efdb2ce43879283adf45578d3470d6e6b9385d1d81c590a"
+        },
+        "test_count": 61,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_official_validation.json",
+            "sha256": "305dcb54e8c175ef5bb5364b6767d8b6219b8b7d7cfdbbc37130f9a9c3d5f4ee",
+            "scope": "Corrected reference passed every published test; initial expected values generated in Docker."
+          },
+          {
+            "path": "references/coding/atcoder_independent_validation.json",
+            "sha256": "a047cf0ea6d22104791c7266833bf1a122116bd1f6ae532383e179266f6f0884",
+            "scope": "Both variant references passed different literal/exhaustive exact oracles; independent agent reviewed algorithms."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:218",
+      "source_id": 218,
+      "source_row_sha256": "9d14ad2637b3cf964282eacdf915fc17f875171c6620d483260a78505d5b0942",
+      "original_identity": "b884f5cb9355aeed47b4f3ec8350df902311cb78670cd7bcf90af8f0f866d162",
+      "source_original_prompt_sha256": "9572b561ab0143295adf2284a76492924b0753fcdbea8c2cdcb4880ddb4b5725",
+      "source_revised_prompt_sha256": "dd08931f988968a6f5a998a2f5eaf1b85e1860e14dfe0e6635834460505b72c9",
+      "correction_prompt_sha256": "4088676678d16316042328292a1d42568e402757c135cd82bb8c059b3d6e3046",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 41,
+      "rank_zero_based": 40,
+      "platform": "atcoder",
+      "question_title": "Flip Edge",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 53,
+        "raw_line_sha256": "abf7fa3851df97c6ca9a64c9af41889318c8e1e3127c64e046cf6868a83b89f6",
+        "join_key": [
+          "atcoder",
+          "abc395",
+          "Flip Edge"
+        ],
+        "upstream_question_id": "abc395_e",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs.",
+        "root_review_evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      },
+      "official_cases": 44,
+      "original": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/218/original.py",
+          "sha256": "871353260b493ee19f198e7e020b82734636d4cfc0818c8b90427547fbbecb3e"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/218-original.json",
+          "sha256": "651305eeefd4f04a7ed014ba35c1a4f120bd04096b5099471eda5713b179da2c"
+        },
+        "test_count": 260,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_official_validation.json",
+            "sha256": "305dcb54e8c175ef5bb5364b6767d8b6219b8b7d7cfdbbc37130f9a9c3d5f4ee",
+            "scope": "Corrected reference passed every published test; initial expected values generated in Docker."
+          },
+          {
+            "path": "references/coding/atcoder_independent_validation.json",
+            "sha256": "a047cf0ea6d22104791c7266833bf1a122116bd1f6ae532383e179266f6f0884",
+            "scope": "Both variant references passed different literal/exhaustive exact oracles; independent agent reviewed algorithms."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/218/updated.py",
+          "sha256": "42b5cb1a02f8833f5b5adcf2214a64ebcffa25f02d592a7117cca347b6e21a6f"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/218-updated.json",
+          "sha256": "e8a18303f29961678b91e0e840d685da9c643b55936fad78aae0ebb436360205"
+        },
+        "test_count": 260,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_official_validation.json",
+            "sha256": "305dcb54e8c175ef5bb5364b6767d8b6219b8b7d7cfdbbc37130f9a9c3d5f4ee",
+            "scope": "Corrected reference passed every published test; initial expected values generated in Docker."
+          },
+          {
+            "path": "references/coding/atcoder_independent_validation.json",
+            "sha256": "a047cf0ea6d22104791c7266833bf1a122116bd1f6ae532383e179266f6f0884",
+            "scope": "Both variant references passed different literal/exhaustive exact oracles; independent agent reviewed algorithms."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:274",
+      "source_id": 274,
+      "source_row_sha256": "aeb2c9cc0f0574d3cd8eff529b685c3a83130734a096ebe76ae4e899c75acc1a",
+      "original_identity": "5269e212dafa595bd5cc7854a165353835dd3ed737121b4caa923525fb7ccd27",
+      "source_original_prompt_sha256": "4c3f8b5a6196b7f3bdecf14e230784816aacae338db2a9b27e466f2596b3d3b8",
+      "source_revised_prompt_sha256": "19ec4723eb87a062ae77c7ad65d9fe57c039a7b0e982d11ee734b0ae13dd90e9",
+      "correction_prompt_sha256": "9beab5e8927f8d0574f578a80f0e5260aaa8f6b0058f3c6149df055cfa463af6",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 42,
+      "rank_zero_based": 41,
+      "platform": "atcoder",
+      "question_title": "Torus Loop",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:268",
+      "source_id": 268,
+      "source_row_sha256": "00e384101be8d267d86abef278b6348581a239916d9f353960a132613eccc7fd",
+      "original_identity": "79db555e63fbf9da28de4454f5f022ba74680536c2ef1b06b5c3cfe39f77df43",
+      "source_original_prompt_sha256": "b15ff479c5ad32d8810fba9cd668b753aef4731741a84886ed098c9847416490",
+      "source_revised_prompt_sha256": "13355caf13c79febdaa94e4f99a5e50f65b518f9fce6a8cdd9b41f2a60cc6313",
+      "correction_prompt_sha256": "3c4d0405cc89c9603566e21d0afa147f5c309705032eee82479a5768364686e0",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 43,
+      "rank_zero_based": 42,
+      "platform": "atcoder",
+      "question_title": "Reverse Brackets",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 103,
+        "raw_line_sha256": "6e0eeec65a651b448144eefe8b7791371dd137c03e69192c4e059a7441dcdd37",
+        "join_key": [
+          "atcoder",
+          "arc194",
+          "Reverse Brackets"
+        ],
+        "upstream_question_id": "arc194_d",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs.",
+        "root_review_evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      },
+      "official_cases": 42,
+      "original": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/268/original.py",
+          "sha256": "90b5615c1470c084f9d74de34d165783d23d292424429e7500ee3c9547fe7763"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/268-original.json",
+          "sha256": "45043fa27ec1f7043c4041bd2f0ce50a2d4a7b99c69ef93589d14ed99283565c"
+        },
+        "test_count": 110,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_official_validation.json",
+            "sha256": "305dcb54e8c175ef5bb5364b6767d8b6219b8b7d7cfdbbc37130f9a9c3d5f4ee",
+            "scope": "Corrected reference passed every published test; initial expected values generated in Docker."
+          },
+          {
+            "path": "references/coding/atcoder_independent_validation.json",
+            "sha256": "a047cf0ea6d22104791c7266833bf1a122116bd1f6ae532383e179266f6f0884",
+            "scope": "Both variant references passed different literal/exhaustive exact oracles; independent agent reviewed algorithms."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/268/updated.py",
+          "sha256": "a6256853d3dd3ad966bb1e6b1f4baa82d3127b4145079a15e6cf44f78369cf9d"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/268-updated.json",
+          "sha256": "37f3c441c5171bd4ca1a786f6a8556df3d8cc07eacf08a58cbd9a838d2d2cf86"
+        },
+        "test_count": 110,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_official_validation.json",
+            "sha256": "305dcb54e8c175ef5bb5364b6767d8b6219b8b7d7cfdbbc37130f9a9c3d5f4ee",
+            "scope": "Corrected reference passed every published test; initial expected values generated in Docker."
+          },
+          {
+            "path": "references/coding/atcoder_independent_validation.json",
+            "sha256": "a047cf0ea6d22104791c7266833bf1a122116bd1f6ae532383e179266f6f0884",
+            "scope": "Both variant references passed different literal/exhaustive exact oracles; independent agent reviewed algorithms."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:233",
+      "source_id": 233,
+      "source_row_sha256": "6efd370b8d0c6a275adfc06f6cc2b24b1a789d53e6349de82b687da461bec6b2",
+      "original_identity": "2ec3418dc23ebf6b2d86e2d61d2484f76a70228aa3ff4dc244a7e3184b3d2a44",
+      "source_original_prompt_sha256": "689dc044b70314f010a48fd0926d113d3d480732c57930a72e1d2955a2a73d23",
+      "source_revised_prompt_sha256": "50e078885e20255e631c16e5f0a54b9a40ba4dfe605dc9ed597f736a21875da2",
+      "correction_prompt_sha256": "472c70f3b1c497aba80c0b937b35b2f65861352688e30139718b32a30559cc8d",
+      "published_difficulty": "hard",
+      "changed_tokens": 1,
+      "review_rank": 44,
+      "rank_zero_based": 43,
+      "platform": "atcoder",
+      "question_title": "ABCBA",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 68,
+        "raw_line_sha256": "b92c22a44160c91a15c6dfcd4480fbb0c512d50aab168a16b7266ad212d24f77",
+        "join_key": [
+          "atcoder",
+          "abc398",
+          "ABCBA"
+        ],
+        "upstream_question_id": "abc398_f",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs.",
+        "root_review_evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      },
+      "official_cases": 43,
+      "original": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/233/original.py",
+          "sha256": "c0a07fd117927193faf1e3b0f9d013ca05b1157a1c1f2dda80bee7774bc3c6d0"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/233-original.json",
+          "sha256": "50cf5f63698f81d542465bf45d688f33c6081d9d0e6578c346a474254b09f185"
+        },
+        "test_count": 297,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_official_validation.json",
+            "sha256": "305dcb54e8c175ef5bb5364b6767d8b6219b8b7d7cfdbbc37130f9a9c3d5f4ee",
+            "scope": "Corrected reference passed every published test; initial expected values generated in Docker."
+          },
+          {
+            "path": "references/coding/atcoder_independent_validation.json",
+            "sha256": "a047cf0ea6d22104791c7266833bf1a122116bd1f6ae532383e179266f6f0884",
+            "scope": "Both variant references passed different literal/exhaustive exact oracles; independent agent reviewed algorithms."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/233/updated.py",
+          "sha256": "027ce8068b3e99852806e3477c5dc802c0bd2524c76b9958c3bb83153e751a1b"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/233-updated.json",
+          "sha256": "99525fe80ec832d9b59769ba779b980d664de01b35e35e5ff5887d26db68f899"
+        },
+        "test_count": 297,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/atcoder_official_validation.json",
+            "sha256": "305dcb54e8c175ef5bb5364b6767d8b6219b8b7d7cfdbbc37130f9a9c3d5f4ee",
+            "scope": "Corrected reference passed every published test; initial expected values generated in Docker."
+          },
+          {
+            "path": "references/coding/atcoder_independent_validation.json",
+            "sha256": "a047cf0ea6d22104791c7266833bf1a122116bd1f6ae532383e179266f6f0884",
+            "scope": "Both variant references passed different literal/exhaustive exact oracles; independent agent reviewed algorithms."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:276",
+      "source_id": 276,
+      "source_row_sha256": "ef7326ff43fac98d6e0dff30ea30fc2a7ba11a6519b24baadc95f6febe6b9fcf",
+      "original_identity": "b92f20023c12899a7666397dfd6a329f712dd570689f4f3457dba4c4aa0f7338",
+      "source_original_prompt_sha256": "e20fdcf9d1bf66c6d740b20a792dd996a38a6a7f4f7fadc5ce908abb08b5dfc3",
+      "source_revised_prompt_sha256": "d7f1a9911c76afa45ec7d55daaa93d7f753056bf110e5a2b769fd775cfe0afcd",
+      "correction_prompt_sha256": "861aedc1e5e6d27dc954cd1c41c49957cbee076a804e4202ad51eac12ccafba1",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 45,
+      "rank_zero_based": 44,
+      "platform": "atcoder",
+      "question_title": "Adjacent Delete",
+      "status": "pending",
+      "reason": "The exact initial minimum-cost interval DP has a declared n<=240 resource bound; the full retained published suite reaches n=4736 and the corrected constraint is n<=300000. A scalable, independently verified initial reference is unresolved. This candidate remains pending and cannot be skipped.",
+      "partial_evidence": {
+        "path": "references/coding/276/validation.json",
+        "sha256": "3a77a16a78618f835365da3fdf5de4e2606d4c400434f1d5e86ba629b2b08b8c"
+      },
+      "independent_review": {
+        "status": "pending",
+        "reviewer": "root",
+        "method": "Exact small-instance proof verified, scalable full-suite initial reference unresolved.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:44",
+      "source_id": 44,
+      "source_row_sha256": "1408809af05e1d8120dec9f3ae5221de6b6dfec4cecbf8a9d15dea2f5fc67a02",
+      "original_identity": "684e10b35577a31e26788f0d5d57fdf574c36a6a38ddedbe9388421fb6d9e313",
+      "source_original_prompt_sha256": "02474e9fc5414cf04ae5696f8abb3d1935a33ddf0a0adc8cb1474ef756b834ac",
+      "source_revised_prompt_sha256": "25947e51c1cdadad2d32931cb2f3b3fa87ac9b03ade9a5ffae5849f13e5eaf75",
+      "correction_prompt_sha256": "ad055b0d8c6783b2f572b3da471c456579712193ff12b98337e8bef67412519f",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 46,
+      "rank_zero_based": 45,
+      "platform": "atcoder",
+      "question_title": "1D Bucket Tool",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:266",
+      "source_id": 266,
+      "source_row_sha256": "645b0a37e4d1234aa269c6d728033860b2218997e14ca1558d11c9f24811d749",
+      "original_identity": "3622b30ef9ff96c093994cac6827ccbf4b383f1ea9250e4460e2268cf05dfc46",
+      "source_original_prompt_sha256": "df5e9ae23df12bf5ce34b8d3d93a63e048ddce12f91b02148962fd2c9ef6e504",
+      "source_revised_prompt_sha256": "d2bb405238f7f55c86fc8ff550d357beb8530e633fc211b1bdf5479f89354896",
+      "correction_prompt_sha256": "824213edd8bdd12edc110f531510ff9fd3f71c92907e0e554a7e9b4305646634",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 47,
+      "rank_zero_based": 46,
+      "platform": "atcoder",
+      "question_title": "Swap 0^X and 1^Y",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:180",
+      "source_id": 180,
+      "source_row_sha256": "90b7046562e178190253cd07b8c6b5297335dfb1b2e8f0ad58e69538080c81ed",
+      "original_identity": "f76d5d118c49c65d21c42a72593cba77e775773f84990bd756ec68c47b65c396",
+      "source_original_prompt_sha256": "1a01c285ca349e60fd61d118338ba05751a3974790140b8360c21a2856abf5bf",
+      "source_revised_prompt_sha256": "b84c6ec3dd7475e109d55691a96f0ed0a2e69c77c3957718ed05c28748bca5ce",
+      "correction_prompt_sha256": "e56efb641c33e502fa033aff95b06dd31ba6061486ed71e2e2d290df56e4b479",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 48,
+      "rank_zero_based": 47,
+      "platform": "atcoder",
+      "question_title": "Odd Even Graph",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:188",
+      "source_id": 188,
+      "source_row_sha256": "9c485028f484e87fb28cd171b1781b7999d23c12e785a12b930fe87c9407ebfa",
+      "original_identity": "36936f31f7522ae84da28a17dd4a67fba1cc9e757fdcbd1c3fce2deb882ba0cc",
+      "source_original_prompt_sha256": "385756a2af028577a4c647ebe1769dabdaad3d6e9fbd9dc071d14a01282ff8bc",
+      "source_revised_prompt_sha256": "c0ba379c24bd74becd1bf586df0849faf79f2465d1b66b59fc217daeeba4f6f6",
+      "correction_prompt_sha256": "435277290ee4c8bdc694d5af67abdd9380db5d9ad7e620b8c4e89ffbb7f9fb41",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 49,
+      "rank_zero_based": 48,
+      "platform": "atcoder",
+      "question_title": "Double Sum 3",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:320",
+      "source_id": 320,
+      "source_row_sha256": "c0e497cef42207622aed96e5315962984c8a5780bac9929c7a3197871da61ad5",
+      "original_identity": "445908b0cc19b15f7067de5bc2ce4d3d4cb8f9e6129ad440596a0016fcf18a1c",
+      "source_original_prompt_sha256": "ac85f5ae6d8f822e0102cdf6ab19b97e7357c6e1265b66f766991fc4eec6d22e",
+      "source_revised_prompt_sha256": "ac0d5c5c72ca211f0bdcdc8ae9ae9512866eda6126585c4dac07e34caf486316",
+      "correction_prompt_sha256": "dceb308f9fb32aaa092e0321671e52d5160f97b53eb226a61ba61670b64075d1",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 50,
+      "rank_zero_based": 49,
+      "platform": "leetcode",
+      "question_title": "minimum-operations-to-make-elements-within-k-subarrays-equal",
+      "status": "excluded",
+      "reason": "The initial x+1 minimum subarray length can make valid published k*x<=n inputs infeasible, and the initial prompt supplies no impossible-case convention.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:250",
+      "source_id": 250,
+      "source_row_sha256": "e55b546d39814db040462275a6bf4f4e7ce469e78907e2314174efd751852f42",
+      "original_identity": "0d8795c4da668984ab1dcd8b0c43c33bf846d8ea1387be76790dbdb2d2f17d44",
+      "source_original_prompt_sha256": "38d0594fa520f769f3872e2d91d3e6964071b7afd7ce62b90717b9fb877802f3",
+      "source_revised_prompt_sha256": "7ccc0dd46e1723047d5494671e5a38fe04257c373e442f33393a2b15549fcbd1",
+      "correction_prompt_sha256": "d4731ad4d900482daabfdeb6c360fb9505b5a852d37ea2398544a067be32b7b9",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 51,
+      "rank_zero_based": 50,
+      "platform": "atcoder",
+      "question_title": "Patisserie ABC 3",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 85,
+        "raw_line_sha256": "eb49c466d982d4e41ca7d3213dcc83b399070fdd4663203a3db5ad94a2992209",
+        "join_key": [
+          "atcoder",
+          "abc400",
+          "Patisserie ABC 3"
+        ],
+        "upstream_question_id": "abc400_g",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 6,
+      "original": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/250/original.py",
+          "sha256": "fcdbd01d46c4c5465683a67b548eb0560f4292f15f56c96a87afe34e2fe3c80a"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/250-original.json",
+          "sha256": "ea822ede681e4a7973723e10b454267e0dabb0b24d59ab5aef6a7cce17d1a6db"
+        },
+        "test_count": 310,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/191_250_validation.json",
+            "sha256": "88995b849294581c310fa2890289022f7073f3e601f1510aaaf8ac92ca7c242f",
+            "scope": "All published tests, exact initial transformations and independent exhaustive verification."
+          },
+          {
+            "path": "references/coding/root-independent-191-250.json",
+            "sha256": "d50594bd95b143ddeefac6f43fc22cf25e029a64f74215fd17e10ab6df95c736",
+            "scope": "Separate-agent mathematical review and alternate exact oracle execution."
+          },
+          {
+            "path": "references/coding/250/PROOF.md",
+            "sha256": "7b7e5af685c02804c94a3deb6e8b06af10bddd8f7bc87e9c7d2d3a13bd170b40",
+            "scope": "Full reference correctness argument."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/250/updated.py",
+          "sha256": "ba4290932191ab40538dca6431fc45475e959a72bd88d52a9d735b01e76ecf0d"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/250-updated.json",
+          "sha256": "3a9136d171a0fb1cd6ee6e84ee0f8c8ab46db6fdc2afa954a3d6abb082500835"
+        },
+        "test_count": 310,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/191_250_validation.json",
+            "sha256": "88995b849294581c310fa2890289022f7073f3e601f1510aaaf8ac92ca7c242f",
+            "scope": "All published tests, exact initial transformations and independent exhaustive verification."
+          },
+          {
+            "path": "references/coding/root-independent-191-250.json",
+            "sha256": "d50594bd95b143ddeefac6f43fc22cf25e029a64f74215fd17e10ab6df95c736",
+            "scope": "Separate-agent mathematical review and alternate exact oracle execution."
+          },
+          {
+            "path": "references/coding/250/PROOF.md",
+            "sha256": "7b7e5af685c02804c94a3deb6e8b06af10bddd8f7bc87e9c7d2d3a13bd170b40",
+            "scope": "Full reference correctness argument."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:191",
+      "source_id": 191,
+      "source_row_sha256": "d15981ac24d8ae5edb42a2236addd414c3ca4ade9cd44d2106b2449afd1bb55e",
+      "original_identity": "9a41775ee07a0500ad002d6a5603334fa390505d2cf22cc961c0e94fbf011e77",
+      "source_original_prompt_sha256": "39543965feeb0ec3f9257828c9c056a8cca7019c12b8f5a8d9eab21535a53330",
+      "source_revised_prompt_sha256": "12c8c59bff3148ff7c6759acf1bc579eb5ea568e6d30a505a3cd7e6414fcffee",
+      "correction_prompt_sha256": "6a2b33aece4c337bff24e2b9591078d00b0cfa93b17b880d98a1bb3f3687d9d6",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 52,
+      "rank_zero_based": 51,
+      "platform": "atcoder",
+      "question_title": "K",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 26,
+        "raw_line_sha256": "d315956e84562b5450e03bb7e7bb7ecff3fe1d05eb29e86c26691b96372e3af6",
+        "join_key": [
+          "atcoder",
+          "abc391",
+          "K"
+        ],
+        "upstream_question_id": "abc391_f",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 43,
+      "original": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/191/original.py",
+          "sha256": "161559b6106b317672a6d9969a290c723901c310430a32fec3b58be4e28c81c4"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/191-original.json",
+          "sha256": "373ac8e9550fa6172856a0e6f31e29c8bd706867d41c325fed3b41dc83f09148"
+        },
+        "test_count": 822,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/191_250_validation.json",
+            "sha256": "88995b849294581c310fa2890289022f7073f3e601f1510aaaf8ac92ca7c242f",
+            "scope": "All published tests, exact initial transformations and independent exhaustive verification."
+          },
+          {
+            "path": "references/coding/root-independent-191-250.json",
+            "sha256": "d50594bd95b143ddeefac6f43fc22cf25e029a64f74215fd17e10ab6df95c736",
+            "scope": "Separate-agent mathematical review and alternate exact oracle execution."
+          },
+          {
+            "path": "references/coding/191/PROOF.md",
+            "sha256": "c805025c7c32ae3ebbf154821c497652edf04c1e120c9c26dd587fbf5cd3776e",
+            "scope": "Full reference correctness argument."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/191/updated.py",
+          "sha256": "1ca653d3ce16a315b266d6857bb9e324695f6d62c0562c01a8af20cc768adc24"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/191-updated.json",
+          "sha256": "48e42556bbfefaa3027dd1c1a1469af5abfc8694471d7f665f240dbce6ff19f8"
+        },
+        "test_count": 438,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/191_250_validation.json",
+            "sha256": "88995b849294581c310fa2890289022f7073f3e601f1510aaaf8ac92ca7c242f",
+            "scope": "All published tests, exact initial transformations and independent exhaustive verification."
+          },
+          {
+            "path": "references/coding/root-independent-191-250.json",
+            "sha256": "d50594bd95b143ddeefac6f43fc22cf25e029a64f74215fd17e10ab6df95c736",
+            "scope": "Separate-agent mathematical review and alternate exact oracle execution."
+          },
+          {
+            "path": "references/coding/191/PROOF.md",
+            "sha256": "c805025c7c32ae3ebbf154821c497652edf04c1e120c9c26dd587fbf5cd3776e",
+            "scope": "Full reference correctness argument."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:262",
+      "source_id": 262,
+      "source_row_sha256": "89d2400aca3a2e47a82e5ba67aed4c72067cc523d77eab76be18940d5b82b3ca",
+      "original_identity": "800ffbbcbb652088b89505a1a2e45bf80d6f45f26dec39496168fe048768a010",
+      "source_original_prompt_sha256": "886d2375e2b487cd3ed11a606a79786f68e681978641f8bbf79f57b425ea9272",
+      "source_revised_prompt_sha256": "4595437d27cf09b86f5c47cdd018b8a47eb03d72ef17d56cd768c004a17f093f",
+      "correction_prompt_sha256": "b1e17a8c50ef49650f5628a32e7f26a248da8b8a6fce2afffdc83d4c37fdba2c",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 53,
+      "rank_zero_based": 52,
+      "platform": "atcoder",
+      "question_title": "Complement Interval Graph",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:82",
+      "source_id": 82,
+      "source_row_sha256": "65aac80794b5b76c5c9f8fbf51fa5e01e90cea8ed500f5420e3cf5c059026658",
+      "original_identity": "2afdf091783ec3a1f182a126abdb86abcc7bec4621ff084cf383cde82d785b45",
+      "source_original_prompt_sha256": "cdfc1b6df2a8ed7b73ebe95ec42e939588e0bd115b96d56b7cca3019173078d0",
+      "source_revised_prompt_sha256": "1badc85f472e481889ff4f70982ae41ab96789970d0e2476f876d7eeff01d4bc",
+      "correction_prompt_sha256": "42b6a1b7a4c221743d10d0431c25fb95762f194178b457e9249dc216c66860a8",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 54,
+      "rank_zero_based": 53,
+      "platform": "atcoder",
+      "question_title": "Diagonal Separation",
+      "status": "excluded",
+      "reason": "The released initial AtCoder prompt omits all stdin serialization/output-format instructions and has an empty starter. Importing the format from the correction would repair the initial prompt. Statement reviewed verbatim.",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "method": "Read exact raw release source statement and starter; independently checked every exclusion reason before any paid responses.",
+        "evidence": {
+          "path": "references/coding/ROOT_INDEPENDENT_REVIEW.md",
+          "sha256": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87"
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:337",
+      "source_id": 337,
+      "source_row_sha256": "7de87b232d2c090fb3ec0c3056cb5e8fbb65ace1fd124d7e5d920ac7ac5f8c4d",
+      "original_identity": "70f56925a6a44d5279f3c65cef6e2a52fca03bd2d4c279d2d613dc7aba6b4bb1",
+      "source_original_prompt_sha256": "9fc6ae60c4447325292b61cefb1253f01c26e74d92de248d66dfd6f1e427b08d",
+      "source_revised_prompt_sha256": "67c83fbea3ff0d3db9eee91000d2f6963e1453698a7c885677b8d5a854fd5c99",
+      "correction_prompt_sha256": "1712a84a04e0d9be997944ab6c1cdbaf46825eb66c71c8f659fe3e934264a237",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 55,
+      "rank_zero_based": 54,
+      "platform": "leetcode",
+      "question_title": "longest-common-prefix-of-k-strings-after-removal",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 172,
+        "raw_line_sha256": "13ae2c1f3883688130cacdd04ecdbd171c29ea1d1e3ba29a424f0057104d7653",
+        "join_key": [
+          "leetcode",
+          "biweekly-contest-152",
+          "longest-common-prefix-of-k-strings-after-removal"
+        ],
+        "upstream_question_id": "3784",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 42,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/337/original.py",
+          "sha256": "0dd77a0bab286be0a9426c6bdd6719b5698e8c5814482df808686a4bcf31747c"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/337-original.json",
+          "sha256": "250e3748cdca8e44908ab7c5f57b3b01c8a452f5e327d004e24f582ce2dc2f74"
+        },
+        "test_count": 137,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "longestCommonPrefix"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/337/updated.py",
+          "sha256": "1698cefed116bbbbd4adfd91891fcf51bdb05de7f13e573e4c3a471a887dbbe4"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/337-updated.json",
+          "sha256": "9d6806ef754937b9fd4c21b2ef7768c198c3577b2aba5335524ebae0f78a8bcd"
+        },
+        "test_count": 137,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "longestCommonPrefix"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:317",
+      "source_id": 317,
+      "source_row_sha256": "9f7dd18e72401a54f987de37a64f7192606b9c53859c60345cd5936ff8720bb5",
+      "original_identity": "766d80eba1fd6fa8e8bfde7085f25f490795326d797957d79fb710da09dd1bde",
+      "source_original_prompt_sha256": "da4824fab4bf7f348c98da2c884d70d4bcc22a52f1f5ea0220a9250139b720a7",
+      "source_revised_prompt_sha256": "03207a3b72fe34ba783b44b1baac8c6b6681a3409cfba2ad9277fa175899631f",
+      "correction_prompt_sha256": "851bd27c323508f86f99b54d234bedf642aa80ae5ad9b22489edca86ff7f0605",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 56,
+      "rank_zero_based": 55,
+      "platform": "leetcode",
+      "question_title": "minimum-operations-to-make-array-elements-zero",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 152,
+        "raw_line_sha256": "b3be07315de07e761c62d2d0f89dd6e840ff9d9be5b46220ff85e9bd420b4eeb",
+        "join_key": [
+          "leetcode",
+          "weekly-contest-442",
+          "minimum-operations-to-make-array-elements-zero"
+        ],
+        "upstream_question_id": "3744",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 42,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/317/original.py",
+          "sha256": "af3bcc8316a985a009cf26a564dfa7bde49f6075ef765ea87ba1efc2f3515dcd"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/317-original.json",
+          "sha256": "19d45c0edefa24c7580b262019546e9a4e6932f594bf8760bcb7ed75e55a7d6c"
+        },
+        "test_count": 75,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "minOperations"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/317/updated.py",
+          "sha256": "49b74e14455031597a7c9732bb59711dae545f9c01d2f056d29490572092803d"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/317-updated.json",
+          "sha256": "704fb43a853cbc1110ab3c559e2106d29f55dc1e9b30e03da37cf22d776726e3"
+        },
+        "test_count": 75,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "minOperations"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:328",
+      "source_id": 328,
+      "source_row_sha256": "8396c41860f3825f54789131caa568c9f6281f99eddca0ca27855dec4ec2d343",
+      "original_identity": "cbb9e9d89fd8b52e546ab5e4223189f44f59ac743d77643aebe598f81af7f666",
+      "source_original_prompt_sha256": "c3e5aad803bcd2077e2a47dd6d2324576d1522ab4bc07d2b8b94a32ee4ca740c",
+      "source_revised_prompt_sha256": "b9df0cb322511b6aacb978967f325ebd35e2d6a5f7d88865fc55719f85bad3c1",
+      "correction_prompt_sha256": "bed6355795a1d2b7f4e530464c5cc2607c6d5be6b395352053701de8d0e2a2dc",
+      "published_difficulty": "hard",
+      "changed_tokens": 2,
+      "review_rank": 57,
+      "rank_zero_based": 56,
+      "platform": "leetcode",
+      "question_title": "minimum-cost-good-caption",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 163,
+        "raw_line_sha256": "afebc41daf2b042b545cc8b83d7f4667ea488d4d3b293b893e320f48b61a7232",
+        "join_key": [
+          "leetcode",
+          "biweekly-contest-149",
+          "minimum-cost-good-caption"
+        ],
+        "upstream_question_id": "3701",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 43,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/328/original.py",
+          "sha256": "27b67d9209b50f54e5b3b6d018e3c101f34e610686dd6282556734fa90aebd0b"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/328-original.json",
+          "sha256": "e63497fdd3f30b3863d86c8fae8824d314348908b86bb8bb0b9c83658c136ca8"
+        },
+        "test_count": 163,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "minCostGoodCapiton"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/328/updated.py",
+          "sha256": "5875bb868f74e52a3ffb5bea3d40314396cd2794c397328e55ce45c5d694f242"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/328-updated.json",
+          "sha256": "f64fdeaf1b103a923786200c05bfa7e79cfa6e24cc997f174a9c8696f31164a8"
+        },
+        "test_count": 163,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "minCostGoodCaption"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:151",
+      "source_id": 151,
+      "source_row_sha256": "99e07e40ccb329f04ede90b62d16c9e063da8f4a35fefef7a5cbe3b177828ade",
+      "original_identity": "e8b6c9cdcb2200a73a9405d6d18aff80705a3ad6da2248554a4eba52c3dfe9c7",
+      "source_original_prompt_sha256": "d038aee478fc912d080871f9bcfd5cb5de3d832e9f3c7a6ea5639016f43b0326",
+      "source_revised_prompt_sha256": "6381d3774d2f87633e3dcae363eec75ff5cf7343993da1ce5bf7e71ca383c35a",
+      "correction_prompt_sha256": "4f2575c47596c62a888965968a40a1f143a87aa424b074cc6b4ff4a050c8e0e9",
+      "published_difficulty": "hard",
+      "changed_tokens": 3,
+      "review_rank": 60,
+      "rank_zero_based": 59,
+      "platform": "leetcode",
+      "question_title": "smallest-substring-with-identical-characters-i",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test5.jsonl",
+        "line_number": 153,
+        "raw_line_sha256": "7b28f2cc8aee7b929250560f6ab5e5a83ee0494218e3a48fa8d8dabf68b6028f",
+        "join_key": [
+          "leetcode",
+          "weekly-contest-429",
+          "smallest-substring-with-identical-characters-i"
+        ],
+        "upstream_question_id": "3690",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 43,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/151/original.py",
+          "sha256": "037e90910965f722ccb73a7a3f3924853ea7d11cad89fdf163dc1786a7e01160"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/151-original.json",
+          "sha256": "a7b7446f9945fd34e6b741009941347f31803cb48a6e2b182bf186927c2a0e47"
+        },
+        "test_count": 363,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "minLength"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/151/updated.py",
+          "sha256": "7369be735353041ec630ac141a4f846a87fd577003d322c3485394af0fa5352f"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/151-updated.json",
+          "sha256": "4b4d8d5d29086719e1d7bae8d8d144e82e0d4ebae21603efee1ac0346ac43ec6"
+        },
+        "test_count": 363,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "minLength"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:331",
+      "source_id": 331,
+      "source_row_sha256": "d71a6bb012276a2836945f3a290daa8f3e21a07c361e6950b7490b698a08ccbe",
+      "original_identity": "9c8679ed27e29290dfd03170070f72026d95d86f8cb249a8d833f0a591ab777a",
+      "source_original_prompt_sha256": "5507579bd7cc02814b57a1d204a1e6ae0ebd251d0ad3b61a8400e89d9807a9de",
+      "source_revised_prompt_sha256": "f1d061f0f49aae1bc7e41560094e2fc040fe9c96de8afdf91df141e4e628b62f",
+      "correction_prompt_sha256": "65448523384ba09a90f45f8ec806ab217effbc1956df2950936504c5f8ac86e4",
+      "published_difficulty": "hard",
+      "changed_tokens": 3,
+      "review_rank": 70,
+      "rank_zero_based": 69,
+      "platform": "leetcode",
+      "question_title": "shortest-matching-substring",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 166,
+        "raw_line_sha256": "9a66e7bc7cc703c87884e1070e33982d177f74289720b2fb4e8b789f94f9a85d",
+        "join_key": [
+          "leetcode",
+          "biweekly-contest-150",
+          "shortest-matching-substring"
+        ],
+        "upstream_question_id": "3692",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 44,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/331/original.py",
+          "sha256": "8b91425c16fba8de5f8b74179d8213c20e087fcdfae4d860bec846185ab3a530"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/331-original.json",
+          "sha256": "3ef303abe3f2f2c9fca09c9ec02bc5f44377d1a358b656a721a66414e198544d"
+        },
+        "test_count": 184,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "shortestMatchingSubstring"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/331/updated.py",
+          "sha256": "83628cab9a053c62f762670e52fba2a0f4cb283c6c9853000cb993604570a6ec"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/331-updated.json",
+          "sha256": "97cab4ed7a2fc5e78d80e3d4eb68f6f0b508e19336b0fc4bfaba8df97b2440a8"
+        },
+        "test_count": 184,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "shortestMatchingSubstring"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:154",
+      "source_id": 154,
+      "source_row_sha256": "9b2e84f4ec6f3ad2a6d02411378d5dc91d58063ba7d8c7a4ca662c56eecc7794",
+      "original_identity": "07a14da9f80fbfbd8681b9258ccfaa57fb00ded8e56386d2b465bb268351c012",
+      "source_original_prompt_sha256": "5b955e1cb6d484fff7cd6f0419cf5d64a0681bfb5c254adc4edd77212bb7906c",
+      "source_revised_prompt_sha256": "a8d3d7a66477bf546ca17585a4c5d0ae3080bb77efa6518e881fe0c0fb2e7387",
+      "correction_prompt_sha256": "a09dfb0fbb3010b9672456a78dde4deda0f6ca2cec452c0a25605ea9c56636c8",
+      "published_difficulty": "hard",
+      "changed_tokens": 3,
+      "review_rank": 79,
+      "rank_zero_based": 78,
+      "platform": "leetcode",
+      "question_title": "count-the-number-of-arrays-with-k-matching-adjacent-elements",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test5.jsonl",
+        "line_number": 156,
+        "raw_line_sha256": "c51a54980bd321c813ceac239983bf56f401330badd0279704b501d79d12692a",
+        "join_key": [
+          "leetcode",
+          "weekly-contest-430",
+          "count-the-number-of-arrays-with-k-matching-adjacent-elements"
+        ],
+        "upstream_question_id": "3682",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 43,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/154/original.py",
+          "sha256": "230f779dd977b5d8aaf072c88e4e6645a387f64bef2ccad13266effdce9d4650"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/154-original.json",
+          "sha256": "5c9b2c0481b1336e0557a68d662998806e6a82e5663b980405fb6e5602e8b86e"
+        },
+        "test_count": 106,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "countGoodArrays"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/154/updated.py",
+          "sha256": "1720eb785673074ebe49061b19123b74160edf492a4d7bbe88b6429fd3bc7b3d"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/154-updated.json",
+          "sha256": "f5de393c685bfe979d29ee301a73695892e60b01b68056c741975ed607fabbe3"
+        },
+        "test_count": 106,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "countGoodArrays"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:325",
+      "source_id": 325,
+      "source_row_sha256": "5c927727b8d3cd80d9ba5a367edb7d33f8557508790899095e1be2b7f5bec2bb",
+      "original_identity": "2556726a9d219987adfe2fdcb5985cd7323c1208f36f4bd488b6ed406b358128",
+      "source_original_prompt_sha256": "98546e9711ebfd3ffe0025f346aaa1c48c4cde4780ef6f2975dfd5546a8a9db3",
+      "source_revised_prompt_sha256": "0928c52797b68ebba926643c9320809b0ad4ff66d589ead8520c27b171e1357d",
+      "correction_prompt_sha256": "7e712b9bcdb55f5a2dc77eeaaaafdf8fc7e0eb80615c9c07c3d029cb2343ef3c",
+      "published_difficulty": "hard",
+      "changed_tokens": 3,
+      "review_rank": 81,
+      "rank_zero_based": 80,
+      "platform": "leetcode",
+      "question_title": "manhattan-distances-of-all-arrangements-of-pieces",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test6.jsonl",
+        "line_number": 160,
+        "raw_line_sha256": "11e81041f4b52c5ed649a369b04e512923b3fc623d9f887f0d003aedd5928b4c",
+        "join_key": [
+          "leetcode",
+          "biweekly-contest-148",
+          "manhattan-distances-of-all-arrangements-of-pieces"
+        ],
+        "upstream_question_id": "3739",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 42,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/325/original.py",
+          "sha256": "5ada27ec21b3b1999852a960c9bd58445f33c2e8452bc99f5191b95b1e859a34"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/325-original.json",
+          "sha256": "d00fba67aed89841d2dacdd6cb9616e1b186e0929933319f454ea4868f76edc7"
+        },
+        "test_count": 61,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "distance_sum"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/325/updated.py",
+          "sha256": "ac3ffe002d8c94d3e13fdbc1c533cc2d6efd564ba2328adf8abc6a287781c011"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/325-updated.json",
+          "sha256": "173572128d6f7d304fc59629661f38d3cc3e53fd992e47fe85d7a23e3c78611e"
+        },
+        "test_count": 61,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "distanceSum"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:117",
+      "source_id": 117,
+      "source_row_sha256": "d4a6bbe59ca038b32e1d2ef22baf6600a4c96023da79ae18414594ef4e70ec52",
+      "original_identity": "20d2b5213c0f406965343b53f98090bf3de1c81a186516b37429e11fd928ffad",
+      "source_original_prompt_sha256": "35cfdf739643536d05a332ca9ff1740823141ffaf2ba8e7f985bbe939627d4fa",
+      "source_revised_prompt_sha256": "8f2d8dd49b79794f4183b45383ff670500c8befadede67f54754471ce7991616",
+      "correction_prompt_sha256": "e8cc0fb7bd4177628b77e050c24d22b319d48e56d5e98b8f3b98e8b6f078ea41",
+      "published_difficulty": "hard",
+      "changed_tokens": 3,
+      "review_rank": 82,
+      "rank_zero_based": 81,
+      "platform": "leetcode",
+      "question_title": "sum-of-good-subsequences",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test5.jsonl",
+        "line_number": 119,
+        "raw_line_sha256": "8ae1f15b9199cde885165e89346cb9b3b6959ba9ce4d961e0cb89af154c34dcf",
+        "join_key": [
+          "leetcode",
+          "weekly-contest-423",
+          "sum-of-good-subsequences"
+        ],
+        "upstream_question_id": "3646",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 42,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/117/original.py",
+          "sha256": "2db413700f84bc1e4611fab17694d3689cfd8e7d859ccc0848d36e3afbec79ca"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/117-original.json",
+          "sha256": "b3659cb08ac42159c8147e2f0f4b7ee9b59f683094625b57ee4115df3e2180c5"
+        },
+        "test_count": 163,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "sumOfGoodSubsequences"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/117/updated.py",
+          "sha256": "262be99215a61364ab9c65aad18d59e56d2dd1b2989272f26c3a2003a492752c"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/117-updated.json",
+          "sha256": "b78bb6841b3b85c815c30be4bac84863f14259e1dec1c1689c399d22ea51f9ef"
+        },
+        "test_count": 163,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "sumOfGoodSubsequences"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:162",
+      "source_id": 162,
+      "source_row_sha256": "8af693a96f2a543179c6638a4cc2f3cbe95c63bed9565d159a5d4d88b7f55ac7",
+      "original_identity": "36a8252b38b52f26d85908ebc5d8dfdd793bb7c3c9fe0d05ca539eb3760805c8",
+      "source_original_prompt_sha256": "36fdc27fcccd66663ed97cd5419ea4b180dec3540f861024d4c590e9add1347e",
+      "source_revised_prompt_sha256": "7cc52f36943bb841de9129cd99c536be1ea8ed4c3f9ded57f556b2e84c3f851a",
+      "correction_prompt_sha256": "1a73b6a766e3d918130bb113ac81d6a796451bf84c67e4b1e8dc7372c0de79df",
+      "published_difficulty": "hard",
+      "changed_tokens": 3,
+      "review_rank": 85,
+      "rank_zero_based": 84,
+      "platform": "leetcode",
+      "question_title": "maximum-score-of-non-overlapping-intervals",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test5.jsonl",
+        "line_number": 164,
+        "raw_line_sha256": "3983c611c281175e26b1ca9a908c6dac496f70b051c9f6ea2ccf65e524f31c18",
+        "join_key": [
+          "leetcode",
+          "weekly-contest-431",
+          "maximum-score-of-non-overlapping-intervals"
+        ],
+        "upstream_question_id": "3562",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 42,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/162/original.py",
+          "sha256": "08cec205d3fb2ab3adf28367125d71cb32b74134f8f9aa6ca73381d928176ac2"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/162-original.json",
+          "sha256": "2a4ef353149aa83550bb13f5399679397fe214e70ca78d0b8bb3c054374ebb28"
+        },
+        "test_count": 143,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "maximumweight"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/162/updated.py",
+          "sha256": "ef467c1b991222f80f8f0f892d009ca9d6e5cf06c372a0f13a030f77b7bd4e12"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/162-updated.json",
+          "sha256": "2728a003c031edc23a831717c009d6a6a32e8622197f01924d5109453895eb03"
+        },
+        "test_count": 143,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "maximumWeight"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "livecodebench:148",
+      "source_id": 148,
+      "source_row_sha256": "c0aec08910ca9da426b44da5dc16e6132c541050d7923794f63596f34d617eee",
+      "original_identity": "9517e9bdb286b868fc9cb8c483fda4273b4cf63844074ed6ced19323abbc7ff0",
+      "source_original_prompt_sha256": "2dd87583e20d3dc311b0e6eb2ee540e9e2f517f646d2622540ffc5c517d2c2d3",
+      "source_revised_prompt_sha256": "c6d030c1ba636907de514b7eb775cbd0a926c95a90c783684321854cc590e88f",
+      "correction_prompt_sha256": "e8ca0fb27cbda858c1104f3b4e94615f316f256498f68fc5c3c28bc958f39bda",
+      "published_difficulty": "hard",
+      "changed_tokens": 3,
+      "review_rank": 86,
+      "rank_zero_based": 85,
+      "platform": "leetcode",
+      "question_title": "minimum-operations-to-make-character-frequencies-equal",
+      "status": "qualified",
+      "reason": "Complete exact released task variants; authored proof-based references independently reviewed, all retained published inputs and independent exact tests validated in Docker.",
+      "matching": {
+        "source_file": "test5.jsonl",
+        "line_number": 150,
+        "raw_line_sha256": "71113478c41fae8dadfce8d85a56fe7dac3d1bb042bb480c224346b61dcefb8e",
+        "join_key": [
+          "leetcode",
+          "weekly-contest-428",
+          "minimum-operations-to-make-character-frequencies-equal"
+        ],
+        "upstream_question_id": "3638",
+        "method": "Exact platform + contest_id + question_title join; source initial row position is not trusted.",
+        "normalized_core_containment_verified": true,
+        "starter_exact_match_verified": true
+      },
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "grading_analysis",
+        "method": "Distinct literal/exact oracle plus separate-agent proof/code review; no candidate model outputs."
+      },
+      "official_cases": 43,
+      "original": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/148/original.py",
+          "sha256": "355a3c50b8ec1a6499914fc6189c5ddcd83196048b34c77312bee31bbee2925a"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/148-original.json",
+          "sha256": "70fa2743969c9639e5b4a06f664011b3a3e0f3d2897ac7c7aa10cdfe1f8cf612"
+        },
+        "test_count": 93,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "makeStringGood"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      },
+      "updated": {
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/148/updated.py",
+          "sha256": "eea371dbb551f4078ead56efe12ebea18319e4271e6917d4f79633f9f03672d6"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/148-updated.json",
+          "sha256": "766b13591e4fbf668f87015908f009c34466bb7c9dc894f17227185c894fc57c"
+        },
+        "test_count": 93,
+        "timeout_seconds": 60,
+        "entrypoint": {
+          "class": "Solution",
+          "method": "makeStringGood"
+        },
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+            "scope": "Corrected references passed complete published suites."
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+            "scope": "Both references passed independently authored exact oracle suites."
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails."
+          }
+        ]
+      }
+    }
+  ],
+  "qualified_prefix_before_first_pending": [
+    "livecodebench:124",
+    "livecodebench:258",
+    "livecodebench:167",
+    "livecodebench:299",
+    "livecodebench:158",
+    "livecodebench:269",
+    "livecodebench:218",
+    "livecodebench:268",
+    "livecodebench:233"
+  ],
+  "blockers": [
+    "Rank45 livecodebench:276 has no scalable verified initial grader; later qualified candidates cannot be substituted past this unresolved rank. Only9coding tasks qualify in the resolved prefix, short of12."
+  ]
+}

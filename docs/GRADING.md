@@ -2,26 +2,30 @@
 
 The released source graders are audited as source text, never imported or
 executed on the host. The source Python evaluator uses host execution and its
-`reliability_guard` is not an isolation boundary. Compressed source test loaders
-use pickle, which this implementation does not deserialize. The source math
+`reliability_guard` is not an isolation boundary. Compressed upstream tests are decoded only inside Docker with a restricted
+unpickler that rejects class/global lookup and persistent IDs; JSON leaves the
+container. No pickle payload is deserialized on the host. The source math
 grader's last-number extraction is too permissive for exact scoring.
 
 The released initial problem is the **revised** problem; the correction changes
 it back to the source **original** problem. The release omits the initial revised
-math answers and omits the coding test assets needed for both variants. Software
-fixtures below demonstrate the harness only; they never replace pilot cases or
-qualify the missing source assets. Paid execution remains blocked until the
-separate source and reference gates pass.
+math answers and omits the coding test assets needed for both variants. Verified reference construction now supplies separately reviewed initial answers
+and tests; the baseline audit remains historical evidence. Candidate276 still
+prevents completing the ordered coding sample. Software fixtures never replace
+pilot cases. The explicit user policy blocks all paid execution, independently
+of whether source qualification eventually passes.
 
 ## Exact mathematical answers
 
 `exact_answer` accepts the final `\\boxed{...}` or `\\fbox{...}`, an explicit final
-answer line, or a standalone rational expression. It does not search prose for a
+answer line, or a standalone exact expression. It does not search prose for a
 matching number. Safe bounded AST traversal supports rational arithmetic,
 decimal/scientific notation, simple LaTeX fractions, and integer powers. Numeric
 source tokens are converted to exact `Fraction` values, avoiding float rounding.
-No `eval`, symbolic evaluator, imported benchmark evaluator, or user function
-call is used. Unsupported expressions are invalid output and unsuccessful in
+Bounded nonnegative rational square roots are also supported. Trusted SymPy
+constructors build each AST node; exact equality is tested in an algebraic number
+field. No string `sympify`, `parse_expr`, Python `eval`, imported benchmark
+evaluator, arbitrary user function call, or floating tolerance is used. Unsupported expressions are invalid output and unsuccessful in
 operational accuracy. The admissible grammar must be included in the frozen
 task instructions before any paid run; future extensions require a new freeze.
 
@@ -32,25 +36,30 @@ An old-answer match is descriptive and is not evidence of a reasoning mechanism.
 
 ## Coding programs and isolation
 
-The implemented coding format is Python stdin/stdout. It accepts one Python
-fence or a bare Python program, checked with parse-only `ast.parse`. Native
-function-call tasks, multiple files, alternate languages, floating-point
-tolerance, and interactive tasks are not qualified. Such tasks must remain
-blocked until an audited adapter and adequate tests exist.
+The implemented coding formats are Python stdin/stdout and the released
+class/method interface with positional JSON arguments. It accepts one Python
+fence or a bare Python program, checked with parse-only `ast.parse`. Function submissions receive a released-evaluator-compatible standard-library
+prelude inside Docker. Their returned JSON values are compared exactly on the
+host; tuple/list serialization is equivalent, while booleans are distinguished
+from numbers. Multiple files, alternate languages, floating tolerance, and
+interactive tasks remain unsupported.
 
 Docker is mandatory. The image is pinned to the official local Python 3.12-slim
 digest recorded in `sandbox/runner.py`; qualification records the resolved image
 ID, architecture, and Docker version. Images are never pulled during grading.
-Each test runs in a fresh container with network disabled, user 65534, read-only
-root filesystem, all capabilities dropped, no-new-privileges, one CPU, 256 MiB
-memory/swap ceiling, 32 processes, 64 file descriptors, a 16 MiB temporary
-filesystem, a five-second wall-clock limit, and one MiB per output stream.
+Each bounded test batch runs in a fresh container with network disabled, user 65534, read-only
+root filesystem, all capabilities dropped, no-new-privileges, one CPU, task-bound memory/swap (256–768 MiB for current references), 32
+processes, 64 file descriptors, a 16 MiB temporary filesystem, a bounded
+wall-clock limit (at most60 seconds), and at most4 MB per output stream.
+Published and independent tests are all retained; batches bound input/output
+size without dropping cases. stdin cases run in fresh Python subprocesses;
+function cases initialize a fresh module namespace and class instance.
 The only bind mount contains the submitted `main.py`, mounted read-only.
 No host credentials, grader, expected outputs, test archive, Docker socket,
-checkpoint, or provider environment is mounted or forwarded. The current test's
-stdin is piped to the process. Host-side code performs authoritative stdout
-comparison after execution, with inter-token whitespace normalized and no
-numeric tolerance. A program cannot declare itself passed.
+checkpoint, or provider environment is mounted or forwarded. Only invocation inputs are piped into the container; expected outputs stay outside. Host-side code performs authoritative stdout
+comparison after execution, with inter-token whitespace normalized and no numeric tolerance. Candidate258
+explicitly requests case-insensitive winner names, so that task alone enables
+case folding. The checked test-asset hash fixes this setting. A program cannot declare itself passed.
 
 Timeout/output limits force-remove the named container as well as terminating
 the Docker client. A separate container-side PID1 timeout bounds execution even
@@ -65,7 +74,10 @@ boundary, not a proof against all runtime/kernel vulnerabilities.
 for coding, both reference programs. It executes them only inside Docker,
 cross-checks the update, rejects deliberately failing code, and confirms an
 equivalent whitespace variant. An empty task set fails. This validates supplied
-assets; provenance and update ambiguity are independent source-audit gates.
+assets; provenance, independent derivations, and update ambiguity are independent
+source-audit gates. `qualify-reviewed` can validate every completed candidate
+reference while recording that the ordered campaign selection remains blocked.
+It cannot authorize payment or invent a complete manifest.
 
 ## Response classifications
 

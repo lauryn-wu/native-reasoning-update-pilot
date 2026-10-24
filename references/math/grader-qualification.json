@@ -1,0 +1,147 @@
+{
+  "passed": true,
+  "status": "passed",
+  "checks": {
+    "aime2024:1004": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2024:1027": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2024:1003": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2024:1024": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2025:1030": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2025:1044": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2025:1042": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2024:1012": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2024:1016": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2025:1053": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2024:1019": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2025:1057": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2025:1031": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    },
+    "aime2024:1008": {
+      "changed_answer": true,
+      "original_reference": true,
+      "original_equivalent": true,
+      "original_wrong_rejected": true,
+      "updated_reference": true,
+      "updated_equivalent": true,
+      "updated_wrong_rejected": true,
+      "stale_rejected": true
+    }
+  },
+  "blockers": []
+}

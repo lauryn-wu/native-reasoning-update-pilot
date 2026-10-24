@@ -1,0 +1,50 @@
+[
+  {
+    "source_id": 218,
+    "variant": "original",
+    "tests": 216,
+    "passed": true
+  },
+  {
+    "source_id": 218,
+    "variant": "updated",
+    "tests": 216,
+    "passed": true
+  },
+  {
+    "source_id": 233,
+    "variant": "original",
+    "tests": 254,
+    "passed": true
+  },
+  {
+    "source_id": 233,
+    "variant": "updated",
+    "tests": 254,
+    "passed": true
+  },
+  {
+    "source_id": 268,
+    "variant": "original",
+    "tests": 68,
+    "passed": true
+  },
+  {
+    "source_id": 268,
+    "variant": "updated",
+    "tests": 68,
+    "passed": true
+  },
+  {
+    "source_id": 269,
+    "variant": "original",
+    "tests": 18,
+    "passed": true
+  },
+  {
+    "source_id": 269,
+    "variant": "updated",
+    "tests": 18,
+    "passed": true
+  }
+]

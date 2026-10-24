@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "repository": "livecodebench/code_generation_lite",
+  "revision": "0fe84c3912ea0c4d4a78037083943e8f0c4dd505",
+  "version": "release_v6",
+  "artifacts": [
+    {
+      "path": "lcb/test5.jsonl",
+      "url": "https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test5.jsonl",
+      "bytes": 557699297,
+      "sha256": "7f77571c2a6df0c2a72a3277650309f67e01e0008e18117e624633df53f81214",
+      "category": "upstream_tests"
+    },
+    {
+      "path": "lcb/test6.jsonl",
+      "url": "https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/test6.jsonl",
+      "bytes": 134303240,
+      "sha256": "bb4c364f71921c4495a6ad15abe1a927350b720009f4933e2e71f8af0f6fd1f5",
+      "category": "upstream_tests"
+    }
+  ]
+}

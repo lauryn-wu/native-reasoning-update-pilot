@@ -1,117 +1,114 @@
 # Native reasoning update pilot
 
-An exploratory implementation of the question: **Does retaining a model's previous native reasoning impair adaptation to a legitimate later correction, beyond its previous visible answer?**
+Does retaining a model's native reasoning impair adaptation to a legitimate later
+correction, beyond its previous visible answer? This is an exploratory screen,
+not evidence for a mechanism or a claim of novelty. The source interrupts ongoing
+reasoning; this pilot instead corrects a completed response in a new user turn.
 
-**Status: implementation complete; paid research execution blocked by source qualification. No paid model calls have been made.** The released tasks cannot currently support the requested valid 12 AIME + 12 coding sample. This is an audited feasibility result, not a model-performance result.
+**Paid execution is explicitly blocked. No paid model calls have been made.**
 
-The source presents a *revised* problem, then corrects it back to the benchmark's *original* problem. Its 60 AIME revisions have no initial-answer references. Its 341 coding rows omit executable tests and references; upstream original tests cannot grade the revised initial behavior. Some revisions are ill-posed, and 33 coding rows have unchanged problem/starter text. We did not invent answers, updates, tests, pilot IDs, or substitute easier problems. See [source audit](docs/SOURCE_AUDIT.md), [frozen protocol](docs/PROTOCOL.md), and [blocked manifest](manifests/pilot-v1.json).
+The current ordered review supports **12 math + 9 coding pairs**. The coding
+shortfall is **3**: `livecodebench:276` (Adjacent Delete), at one-based coding
+review rank 45, remains pending. Its minimum-score initial variant has a proved
+exact interval algorithm and 9,999 small checks, but no verified implementation
+covering the large released tests within the sandbox bounds. It is not excluded
+for difficulty, and later validated references do not replace it. No new 24-case
+manifest, control assignment, smoke assignment, or 200-call schedule is frozen.
 
-The source paper interrupts ongoing thinking. This pilot uses a correction in a **new user turn after a completed response**, so it is an adaptation, not a replication of the reported failure rate. No novelty or causal mechanism is claimed.
+The historical [v1 manifest](manifests/pilot-v1.json) and baseline source audit
+are preserved. They describe the earlier source-only inspection, before verified
+reference construction was authorized. Current evidence is in
+[qualification audit](provenance/qualification_audit.json),
+[math review](provenance/math_review.json), [coding review](provenance/coding_review.json),
+and [validation](docs/VALIDATION.md). The existing deterministic order and seed
+are unchanged. Selection never reads experimental model outcomes.
 
-## What is implemented
+## References and grading
 
-- Revision-pinned acquisition, checksums, source/schema/license audit, deterministic difficulty/edit-size ranking, deduplication, and fail-closed selection.
-- Responses API adapter for `gpt-6.1-sol`: full manual replay, encrypted reasoning and phases preserved, `store:false`, identical high effort, and returned-context verification. Retained/dropped payloads differ only in `reasoning.context`.
-- Immutable checkpoints, independent repeats, randomized topological schedule, stable IDs, and resumable execution.
-- Exact math grading and Docker-only Python stdin/stdout grading. No generated code runs on the host. Missing source graders never pass software qualification.
-- Atomic persistent $40 ledger shared by smoke, retries, and manifest versions; maximum-cost reservation, usage reconciliation, and uncertain-charge retention.
-- Initial-correct eligibility, exact problem-level sign-flip inference, bootstrap uncertainty, secondary all-assigned analysis, descriptive controls, and the specified continuation gate.
+Math references include checkable derivations, exhaustive integer calculations,
+exact rational/radical answers, and a rigorous interval certificate for the
+trigonometric pair. Derivations and exclusions have independent reviews.
 
-The planned design is 200 responses: 24 initial, 144 updated/fresh, and 32 unchanged. There are no assigned research calls in the blocked v1 manifest. The 401-case inventory is unqualified review metadata, not a selected sample. Synthetic test fixtures are software-only and cannot enter selection.
+Coding tests are acquired from pinned upstream LiveCodeBench files and matched
+by platform, contest, and title. Original published inputs are retained. Initial
+expected outputs use proved transformations or independently validated reference
+implementations. One erroneous game-test label is explicitly adjudicated with a
+published theorem and a literal-state minimax certificate; its original label
+is preserved. No case is silently dropped. Full tests remain in the ignored
+source cache; committed checksums, small independent fixtures, proofs, references,
+and reconstruction code bind the assets.
 
-## macOS setup (Python 3.12 and Docker Desktop)
+All reference and submitted code executes only inside Docker: no network or
+credentials, unprivileged user, read-only filesystem, bounded CPU/memory/processes/
+runtime/output. Expected outputs and grader decisions stay outside. Both stdin
+and function-call interfaces are supported. See [grading](docs/GRADING.md),
+[math derivations](references/math/proofs.md), and
+[coding references](docs/CODING_REFERENCES.md).
+
+## Setup and current offline commands
+
+Use Python 3.12 and Docker Desktop on macOS:
 
 ```sh
-git clone https://github.com/lauryn-wu/native-reasoning-update-pilot.git
-cd native-reasoning-update-pilot
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e '.[data,paid]'
 open -a Docker
 docker pull python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+native-pilot prepare
+native-pilot prepare-upstream
+native-pilot review
+native-pilot qualify-reviewed --docker
 ```
 
-The `paid` extra installs the SDK only; it makes no paid calls. No API key is needed for source preparation, audits, qualification, dry-run, reporting, or archives. SDK and PyArrow versions are pinned; audited SDK wheel and source checksums are recorded in provenance. Use `python -m native_pilot` if the `native-pilot` console command is unavailable.
+`paid` installs the SDK only; these commands require no API key and make no paid
+calls. Source/test downloads use ignored `work/source-cache`. To reuse another
+cache, pass `--cache PATH` to preparation/review and `--asset-cache PATH` before
+`qualify-reviewed`. Candidate qualification is separate from completed sample
+qualification; the result records that the ordered selection is still blocked.
 
-## Commands
+`review` rebuilds the current audit from pinned sources, reference assets, exact
+math grading checks, and independent review records. `qualify-reviewed` runs the
+offline suite, Docker isolation checks, and correct/equivalent/wrong/stale checks
+on all completed candidate references. Results are saved under ignored `runs/`.
+The committed validation record states what was actually run.
 
-Run these from the repository root with the virtual environment active.
+## Freezing and execution gates
 
-1. Prepare and audit the exact public source bytes:
+After the pending source/reference work is genuinely resolved, use a new version:
 
-   ```sh
-   native-pilot prepare
-   native-pilot audit
-   ```
+```sh
+native-pilot review
+native-pilot freeze --version pilot-v2 --out manifests/pilot-v2.json --audit provenance/qualification_audit.json
+native-pilot --manifest manifests/pilot-v2.json qualify --docker
+native-pilot --manifest manifests/pilot-v2.json dry-run
+native-pilot --manifest manifests/pilot-v2.json report
+native-pilot --manifest manifests/pilot-v2.json archive
+```
 
-   The audit succeeds as an audit while reporting source qualification blocked. Downloads remain in ignored `work/source-cache`; no upstream source or reference code is executed.
+A blocked audit cannot produce a 24-case schedule. Existing manifests cannot be
+overwritten; changing frozen implementation or evidence requires a new version.
+The historical v1 implementation-file hashes are expected to reject the updated
+checkout; it is an archival snapshot, not the current runnable campaign.
 
-2. Inspect the shipped frozen v1, or freeze a new version after independently reviewing source changes:
+The separately labeled three-call `smoke --allow-paid` and subsequent
+`run --allow-paid` commands remain implemented, but **the explicit user hold
+rejects both before a real provider client is constructed**, even if all source
+checks pass. Removing that hold requires new user authorization and a new freeze.
+No command or successful reference check automatically removes it.
 
-   ```sh
-   native-pilot dry-run
-   native-pilot freeze --version pilot-v2 --out manifests/pilot-v2.json
-   ```
+## Design and limits
 
-   With current sources v2 is also blocked. Existing manifests cannot be overwritten. Any later implementation, configuration, data, or qualification-test change requires a new version. Pass `--manifest manifests/pilot-v2.json` **before** the subcommand to use another version.
+The planned campaign remains 24 initial responses, 144 updated/fresh responses,
+and 32 unchanged controls, totaling 200, plus separately accounted smoke/retries.
+Both samples independently continue the same initial checkpoint. Full native
+reasoning and assistant phases are replayed; paired requests differ only in
+`reasoning.context`. The $40 atomic ledger reserves worst-case costs before any
+request and retains uncertain charges. It does not guarantee all 200 will fit.
 
-3. Offline and Docker qualification:
-
-   ```sh
-   native-pilot qualify
-   native-pilot qualify --docker
-   ```
-
-   Full qualification checks the same manifest's pilot AND separate smoke references. With v1, `--docker` records software checks as passed but exits **2** because source/reference qualification is blocked. If Docker is unavailable it records that check as not run and blocks paid coding evaluation. There is no host fallback.
-
-4. Dry-run assignments, request differences, and budget assumptions:
-
-   ```sh
-   native-pilot dry-run
-   ```
-
-   Blocked v1 honestly reports zero qualified tasks and zero assignments, alongside the intended 200-response design. Mock tests separately verify the 200-assignment shape and paired request equality.
-
-5. **Paid three-call protocol smoke — blocked until all qualification passes:**
-
-   ```sh
-   # Supply OPENAI_API_KEY securely in the environment; never commit it.
-   native-pilot smoke --allow-paid
-   ```
-
-   Exactly three planned calls on one disjoint, qualified source problem; retries are extra. Current v1 rejects this before constructing a real API client. Smoke spends from the SAME $40 ledger. It is not a pilot outcome. Changes after smoke require a new manifest version and repeat qualification/smoke.
-
-6. **Paid run/resume — explicit flag required and blocked for current v1:**
-
-   ```sh
-   native-pilot run --allow-paid
-   ```
-
-   The same command resumes completed calls without dispatching or charging them again. Do not delete `runs/budget.sqlite`, clone the campaign into a second spending ledger, or reset it between versions. Only transport failures get at most one separately reserved retry; incorrect answers, refusals, and truncations never get score-improving retries.
-
-7. Produce the analysis and review archive:
-
-   ```sh
-   native-pilot report
-   native-pilot archive
-   ```
-
-   Reports and archives are in ignored `runs/`. Review archives exclude the ledger, raw model text, encrypted reasoning, credentials, and downloaded source corpora. The blocked report is inconclusive; no model accuracy is inferred from absent runs.
-
-## Validation actually completed
-
-See [validation record](docs/VALIDATION.md) for actual commands, counts, environment, and limits. Source preparation verified 43 artifacts and parsed all 1,401 released rows; 401 belong to the requested task families. The offline suite includes mocked serialization through the actual pinned OpenAI SDK, statistical known examples, request equivalence, same-checkpoint repeats, budget refusals, recovery, failure classification, and immutable-manifest checks. Docker software checks ran successfully on Docker 29.8.2 with the pinned Python image. No benchmark reference solutions or paid model calls were run.
-
-## Remaining blocker
-
-Obtain published or independently audited authoritative initial AND updated answers/tests and complete unambiguous prompts for at least 12 AIME and 12 coding originals, plus a disjoint smoke case. Update the source adapter and audit with evidence of changed behavior; do not merely toggle the audit's status. The source report lists precise omissions and malformed examples. That work requires new evidence; no CLI command can reconstruct missing references reliably. Then freeze a new manifest, requalify, and run the paid smoke explicitly. Actual account-level model access and manipulation remain untested until that authorized smoke.
-
-## Budget and interpretation
-
-Official pricing verified 2026-10-24: Standard $2 input / $0.10 cached input / $2.50 30m write / $5 12h write / $10 output per million tokens. Cache mode is explicitly frozen without breakpoints; reservation assumes no savings and covers the highest write rate. Full pricing/provenance is in [pricing.json](provenance/pricing.json). Maximum output alone for 200 calls costs **$65.536**; $40 is a cap, not a promise of completion. Budget exhaustion produces an incomplete, inconclusive campaign.
-
-A positive preliminary gate requires >=18 initially correct problems, >=75% fresh accuracy on that same population, >=10-point dropped-minus-retained gap, exploratory one-sided p<=0.10, and complete valid outcomes. Problems are the analysis units; repeats remain together. Passing only motivates confirmation on NEW held-out problems. Old-answer matches do not establish reasoning causation; eight unchanged controls cannot establish absence of a general retention effect.
-
-## Layout
-
-`src/native_pilot/` contains data, design/manifest, provider, budget, runner, grading/sandbox, analysis, and CLI modules. `tests/` contains software fixtures. `provenance/` records public-source revisions, licenses, checksums, pricing and review metadata. `manifests/` contains frozen protocol artifacts. `docs/` records the protocol, source/provider/grader audits, and actual qualification.
+The primary population uses initial correctness only. Analysis uses problem-level
+paired differences and exact one-sided sign flips, with the predeclared 18-case,
+75% fresh-accuracy, 10-point-gap, p≤0.10 exploratory gate. An incomplete campaign
+is inconclusive. No research performance is inferred from reference checks.
+See [protocol](docs/PROTOCOL.md), [provider](docs/PROVIDER.md), and
+[source provenance](docs/SOURCE_AUDIT.md).

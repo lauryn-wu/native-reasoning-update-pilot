@@ -1,0 +1,178 @@
+[
+  {
+    "id": 1004,
+    "source": "aime2024",
+    "original_problem": "Let $p$ be the least prime number for which there exists a positive integer $n$ such that $n^{4}+1$ is divisible by $p^{2}$. Find the least positive integer $m$ such that $m^{4}+1$ is divisible by $p^{2}$.",
+    "original_answer": "\\boxed{110}",
+    "revised_problem": "Let $p$ be the least odd prime number for which there exists a positive even integer $n$ such that $n^{4}+1$ is divisible by $p^{3}$. Find the least positive integer $m$ such that $m^{4}+1$ is divisible by $p^{3}$.",
+    "update": "Remove the “odd” restriction on p; take p to be the least prime. Remove the “even” restriction on n; n is any positive integer. Replace p^3 with p^2 in the divisibility conditions for both n^4 + 1 and m^4 + 1."
+  },
+  {
+    "id": 1027,
+    "source": "aime2024",
+    "original_problem": "Let $N$ be the greatest four-digit positive integer with the property that whenever one of its digits is changed to $1$, the resulting number is divisible by $7$. Let $Q$ and $R$ be the quotient and remainder, respectively, when $N$ is divided by $1000$. Find $Q+R$.",
+    "original_answer": "\\boxed{699}",
+    "revised_problem": "Let $N$ be the smallest five-digit positive integer with the property that whenever one of its digits is changed to $2$, the resulting number is divisible by $9$. Let $Q$ and $R$ be the quotient and remainder, respectively, when $N$ is divided by $1000$. Find $Q+R$.",
+    "update": "Replace “smallest five-digit” with “greatest four-digit.” Replace “changing any digit to 2 makes the number divisible by 9” with “changing any digit to 1 makes the number divisible by 7."
+  },
+  {
+    "id": 1003,
+    "source": "aime2024",
+    "original_problem": "Define $f(x)=|| x|-\\tfrac{1}{2}|$ and $g(x)=|| x|-\\tfrac{1}{4}|$. Find the number of intersections of the graphs of \\[y=4 g(f(\\sin (2 \\pi x))) \\quad\\text{ and }\\quad x=4 g(f(\\cos (3 \\pi y))).\\]",
+    "original_answer": "\\boxed{385}",
+    "revised_problem": "Define $f(x)=|| x|-\\tfrac{1}{3}|$ and $g(x)=|| x|-\\tfrac{1}{6}|$. Find the number of intersections of the graphs of \\[y=4 g(f(\\sin (4 \\pi x))) \\quad\\text{ and }\\quad x=4 g(f(\\cos (5 \\pi y))).\\]",
+    "update": "Define f(x) = ||x| − 1/2| and g(x) = ||x| − 1/4|. Replace sin(4πx) with sin(2πx) in the first equation and cos(5πy) with cos(3πy) in the second. Find the number of intersections."
+  },
+  {
+    "id": 1025,
+    "source": "aime2024",
+    "original_problem": "Let ABCDEF be a convex equilateral hexagon in which all pairs of opposite sides are parallel. The triangle whose sides are extensions of segments AB, CD, and EF has side lengths 200, 240, and 300. Find the side length of the hexagon.",
+    "original_answer": "\\boxed{80}",
+    "revised_problem": "Let ABCDEF be a convex equiangular hexagon in which all pairs of opposite sides are parallel. The triangle whose sides are extensions of segments AB, CD, and EF has side lengths 180, 216, and 270. Find the side length of the hexagon.",
+    "update": "Replace the equiangular condition with equilateral (all sides equal), keeping it convex with opposite sides parallel. Update the triangle formed by the extensions of AB, CD, and EF to have side lengths 200, 240, and 300."
+  },
+  {
+    "id": 1024,
+    "source": "aime2024",
+    "original_problem": "Let $x,y$ and $z$ be positive real numbers that satisfy the following system of equations:\n\\[\\log_2\\left({x \\over yz}\\right) = {1 \\over 2}\\]\\[\\log_2\\left({y \\over xz}\\right) = {1 \\over 3}\\]\\[\\log_2\\left({z \\over xy}\\right) = {1 \\over 4}\\]\nThen the value of $\\left|\\log_2(x^4y^3z^2)\\right|$ is $\\tfrac{m}{n}$ where $m$ and $n$ are relatively prime positive integers. Find $m+n$.",
+    "original_answer": "\\boxed{33}",
+    "revised_problem": "Let $x,y$ and $z$ be positive real numbers that satisfy the following system of equations:\n\\[\\log_2\\left({x \\over yz}\\right) = {1 \\over 5}\\]\\[\\log_2\\left({y \\over xz}\\right) = {1 \\over 6}\\]\\[\\log_2\\left({z \\over xy}\\right) = {1 \\over 8}\\]\nThen the value of $\\left|\\log_2(x^4y^5z^2)\\right|$ is $\\tfrac{m}{n}$ where $m$ and $n$ are relatively prime positive integers. Find $m+n$.",
+    "update": "Set log_2(x/(yz)) = 1/2, log_2(y/(xz)) = 1/3, and log_2(z/(xy)) = 1/4. Replace the target with |log_2(x^4 y^3 z^2)| (the exponent on y is 3), and find m + n."
+  },
+  {
+    "id": 1058,
+    "source": "aime2025",
+    "original_problem": "Let ${\\triangle ABC}$ be a right triangle with $\\angle A = 90^\\circ$ and $BC = 38.$ There exist points $K$ and $L$ inside the triangle such\\[AK = AL = BK = CL = KL = 14.\\]The area of the quadrilateral $BKLC$ can be expressed as $n\\sqrt3$ for some positive integer $n.$ Find $n.$",
+    "original_answer": "104",
+    "revised_problem": "Let ${\\triangle ABC}$ be a right triangle with $\\angle B = 90^\\circ$ and $BC = 40.$ There exist points $K$ and $L$ inside the triangle such\\[AK = AL = BK = CL = KL = 18.\\]The area of the quadrilateral $BKLC$ can be expressed as $n\\sqrt5$ for some positive integer $n.$ Find $n.$",
+    "update": "Use ∠A = 90° instead of ∠B = 90°. Set BC to 38. Update the equal lengths to AK = AL = BK = CL = KL = 14. Additionally, the area of the quadrilateral should be expressed as $n\\sqrt3$ for some positive integer $n.$ Find $n.$"
+  },
+  {
+    "id": 1013,
+    "source": "aime2024",
+    "original_problem": "Eight circles of radius $34$ are sequentially tangent, and two of the circles are tangent to $AB$ and $BC$ of triangle $ABC$, respectively. $2024$ circles of radius $1$ can be arranged in the same manner. The inradius of triangle $ABC$ can be expressed as $\\frac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.",
+    "original_answer": "\\boxed{197}",
+    "revised_problem": "Seven circles of radius $51$ are sequentially tangent, and two of the circles are tangent to $AB$ and $AC$ of triangle $ABC$, respectively. $2048$ circles of radius $1$ can be arranged in the same manner. The inradius of triangle $ABC$ can be expressed as $\\frac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.",
+    "update": "Use eight sequentially tangent circles of radius 34. The two designated circles are tangent to AB and BC, respectively. The number of unit circles arranged likewise is 2024. Compute m + n where the inradius is m/n."
+  },
+  {
+    "id": 1030,
+    "source": "aime2025",
+    "original_problem": "Find the sum of all integer bases $b>9$ for which $17_b$ is a divisor of $97_b.$",
+    "original_answer": "70",
+    "revised_problem": "Find the product of all integer bases $b>12$ for which $25_b$ is a divisor of $251_b.$",
+    "update": "Require that 17_b divides 97_b instead of 25_b dividing 251_b. Change the base constraint to b > 9. Ask for the sum of all such bases rather than the product."
+  },
+  {
+    "id": 1006,
+    "source": "aime2024",
+    "original_problem": "Let $\\mathcal{B}$ be the set of rectangular boxes with surface area $54$ and volume $23$. Let $r$ be the radius of the smallest sphere that can contain each of the rectangular boxes that are elements of $\\mathcal{B}$. The value of $r^2$ can be written as $\\frac{p}{q}$, where $p$ and $q$ are relatively prime positive integers. Find $p+q$.",
+    "original_answer": "\\boxed{721}",
+    "revised_problem": "Let $\\mathcal{B}$ be the set of rectangular boxes with surface area $96$ and volume $24$. Let $r$ be the diameter of the smallest sphere that can contain each of the rectangular boxes that are elements of $\\mathcal{B}$. The value of $r^2$ can be written as $\\frac{p}{q}$, where $p$ and $q$ are relatively prime positive integers. Find $p+2q$.",
+    "update": "Use surface area 54 and volume 23. Let r be the radius (not the diameter) of the smallest sphere containing every such box. Compute p + q instead of p + 2q."
+  },
+  {
+    "id": 1059,
+    "source": "aime2025",
+    "original_problem": "Let\\[f(x)=\\frac{(x-18)(x-72)(x-98)(x-k)}{x}.\\]There exist exactly three positive real values of $k$ such that $f$ has a minimum at exactly two real values of $x$. Find the sum of these three values of $k$.",
+    "original_answer": "240",
+    "revised_problem": "Let\\[f(x)=\\frac{(x-12)(x-80)(x-100)(x-k)}{x}.\\]There exist exactly three positive real values of $k$ such that $f$ has a maximum at exactly two real values of $x$. Find the sum of these three values of $k$.",
+    "update": "Replace the factors so that f(x) = ((x−18)(x−72)(x−98)(x−k))/x. Change the condition from having a maximum at exactly two real x-values to having a minimum at exactly two real x-values."
+  },
+  {
+    "id": 1044,
+    "source": "aime2025",
+    "original_problem": "Let $N$ denote the number of ordered triples of positive integers $(a, b, c)$ such that $a, b, c \\leq 3^6$ and $a^3 + b^3 + c^3$ is a multiple of $3^7$. Find the remainder when $N$ is divided by $1000$.",
+    "original_answer": "735",
+    "revised_problem": "Let $N$ denote the number of ordered triples of nonnegative integers $(a, b, c)$ such that $a, b, c \\leq 3^7$ and $a^3 + b^3 + c^3$ is a multiple of $3^8$. Find the remainder when $N$ is divided by $729$.",
+    "update": "Use ordered triples of positive integers with a, b, c ≤ 3^6 (instead of nonnegative integers up to 3^7). Require that a^3 + b^3 + c^3 be divisible by 3^7 rather than 3^8. Compute the remainder of N modulo 1000 instead of modulo 729."
+  },
+  {
+    "id": 1028,
+    "source": "aime2024",
+    "original_problem": "Torus $T$ is the surface produced by revolving a circle with radius $3$ around an axis in the plane of the circle that is a distance $6$ from the center of the circle (so like a donut). Let $S$ be a sphere with a radius $11$. When $T$ rests on the outside of $S$, it is externally tangent to $S$ along a circle with radius $r_i$, and when $T$ rests on the outside of $S$, it is externally tangent to $S$ along a circle with radius $r_o$. The difference $r_i-r_o$ can be written as $\\tfrac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.\n[asy] unitsize(0.3 inch); draw(ellipse((0,0), 3, 1.75)); draw((-1.2,0.1)..(-0.8,-0.03)..(-0.4,-0.11)..(0,-0.15)..(0.4,-0.11)..(0.8,-0.03)..(1.2,0.1)); draw((-1,0.04)..(-0.5,0.12)..(0,0.16)..(0.5,0.12)..(1,0.04)); draw((0,2.4)--(0,-0.15)); draw((0,-0.15)--(0,-1.75), dashed); draw((0,-1.75)--(0,-2.25)); draw(ellipse((2,0), 1, 0.9)); draw((2.03,-0.02)--(2.9,-0.4)); [/asy]",
+    "original_answer": "\\boxed{127}",
+    "revised_problem": "Torus $T$ is the surface produced by revolving a circle with radius $4$ around an axis in the plane of the circle that is a distance $8$ from the center of the circle (so like a donut). Let $S$ be a sphere with a radius $11$. When $T$ rests on the outside of $S$, it is externally tangent to $S$ along a circle with radius $r_i$, and when $T$ rests on the inside of $S$, it is internally tangent to $S$ along a circle with radius $r_o$. The difference $r_i-r_o$ can be written as $\\tfrac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.\n[asy] unitsize(0.3 inch); draw(ellipse((0,0), 3, 1.75)); draw((-1.2,0.1)..(-0.8,-0.03)..(-0.4,-0.11)..(0,-0.15)..(0.4,-0.11)..(0.8,-0.03)..(1.2,0.1)); draw((-1,0.04)..(-0.5,0.12)..(0,0.16)..(0.5,0.12)..(1,0.04)); draw((0,2.4)--(0,-0.15)); draw((0,-0.15)--(0,-1.75), dashed); draw((0,-1.75)--(0,-2.25)); draw(ellipse((2,0), 1, 0.9)); draw((2.03,-0.02)--(2.9,-0.4)); [/asy]",
+    "update": "Use a generating circle of radius 3 and revolve it about an axis 6 units from the circle’s center. Replace the inside/internal tangency for r_o with an outside/external tangency, so both r_i and r_o are defined via external tangency on the outside of the sphere."
+  },
+  {
+    "id": 1049,
+    "source": "aime2025",
+    "original_problem": "Suppose $\\triangle ABC$ has angles $\\angle BAC = 84^\\circ, \\angle ABC=60^\\circ,$ and $\\angle ACB = 36^\\circ.$ Let $D, E,$ and $F$ be the midpoints of sides $\\overline{BC}, \\overline{AC},$ and $\\overline{AB},$ respectively. The circumcircle of $\triangle DEF$ intersects $\\overline{BD}, \\overline{AE},$ and $\\overline{AF}$ at points $G, H,$ and $J,$ respectively. The points $G, D, E, H, J,$ and $F$ divide the circumcircle of $\\triangle DEF$ into six minor arcs, as shown. Find $\\overarc{DE}+2\\cdot \\overarc{HJ} + 3\\cdot \\overarc{FG},$ where the arcs are measured in degrees.[asy] import olympiad; size(6cm); defaultpen(fontsize(10pt)); pair B = (0, 0), A = (Cos(60), Sin(60)), C = (Cos(60)+Sin(60)/Tan(36), 0), D = midpoint(B--C), E = midpoint(A--C), F = midpoint(A--B); guide circ = circumcircle(D, E, F); pair G = intersectionpoint(B--D, circ), J = intersectionpoints(A--F, circ)[0], H = intersectionpoints(A--E, circ)[0]; draw(B--A--C--cycle); draw(D--E--F--cycle); draw(circ);  dot(A);dot(B);dot(C);dot(D);dot(E);dot(F);dot(G);dot(H);dot(J); label(\"$A$\", A, (0, .8)); label(\"$B$\", B, (-.8, -.8)); label(\"$C$\", C, (.8, -.8)); label(\"$D$\", D, (0, -.8)); label(\"$E$\", E, (.8, .2)); label(\"$F$\", F, (-.8, .2)); label(\"$G$\", G, (0, .8)); label(\"$H$\", H, (-.2, -1));label(\"$J$\", J, (.2, -.8)); [/asy]",
+    "original_answer": "336",
+    "revised_problem": "Suppose $\\triangle ABC$ has angles $\\angle BAC = 84^\\circ, \\angle ABC=54^\\circ,$ and $\\angle ACB = 42^\\circ.$ Let $D, E,$ and $F$ be the midpoints of sides $\\overline{BC}, \\overline{AC},$ and $\\overline{AB},$ respectively. The circumcircle of $\triangle DEF$ intersects $\\overline{BD}, \\overline{AE},$ and $\\overline{CF}$ at points $G, H,$ and $J,$ respectively. The points $G, D, E, H, J,$ and $F$ divide the circumcircle of $\\triangle DEF$ into six minor arcs, as shown. Find $\\overarc{DE}+2\\cdot \\overarc{HJ} + 4\\cdot \\overarc{FG},$ where the arcs are measured in degrees.[asy] import olympiad; size(6cm); defaultpen(fontsize(10pt)); pair B = (0, 0), A = (Cos(60), Sin(60)), C = (Cos(60)+Sin(60)/Tan(36), 0), D = midpoint(B--C), E = midpoint(A--C), F = midpoint(A--B); guide circ = circumcircle(D, E, F); pair G = intersectionpoint(B--D, circ), J = intersectionpoints(A--F, circ)[0], H = intersectionpoints(A--E, circ)[0]; draw(B--A--C--cycle); draw(D--E--F--cycle); draw(circ);  dot(A);dot(B);dot(C);dot(D);dot(E);dot(F);dot(G);dot(H);dot(J); label(\"$A$\", A, (0, .8)); label(\"$B$\", B, (-.8, -.8)); label(\"$C$\", C, (.8, -.8)); label(\"$D$\", D, (0, -.8)); label(\"$E$\", E, (.8, .2)); label(\"$F$\", F, (-.8, .2)); label(\"$G$\", G, (0, .8)); label(\"$H$\", H, (-.2, -1));label(\"$J$\", J, (.2, -.8)); [/asy]",
+    "update": "Use ∠BAC = 84°, ∠ABC = 60°, and ∠ACB = 36°. Define J as the intersection with $\\overline{AF}$ instead of $\\overline{CF}$. Compute $\\overarc{DE}+2\\cdot\\overarc{HJ}+3\\cdot\\overarc{FG}$."
+  },
+  {
+    "id": 1042,
+    "source": "aime2025",
+    "original_problem": "Alex divides a disk into four quadrants with two perpendicular diameters intersecting at the center of the disk. He draws $25$ more lines segments through the disk, drawing each segment by selecting two points at random on the perimeter of the disk in different quadrants and connecting these two points. Find the expected number of regions into which these $27$ line segments divide the disk.",
+    "original_answer": "204",
+    "revised_problem": "Blair divides a disk into four quadrants with two perpendicular diameters intersecting at the center of the disk. He draws $31$ more lines segments through the disk, drawing each segment by selecting two points at random on the perimeter of the disk in adjacent quadrants and connecting these two points. Find the expected number of regions into which these $33$ line segments divide the disk.",
+    "update": "Change the name to Alex. Draw 25 additional line segments instead of 31. For each segment, choose two perimeter points in different quadrants (not restricted to adjacent quadrants). The total number of line segments is 27 instead of 33."
+  },
+  {
+    "id": 1012,
+    "source": "aime2024",
+    "original_problem": "Find the largest possible real part of \\[(75+117i)z+\\frac{96+144i}{z}\\]where $z$ is a complex number with $|z|=4$.",
+    "original_answer": "\\boxed{540}",
+    "revised_problem": "Find the largest possible real part of \\[(84+91i)z+\\frac{108+132i}{z}\\]where $z$ is a complex number with $|z|=4$.",
+    "update": "Replace (84+91i) with (75+117i) in the z term and (108+132i) with (96+144i) in the 1/z term."
+  },
+  {
+    "id": 1016,
+    "source": "aime2024",
+    "original_problem": "Let $\\triangle ABC$ have circumcenter $O$ and incenter $I$ with $\\overline{IA}\\perp\\overline{OI}$, circumradius $13$, and inradius $6$. Find $AB\\cdot AC$.",
+    "original_answer": "\\boxed{468}",
+    "revised_problem": "Let $\\triangle ABC$ have circumcenter $O$ and incenter $I$ with $\\overline{IB}\\perp\\overline{OI}$, circumradius $17$, and inradius $7$. Find $AB\\cdot BC$.",
+    "update": "Use IA ⟂ OI instead of IB ⟂ OI. Update the radii to circumradius 13 and inradius 6. Compute AB·AC instead of AB·BC."
+  },
+  {
+    "id": 1053,
+    "source": "aime2025",
+    "original_problem": "There are $n$ values of $x$ in the interval $0<x<2\\pi$ where $f(x)=\\sin(7\\pi\\cdot\\sin(5x))=0$. For $t$ of these $n$ values of $x$, the graph of $y=f(x)$ is tangent to the $x$-axis. Find $n+t$.",
+    "original_answer": "149",
+    "revised_problem": "There are $n$ values of $x$ in the interval $0<x<3\\pi$ where $f(x)=\\sin(9\\pi\\cdot\\sin(4x))=0$. For $t$ of these $n$ values of $x$, the graph of $y=f(x)$ is tangent to the $x$-axis. Find $n-t$.",
+    "update": "Use the interval 0 < x < 2π and update the function to f(x) = sin(7π·sin(5x)). Compute n + t instead of n − t."
+  },
+  {
+    "id": 1019,
+    "source": "aime2024",
+    "original_problem": "Let $\\omega\\neq 1$ be a 13th root of unity. Find the remainder when\n\\[\\prod_{k=0}^{12}(2-2\\omega^k+\\omega^{2k})\\]\nis divided by 1000.",
+    "original_answer": "\\boxed{321}",
+    "revised_problem": "Let $\\omega\\neq 1$ be a 11th root of unity. Find the remainder when\n\\[\\prod_{k=0}^{10}(3-2\\omega^k+\\omega^{2k})\\]\nis divided by 625.",
+    "update": "Replace the 11th root of unity with a 13th root of unity and extend the product to k = 0 to 12. Change each factor to (2 − 2ω^k + ω^{2k}). Compute the remainder modulo 1000."
+  },
+  {
+    "id": 1037,
+    "source": "aime2025",
+    "original_problem": "Let $k$ be a real number such that the system \\begin{align*} &|25 + 20i - z| = 5 \\ &|z - 4 - k| = |z - 3i - k| \\end{align*} has exactly one complex solution $z$. The sum of all possible values of $k$ can be written as $\\frac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m + n$. Here $i = \\sqrt{-1}$.$",
+    "original_answer": "77",
+    "revised_problem": "Let $k$ be a real number such that the system \\begin{align*} &|25 + 20i - z| = 10 \\ &|z - 2 - k| = |z - 6i - k| \\end{align*} has exactly one complex solution $z$. The product of all possible values of $k$ can be written as $\\frac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m + n$. Here $i = \\sqrt{-1}$.$",
+    "update": "Change |25 + 20i − z| = 10 to |25 + 20i − z| = 5. In the distance equality, replace 2 with 4 and 6i with 3i: |z − 4 − k| = |z − 3i − k|. Ask for the sum (instead of the product) of all possible values of k, and then compute m + n."
+  },
+  {
+    "id": 1057,
+    "source": "aime2025",
+    "original_problem": "Let the sequence of rationals $x_1,x_2,\\dots$ be defined such that $x_1=\\frac{25}{11}$ and\\[x_{k+1}=\\frac{1}{3}\\left(x_k+\\frac{1}{x_k}-1\\right).\\]$x_{2025}$ can be expressed as $\frac{m}{n}$ for relatively prime positive integers $m$ and $n$. Find the remainder when $m+n$ is divided by $1000$.",
+    "original_answer": "248",
+    "revised_problem": "Let the sequence of rationals $x_1,x_2,\\dots$ be defined such that $x_1=\\frac{26}{11}$ and\\[x_{k+1}=\\frac{1}{2}\\left(x_k+\\frac{1}{x_k}+1\\right).\\]$x_{2026}$ can be expressed as $\frac{m}{n}$ for relatively prime positive integers $m$ and $n$. Find the remainder when $m+n$ is divided by $1000$.",
+    "update": "The initial term should be x1 = 25/11. Update the recurrence to x_{k+1} = (1/3)(x_k + 1/x_k - 1). Compute x_{2025} (express it as m/n) and find the remainder when m + n is divided by 1000."
+  },
+  {
+    "id": 1031,
+    "source": "aime2025",
+    "original_problem": "In $\\triangle ABC$ points $D$ and $E$ lie on $\\overline{AB}$ so that $AD < AE < AB$, while points $F$ and $G$ lie on $\\overline{AC}$ so that $AF < AG < AC$. Suppose $AD = 4$, $DE = 16$, $EB = 8$, $AF = 13$, $FG = 52$, and $GC = 26$. Let $M$ be the reflection of $D$ through $F$, and let $N$ be the reflection of $G$ through $E$. The area of quadrilateral $DEGF$ is $288$. Find the area of heptagon $AFNBCEM$.",
+    "original_answer": "588",
+    "revised_problem": "In $\\triangle ABC$ points $D$ and $E$ lie on $\\overline{AB}$ so that $AD < AE < AB$, while points $F$ and $G$ lie on $\\overline{AC}$ so that $AF < AG < AC$. Suppose $AD = 6$, $DE = 24$, $EB = 12$, $AF = 13$, $FG = 52$, and $GC = 26$. Let $M$ be the reflection of $D$ through $F$, and let $N$ be the reflection of $G$ through $E$. The area of quadrilateral $DEGF$ is $360$. Find the area of heptagon $AFNBCEM$.",
+    "update": "Set AD = 4, DE = 16, and EB = 8. The area of quadrilateral DEGF is 288."
+  },
+  {
+    "id": 1008,
+    "source": "aime2024",
+    "original_problem": "Alice and Bob play the following game. A stack of $n$ tokens lies before them. The players take turns with Alice going first. On each turn, the player removes either $1$ token or $4$ tokens from the stack. Whoever removes the last token wins. Find the number of positive integers $n$ less than or equal to $2024$ for which there exists a strategy for Bob that guarantees that Bob will win the game regardless of Alice's play.",
+    "original_answer": "\\boxed{809}",
+    "revised_problem": "Alice and Bob play the following game. A stack of $n$ tokens lies before them. The players take turns with Bob going first. On each turn, the player removes either $1$ token or $5$ tokens from the stack. Whoever removes the last token loses. Find the number of positive integers $n$ less than or equal to $2025$ for which there exists a strategy for Bob that guarantees that Bob will win the game regardless of Alice's play.",
+    "update": "Alice goes first instead of Bob. On each turn, a player may remove 1 or 4 tokens (instead of 1 or 5), and the player who takes the last token wins (rather than loses). Replace the bound n ≤ 2025 with n ≤ 2024."
+  }
+]

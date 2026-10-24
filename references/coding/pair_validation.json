@@ -1,0 +1,431 @@
+[
+  {
+    "source_id": 124,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 42,
+        "batches_executed": 4
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 42,
+        "batches_executed": 4
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 42,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 42,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 14.484013795852661
+  },
+  {
+    "source_id": 299,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 44,
+        "batches_executed": 2
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 44,
+        "batches_executed": 2
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 44,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 44,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 22.541436910629272
+  },
+  {
+    "source_id": 158,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 43,
+        "batches_executed": 1
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 43,
+        "batches_executed": 1
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 43,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 43,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 7.573268890380859
+  },
+  {
+    "source_id": 337,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 42,
+        "batches_executed": 2
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 42,
+        "batches_executed": 2
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 42,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 42,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 6.679963827133179
+  },
+  {
+    "source_id": 317,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 42,
+        "batches_executed": 3
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 42,
+        "batches_executed": 3
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 42,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 42,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 8.468243837356567
+  },
+  {
+    "source_id": 328,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 43,
+        "batches_executed": 1
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 43,
+        "batches_executed": 1
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 43,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 43,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 8.296942710876465
+  },
+  {
+    "source_id": 151,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 43,
+        "batches_executed": 1
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 43,
+        "batches_executed": 1
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 43,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 43,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 4.40422511100769
+  },
+  {
+    "source_id": 331,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 44,
+        "batches_executed": 1
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 184,
+        "batches_executed": 1
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 184,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 184,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 31.08889412879944
+  },
+  {
+    "source_id": 154,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 106,
+        "batches_executed": 1
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 106,
+        "batches_executed": 1
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 106,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 106,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 10.15019702911377
+  },
+  {
+    "source_id": 325,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 61,
+        "batches_executed": 1
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 61,
+        "batches_executed": 1
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 61,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 61,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 6.226627826690674
+  },
+  {
+    "source_id": 117,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 163,
+        "batches_executed": 2
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 163,
+        "batches_executed": 2
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 163,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 163,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 10.616441011428833
+  },
+  {
+    "source_id": 162,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 143,
+        "batches_executed": 2
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 143,
+        "batches_executed": 2
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 143,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 143,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 9.95558214187622
+  },
+  {
+    "source_id": 148,
+    "checks": {
+      "original_reference_on_original": true,
+      "updated_reference_on_updated": true,
+      "original_reference_on_updated": true,
+      "updated_reference_on_original": true
+    },
+    "details": {
+      "original_reference_on_original": {
+        "passed": true,
+        "cases": 93,
+        "batches_executed": 1
+      },
+      "updated_reference_on_updated": {
+        "passed": true,
+        "cases": 93,
+        "batches_executed": 1
+      },
+      "original_reference_on_updated": {
+        "passed": false,
+        "cases": 93,
+        "batches_executed": 1
+      },
+      "updated_reference_on_original": {
+        "passed": false,
+        "cases": 93,
+        "batches_executed": 1
+      }
+    },
+    "passed": true,
+    "seconds": 16.651103019714355
+  }
+]

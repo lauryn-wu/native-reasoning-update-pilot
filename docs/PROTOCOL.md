@@ -1,4 +1,4 @@
-# Frozen protocol v1 — exploratory feasibility screen
+# Research protocol — exploratory feasibility screen
 
 Question: Does retaining a model's previous native reasoning impair adaptation to a legitimate subsequent correction, beyond the influence of its previous visible answer?
 
@@ -8,13 +8,27 @@ This is an exploratory screen. It cannot establish a mechanism, dependency-propa
 
 The source paper interrupts ongoing reasoning. This pilot instead completes an initial response and adds an ordinary correction in a new user turn. Its outcomes must never be presented as a replication of the paper's reported failure rate. “Late interruption” describes a generation-time setting, not an intrinsic task attribute.
 
-The source's `revised_problem` is our initial problem; its `original_problem` is our updated target. The source's `original_answer` does not grade our initial problem. The pinned release has zero fully qualified pairs for this design. The v1 manifest is therefore a frozen **blocked protocol**, not a frozen 24-case runnable experiment. No pilot IDs, controls, prompts, answers, tests, or 200-call schedule have been fabricated. A ranked review inventory preserves all 401 released candidates and provenance. Any repaired source basis requires independently audited assets and a NEW manifest version before any payment, including smoke.
+The source's `revised_problem` is our initial problem; its `original_problem` is
+our updated target. The source's `original_answer` does not grade our initial
+problem. The historical v1 manifest is a blocked snapshot of the initial source
+inspection, retained byte-for-byte. The current review constructs references with
+checkable proofs, exact calculations, upstream-test matching, and independent
+validation. It preserves all released statements, starters, and corrections.
+
+The ordered review supports12 math and9 coding pairs before the unresolved
+coding candidate276 (one-based coding rank45). The minimum-score initial variant
+has no verified solver covering the complete released test sizes. It remains
+pending, not excluded. Later independently validated pairs cannot silently
+replace it. The precise coding shortfall is3; no new24-case manifest is frozen.
+The separate smoke reference is available among reviewed extra cases, but no
+smoke case or schedule is assigned before complete selection. Paid execution is
+also held by `provenance/execution_policy.json`, even with `--allow-paid`.
 
 ## Selection fixed before outputs
 
 Target: 24 distinct original identities, 12 AIME 2024/2025 and 12 LiveCodeBench-derived coding problems. Require unambiguous complete prompts, authoritative original and updated graders, and demonstrated changed answers/behavior. Deduplicate normalized original problem text and source identities. No task may be chosen from our model's outputs, failures, or corrected initial retries.
 
-The deterministic rule prioritizes published coding difficulty (hard, medium, easy). AIME has no released per-item difficulty and therefore ties at that stage; do not invent difficulty values. Among ties, prefer smaller token changes, then SHA256(seed:task_id). Seed is 20261024. Small edit size is only a review preference, not proof of consequential, unambiguous updates. Select the first 12 qualified tasks per domain; never fill missing places with unqualified tasks. Choose four unchanged controls per domain by SHA256(seed:control:task_id). The first qualified unselected original provides the separate smoke task. Store full prompts, graders, references, source revisions, task hashes, controls, and schedule when qualification becomes possible.
+The deterministic rule prioritizes published coding difficulty (hard, medium, easy). AIME has no released per-item difficulty and therefore ties at that stage; do not invent difficulty values. Among ties, prefer smaller token changes, then SHA256(seed:task_id). Seed is 20261024. Small edit size is only a review preference, not proof of consequential, unambiguous updates. Select the first 12 qualified tasks per domain; never fill missing places with unqualified tasks. Choose four unchanged controls per domain by SHA256(seed:control:task_id). The first qualified unselected original provides the separate smoke task. Every earlier candidate must have a resolved, independently reviewed disposition; pending reference construction cannot be treated as an exclusion. Store full prompts, graders, references, source revisions, task hashes, controls, and schedule when qualification becomes possible. Initial/fresh prompts preserve released field bytes and use separate output-format instructions; fresh coding prompts also retain the exact released correction containing supplemental constraints/examples. Continuations use the exact correction as the new user turn.
 
 ## Calls and intervention
 
@@ -40,7 +54,7 @@ A seeded random topological schedule interleaves conditions: draw uniformly from
 
 ## Grading and qualification
 
-Math uses exact rational/integer equivalence with strict final-answer extraction, without executing symbolic input. Coding uses authoritative stdin/stdout tests in digest-pinned Docker containers only. Unsupported calling conventions or missing tests block qualification; they are not quietly converted to weaker tests. No LLM judge. No generated or released reference solution executes on the host.
+Math uses exact rational/integer/radical equivalence with strict final-answer extraction, without executing symbolic input. Coding uses independently validated stdin/stdout and function-call tests in digest-pinned Docker containers only. Unsupported calling conventions or missing tests block qualification; they are not quietly converted to weaker tests. No LLM judge. No generated or released reference solution executes on the host.
 
 Sandbox: no network, no credentials, unprivileged UID/GID 65534, read-only root, bounded CPU, RAM, PIDs, wall time and captured output, no Docker socket, read-only submission mount. Tests and reference expected outputs stay on the host and are never mounted into the container. Host code compares returned output. No host fallback. Qualification includes correct, wrong, equivalent, stale, timeout, output flooding, and isolation fixtures; these fixtures test software and are never candidate pilot tasks.
 

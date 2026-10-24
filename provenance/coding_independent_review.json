@@ -1,0 +1,704 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-24",
+  "reviewer": "grading_analysis independent agent; not human certification",
+  "paid_execution_allowed": false,
+  "paid_calls": 0,
+  "selection_decided_here": false,
+  "execution_policy": "All candidate/reference/oracle executable code in pinned Docker only; host compares plain data and hashes",
+  "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+  "method_limits": "Proof, exact oracle and full published validation are complementary; finite tests alone do not certify an arbitrary candidate. Authorship and executor are recorded per task.",
+  "artifacts": [
+    {
+      "path": "docs/CODING_INDEPENDENT_REVIEW.md",
+      "sha256": "07776f3a0f2aa733c58a860273ab7aa42e9c020c48cfc5d735a5a2b1525f649d"
+    },
+    {
+      "path": "src/native_pilot/sandbox/coding_oracles.py",
+      "sha256": "20b3c4c24c033e5c51055563842a0ed13507acc34f43a64230ed64a06165ebfc"
+    },
+    {
+      "path": "src/native_pilot/sandbox/coding_oracles_atcoder.py",
+      "sha256": "0b38683f38f1fd3f9bdd9799596f9e4f81d53215d6e122e479b301610933bfc4"
+    },
+    {
+      "path": "references/coding/atcoder_oracles.py",
+      "sha256": "3bb5a437be131b2efa097258bea9deb768732428e7d2db79b5c303014dbb2d1a"
+    },
+    {
+      "path": "references/coding/independent_cases.json",
+      "sha256": "3fb415ce6990cccb50826090cab214e878674d1a91d0e93f57c1035b7483da95"
+    },
+    {
+      "path": "references/coding/independent_validation.json",
+      "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6"
+    },
+    {
+      "path": "references/coding/official_validation.json",
+      "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb"
+    },
+    {
+      "path": "references/coding/atcoder_agent_validation.json",
+      "sha256": "97f9fb1207f4c705d4b2105099b00729fd3822b2738f6d02e521fb0f181887b3"
+    },
+    {
+      "path": "references/coding/atcoder_independent_validation.json",
+      "sha256": "a047cf0ea6d22104791c7266833bf1a122116bd1f6ae532383e179266f6f0884"
+    },
+    {
+      "path": "references/coding/atcoder_official_validation.json",
+      "sha256": "305dcb54e8c175ef5bb5364b6767d8b6219b8b7d7cfdbbc37130f9a9c3d5f4ee"
+    },
+    {
+      "path": "references/coding/atcoder_additional_validation.json",
+      "sha256": "6fab3848d8e8f1d164dc2221595d440073c3a37c3b7280f32634a1ef8cd9a7dd"
+    },
+    {
+      "path": "references/coding/258/adjudication.py",
+      "sha256": "ef47ba13e878f7522fdc792c4a8f519e8de42bcdcfcd3d0997a6f7f7b874545e"
+    },
+    {
+      "path": "references/coding/258/adjudication.json",
+      "sha256": "0082620b7a4a8eb50101afeaa2eff3930220c1cdbd7f42b3e45a449017edc790"
+    },
+    {
+      "path": "references/coding/258/adjudication_execution.json",
+      "sha256": "f456b057b4eb774dd1c1b2b7927cb81155b58c3bd0c4dd3336dd4931b29e0156"
+    },
+    {
+      "path": "references/coding/atcoder_own_cases.json",
+      "sha256": "c0676fc1e33783ffb3ed5d529fc7b74ebb7d29f05381309a045d8df64c1dbbdb"
+    },
+    {
+      "path": "references/coding/atcoder_agent_cases.json",
+      "sha256": "35d97d00939704e13f7f2fce88a8777274b006aa7ffa0e37dab914b2e1051a20"
+    },
+    {
+      "path": "references/coding/stdin_adapter_validation.json",
+      "sha256": "7596e9d004d1377d0265f1cfef7b0bc4a456d66137bb04d499fe0decd2dddb9c"
+    },
+    {
+      "path": "references/coding/stdin_adapter_validation_before_deadline_fix.json",
+      "sha256": "1eedcad0a06e48aeca31d39472f55e55eb1115931e8711a27240b8db3dae3d89"
+    },
+    {
+      "path": "references/coding/stdin_adapter_validation_cleanup_failure.json",
+      "sha256": "d7539e980f9812b05ffaa3ae5460a89938c86d710629bbf958d952c3d48d7c5f"
+    }
+  ],
+  "tasks": [
+    {
+      "source_id": 124,
+      "references": {
+        "original": {
+          "path": "references/coding/124/original.py",
+          "sha256": "78b00b56c1cedc2d9de6b4bac0478fbb5b27f9ad4754db2a4b53fd2d36732d4d"
+        },
+        "updated": {
+          "path": "references/coding/124/updated.py",
+          "sha256": "9e85eb6046cea1690a4b2c84fa19eaac84e5a9039f2f0458e719a864658e582e"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "All edge subsets with degree constraints",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 55,
+          "container_batches": 7,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 55,
+          "container_batches": 7,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 299,
+      "references": {
+        "original": {
+          "path": "references/coding/299/original.py",
+          "sha256": "8cb92f8880fdb05d794f0372bc74257b2b2b9e36b0bec9ce01f37ef40154bc1e"
+        },
+        "updated": {
+          "path": "references/coding/299/updated.py",
+          "sha256": "8eccfd4a3040e228c183535a7eb5c770f256f3070e10125fde891236e9af3c3d"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Literal diagonal paths and turn locations",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 201,
+          "container_batches": 26,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 201,
+          "container_batches": 26,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 158,
+      "references": {
+        "original": {
+          "path": "references/coding/158/original.py",
+          "sha256": "a100b156e99c09a743e054883ae4164768b904dcbce40a341df0c2a6c630a63f"
+        },
+        "updated": {
+          "path": "references/coding/158/updated.py",
+          "sha256": "e3e676072f7b975ff03d19f46190852abf97c0874f2d72d2c480cde0dfbc147a"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Every five-index subset and frequency counts, plus exact binomial modulus witness",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 131,
+          "container_batches": 17,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 131,
+          "container_batches": 17,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 337,
+      "references": {
+        "original": {
+          "path": "references/coding/337/original.py",
+          "sha256": "0dd77a0bab286be0a9426c6bdd6719b5698e8c5814482df808686a4bcf31747c"
+        },
+        "updated": {
+          "path": "references/coding/337/updated.py",
+          "sha256": "1698cefed116bbbbd4adfd91891fcf51bdb05de7f13e573e4c3a471a887dbbe4"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Every deletion and k-index subset prefix",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 95,
+          "container_batches": 12,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 95,
+          "container_batches": 12,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 317,
+      "references": {
+        "original": {
+          "path": "references/coding/317/original.py",
+          "sha256": "af3bcc8316a985a009cf26a564dfa7bde49f6075ef765ea87ba1efc2f3515dcd"
+        },
+        "updated": {
+          "path": "references/coding/317/updated.py",
+          "sha256": "49b74e14455031597a7c9732bb59711dae545f9c01d2f056d29490572092803d"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "BFS on literal base-b pair reductions",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 33,
+          "container_batches": 5,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 33,
+          "container_batches": 5,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 328,
+      "references": {
+        "original": {
+          "path": "references/coding/328/original.py",
+          "sha256": "27b67d9209b50f54e5b3b6d018e3c101f34e610686dd6282556734fa90aebd0b"
+        },
+        "updated": {
+          "path": "references/coding/328/updated.py",
+          "sha256": "5875bb868f74e52a3ffb5bea3d40314396cd2794c397328e55ce45c5d694f242"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Exhaustive good captions and exact costs/ties",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 120,
+          "container_batches": 15,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 120,
+          "container_batches": 15,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 151,
+      "references": {
+        "original": {
+          "path": "references/coding/151/original.py",
+          "sha256": "037e90910965f722ccb73a7a3f3924853ea7d11cad89fdf163dc1786a7e01160"
+        },
+        "updated": {
+          "path": "references/coding/151/updated.py",
+          "sha256": "7369be735353041ec630ac141a4f846a87fd577003d322c3485394af0fa5352f"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Every allowed flip subset",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 320,
+          "container_batches": 40,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 320,
+          "container_batches": 40,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 331,
+      "references": {
+        "original": {
+          "path": "references/coding/331/original.py",
+          "sha256": "8b91425c16fba8de5f8b74179d8213c20e087fcdfae4d860bec846185ab3a530"
+        },
+        "updated": {
+          "path": "references/coding/331/updated.py",
+          "sha256": "83628cab9a053c62f762670e52fba2a0f4cb283c6c9853000cb993604570a6ec"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Every substring with wildcard-language full match",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 140,
+          "container_batches": 18,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 140,
+          "container_batches": 18,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 154,
+      "references": {
+        "original": {
+          "path": "references/coding/154/original.py",
+          "sha256": "230f779dd977b5d8aaf072c88e4e6645a387f64bef2ccad13266effdce9d4650"
+        },
+        "updated": {
+          "path": "references/coding/154/updated.py",
+          "sha256": "1720eb785673074ebe49061b19123b74160edf492a4d7bbe88b6429fd3bc7b3d"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Enumerate short arrays",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 63,
+          "container_batches": 8,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 63,
+          "container_batches": 8,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 325,
+      "references": {
+        "original": {
+          "path": "references/coding/325/original.py",
+          "sha256": "5ada27ec21b3b1999852a960c9bd58445f33c2e8452bc99f5191b95b1e859a34"
+        },
+        "updated": {
+          "path": "references/coding/325/updated.py",
+          "sha256": "ac3ffe002d8c94d3e13fdbc1c533cc2d6efd564ba2328adf8abc6a287781c011"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Enumerate cell placements and pair distances",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 19,
+          "container_batches": 3,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 19,
+          "container_batches": 3,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 117,
+      "references": {
+        "original": {
+          "path": "references/coding/117/original.py",
+          "sha256": "2db413700f84bc1e4611fab17694d3689cfd8e7d859ccc0848d36e3afbec79ca"
+        },
+        "updated": {
+          "path": "references/coding/117/updated.py",
+          "sha256": "262be99215a61364ab9c65aad18d59e56d2dd1b2989272f26c3a2003a492752c"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Enumerate subsequence index subsets and exact alternating-pattern embeddings",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 121,
+          "container_batches": 16,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 121,
+          "container_batches": 16,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 162,
+      "references": {
+        "original": {
+          "path": "references/coding/162/original.py",
+          "sha256": "08cec205d3fb2ab3adf28367125d71cb32b74134f8f9aa6ca73381d928176ac2"
+        },
+        "updated": {
+          "path": "references/coding/162/updated.py",
+          "sha256": "ef467c1b991222f80f8f0f892d009ca9d6e5cf06c372a0f13a030f77b7bd4e12"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Enumerate interval subsets and lexicographic tie comparison",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 101,
+          "container_batches": 13,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 101,
+          "container_batches": 13,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 148,
+      "references": {
+        "original": {
+          "path": "references/coding/148/original.py",
+          "sha256": "355a3c50b8ec1a6499914fc6189c5ddcd83196048b34c77312bee31bbee2925a"
+        },
+        "updated": {
+          "path": "references/coding/148/updated.py",
+          "sha256": "eea371dbb551f4078ead56efe12ebea18319e4271e6917d4f79633f9f03672d6"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "grading_analysis",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "BFS on literal frequency vectors",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 50,
+          "container_batches": 7,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 50,
+          "container_batches": 7,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 258,
+      "references": {
+        "original": {
+          "path": "references/coding/258/original.py",
+          "sha256": "3258925d56ddcb98a55b810efbef088b6087022fb39c03a63d89987aef343ee1"
+        },
+        "updated": {
+          "path": "references/coding/258/updated.py",
+          "sha256": "e34c093fb9f125a9d61b686a9d4877becd16c3711a0c4284e322cd834b80c76d"
+        }
+      },
+      "reference_author": "grading_analysis",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "source_audit",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Exact legal-move minimax without parity theorem",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 209,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 209,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 167,
+      "references": {
+        "original": {
+          "path": "references/coding/167/original.py",
+          "sha256": "5d166a624f958b743146317b1db31deaa8f8f80e556e7a727cca423a5185d706"
+        },
+        "updated": {
+          "path": "references/coding/167/updated.py",
+          "sha256": "57f74b51d381b49b958d21309ec4a8906889b2b37b8caba2ed1b12af7b5697e1"
+        }
+      },
+      "reference_author": "grading_analysis",
+      "oracle_author": "grading_analysis",
+      "independent_agent_reviewer": "source_audit",
+      "review_status": "algorithm_and_exact_validation_approved",
+      "method": "Enumerate assignments for every small functional graph and three large exact families",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 867,
+          "failed_indices": []
+        },
+        "updated": {
+          "passed": true,
+          "count": 867,
+          "failed_indices": []
+        }
+      }
+    },
+    {
+      "source_id": 218,
+      "references": {
+        "original": {
+          "path": "references/coding/218/original.py",
+          "sha256": "871353260b493ee19f198e7e020b82734636d4cfc0818c8b90427547fbbecb3e"
+        },
+        "updated": {
+          "path": "references/coding/218/updated.py",
+          "sha256": "42b5cb1a02f8833f5b5adcf2214a64ebcffa25f02d592a7117cca347b6e21a6f"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "source_audit",
+      "independent_agent_reviewer": "grading_analysis",
+      "validation_executor": "source_audit",
+      "review_status": "separate_agent_proof_and_code_review_approved",
+      "method": "Bellman-Ford over explicit orientation transitions",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 216
+        },
+        "updated": {
+          "passed": true,
+          "count": 216
+        }
+      }
+    },
+    {
+      "source_id": 233,
+      "references": {
+        "original": {
+          "path": "references/coding/233/original.py",
+          "sha256": "c0a07fd117927193faf1e3b0f9d013ca05b1157a1c1f2dda80bee7774bc3c6d0"
+        },
+        "updated": {
+          "path": "references/coding/233/updated.py",
+          "sha256": "027ce8068b3e99852806e3477c5dc802c0bd2524c76b9958c3bb83153e751a1b"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "source_audit",
+      "independent_agent_reviewer": "grading_analysis",
+      "validation_executor": "source_audit",
+      "review_status": "separate_agent_proof_and_code_review_approved",
+      "method": "Enumerate strings to prepend/append and literal palindrome test",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 254
+        },
+        "updated": {
+          "passed": true,
+          "count": 254
+        }
+      }
+    },
+    {
+      "source_id": 268,
+      "references": {
+        "original": {
+          "path": "references/coding/268/original.py",
+          "sha256": "90b5615c1470c084f9d74de34d165783d23d292424429e7500ee3c9547fe7763"
+        },
+        "updated": {
+          "path": "references/coding/268/updated.py",
+          "sha256": "a6256853d3dd3ad966bb1e6b1f4baa82d3127b4145079a15e6cf44f78369cf9d"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "source_audit",
+      "independent_agent_reviewer": "grading_analysis",
+      "validation_executor": "source_audit",
+      "review_status": "separate_agent_proof_and_code_review_approved",
+      "method": "BFS closure under permitted substring operations plus exact factorial families",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 68
+        },
+        "updated": {
+          "passed": true,
+          "count": 68
+        }
+      }
+    },
+    {
+      "source_id": 269,
+      "references": {
+        "original": {
+          "path": "references/coding/269/original.py",
+          "sha256": "250cc3a371b49e8bd362dd85d4d27aab7a85256493d17ed57a6290e0180611ac"
+        },
+        "updated": {
+          "path": "references/coding/269/updated.py",
+          "sha256": "0e574bcc1a846d3cafe125b6826f296057d212154a692abfe9fb87d3099a80ac"
+        }
+      },
+      "reference_author": "source_audit",
+      "oracle_author": "source_audit",
+      "independent_agent_reviewer": "grading_analysis",
+      "validation_executor": "source_audit",
+      "review_status": "separate_agent_proof_and_code_review_approved",
+      "method": "Enumerate recursive parent sequences and literal graph distances",
+      "variants": {
+        "original": {
+          "passed": true,
+          "count": 18
+        },
+        "updated": {
+          "passed": true,
+          "count": 18
+        }
+      }
+    }
+  ],
+  "adjudications": [
+    {
+      "source_id": 258,
+      "upstream_index_zero_based": 20,
+      "disposition": "Preserved fixture and erroneous original label, corrected expected label after official proof plus independent exact minimax",
+      "proof": "https://atcoder.jp/contests/arc192/editorial/12199?lang=en",
+      "exact_states": 7714,
+      "execution_status": "completed",
+      "returncode": 0
+    }
+  ],
+  "other_reviewed_candidates": {
+    "115": "Initial requested output/count/modulus absent",
+    "306": "Initial alphabet restriction absent; largest output ambiguous",
+    "320": "Changed group size permits infeasible inputs without specified return convention"
+  },
+  "not_covered_here": [
+    191,
+    250
+  ],
+  "grading_adapter_status": "24 targeted grading unit tests passed after stdin batching and cleanup hardening. A final small live Docker check passed fresh-process/work-directory behavior, stdin, sys.exit(0), and self-asserted-pass rejection. Broader validation encountered infrastructure failures; complete final integration remains unconfirmed."
+}

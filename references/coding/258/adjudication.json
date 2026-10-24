@@ -1,0 +1,21 @@
+{
+  "source_id": 258,
+  "upstream_test_index_zero_based": 20,
+  "stdin": "10\n7 16 3 3 9 8 16 12 8 3",
+  "published_updated_expected_preserved": "Snuke\n",
+  "adjudicated_updated_expected": "Fennec\n",
+  "adjudicated_initial_expected": "Snuke\n",
+  "disposition": "Correct the demonstrably erroneous expected label; preserve the original fixture and do not drop the case",
+  "official_proof": "https://atcoder.jp/contests/arc192/editorial/12199?lang=en",
+  "proof_application": "N=10 and five capacities are odd. The official theorem for N>=4 makes the first player the winner when the odd count is odd. The corrected source problem starts with Fennec.",
+  "independent_method": "Exact minimax on every reachable state (sorted unvisited capacities, total remaining capacity of already visited indices), without using the parity theorem",
+  "actual_docker_result": {
+    "status": "completed",
+    "returncode": 0,
+    "first_player_wins": true,
+    "states": 7714
+  },
+  "checker": "references/coding/258/adjudication.py",
+  "reviewer": "grading_analysis agent",
+  "paid_calls": 0
+}

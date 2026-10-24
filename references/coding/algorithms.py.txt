@@ -1,0 +1,266 @@
+# Research reference implementations. This text is assembled into per-task
+# standalone reference programs. Execute ONLY inside the Docker grader.
+
+# TASK 124
+def solve(edges, k):
+    n = len(edges) + 1
+    graph = [[] for _ in range(n)]
+    for a, b, w in edges:
+        graph[a].append((b, w)); graph[b].append((a, w))
+    parent = [-1] * n; order = [0]
+    for u in order:
+        for v, w in graph[u]:
+            if v != parent[u]: parent[v] = u; order.append(v)
+    free = [0] * n; used = [0] * n
+    for u in reversed(order):
+        base = 0; gains = []
+        for v, w in graph[u]:
+            if parent[v] == u:
+                base += free[v]
+                if k: gains.append(max(0, w + used[v] - free[v]))
+        gains.sort(reverse=True)
+        free[u] = base + sum(gains[:k])
+        used[u] = base + sum(gains[:max(k-1, 0)])
+    return free[0]
+
+# TASK 299
+def solve(grid):
+    from array import array
+    h, w = len(grid), len(grid[0]); n = h*w
+    # Clockwise order in screen coordinates (row increases downward).
+    directions = [(1,1),(1,-1),(-1,-1),(-1,1)]
+    straight = [array('H', [0])*n for _ in range(4)]
+    one_turn = [array('H', [0])*n for _ in range(4)]
+    for d,(di,dj) in enumerate(directions):
+        for i in (range(h-1,-1,-1) if di>0 else range(h)):
+            for j in (range(w-1,-1,-1) if dj>0 else range(w)):
+                p=i*w+j; ni,nj=i+di,j+dj; expected=2 if grid[i][j] in (0,1) else 0
+                straight[d][p]=1
+                if 0<=ni<h and 0<=nj<w and grid[ni][nj]==expected:
+                    straight[d][p]+=straight[d][ni*w+nj]
+    result=0
+    for d,(di,dj) in enumerate(directions):
+        turn=(d+(1 if UPDATED else -1))%4; ti,tj=directions[turn]
+        for i in (range(h-1,-1,-1) if di>0 else range(h)):
+            for j in (range(w-1,-1,-1) if dj>0 else range(w)):
+                p=i*w+j; expected=2 if grid[i][j] in (0,1) else 0; best=1
+                ni,nj=i+di,j+dj
+                if 0<=ni<h and 0<=nj<w and grid[ni][nj]==expected:
+                    best=max(best,1+one_turn[d][ni*w+nj])
+                ni,nj=i+ti,j+tj
+                if 0<=ni<h and 0<=nj<w and grid[ni][nj]==expected:
+                    best=max(best,1+straight[turn][ni*w+nj])
+                one_turn[d][p]=best
+                if grid[i][j]==1: result=max(result,best)
+    return result
+
+# TASK 158
+def solve(nums):
+    from collections import Counter
+    from math import comb
+    mod=10**9+(7 if UPDATED else 9)
+    left=Counter(); right=Counter(nums); answer=0
+    def c(n,k): return comb(n,k) if n>=k>=0 else 0
+    for i,x in enumerate(nums):
+        right[x]-=1
+        a,b=left[x],right[x]; l=i-a; r=len(nums)-i-1-b
+        # At least three occurrences of x: it necessarily is the unique mode.
+        for u in range(3):
+            for v in range(3):
+                if u+v>=2: answer+=c(a,u)*c(l,2-u)*c(b,v)*c(r,2-v)
+        # Exactly two x's: the other three values must be pairwise distinct.
+        rpairs=sum(c(count,2) for y,count in right.items() if y!=x)
+        lpairs=sum(c(count,2) for y,count in left.items() if y!=x)
+        for y,count in left.items():
+            if y!=x:
+                ry=right[y]
+                answer+=a*count*(c(r-ry,2)-rpairs+c(ry,2))
+        for y,count in right.items():
+            if y!=x:
+                ly=left[y]
+                answer+=b*count*(c(l-ly,2)-lpairs+c(ly,2))
+        left[x]+=1
+        answer%=mod
+    return answer
+
+# TASK 337
+def solve(words,k):
+    import heapq
+    if len(words)-1<k: return [0 if UPDATED else -1]*len(words)
+    children=[{}]; count=[0]; depth=[0]; paths=[]
+    for word in words:
+        node=0; path=[]
+        for char in word:
+            if char not in children[node]:
+                children[node][char]=len(children); children.append({});count.append(0);depth.append(depth[node]+1)
+            node=children[node][char];count[node]+=1;path.append(node)
+        paths.append(path)
+    good=[0]*(max(depth)+1)
+    for node in range(1,len(children)):
+        if count[node]>=k:good[depth[node]]+=1
+    heap=[-d for d,c in enumerate(good) if c];heapq.heapify(heap);result=[]
+    for path in paths:
+        changed=[depth[node] for node in path if count[node]==k]
+        for d in changed:good[d]-=1
+        while heap and not good[-heap[0]]:heapq.heappop(heap)
+        result.append(-heap[0] if heap else 0)
+        for d in changed:
+            if not good[d]:heapq.heappush(heap,-d)
+            good[d]+=1
+    return result
+
+# TASK 317
+def solve(queries):
+    base=4 if UPDATED else 5
+    def prefix(n):
+        total=0;power=1;steps=1
+        while power<=n:
+            upper=min(n,power*base-1)
+            total+=(upper-power+1)*steps
+            power*=base;steps+=1
+        return total
+    return sum((prefix(r)-prefix(l-1)+1)//2 for l,r in queries)
+
+# TASK 328
+def solve(caption):
+    # f[i][c][r] is optimal suffix cost after previous char c has run r (cap3).
+    from array import array
+    n=len(caption)
+    if n<3:return ''
+    inf=10**9
+    codes=[ord(c)-97 for c in caption]
+    table=[None]*(n+1)
+    last=array('i',[inf])*78
+    for c in range(26):last[c*3+2]=0
+    table[n]=last
+    for i in range(n-1,-1,-1):
+        nxt=table[i+1];curr=array('i',[inf])*78
+        start=[abs(codes[i]-c)+nxt[c*3] for c in range(26)]
+        ranked=sorted(range(26),key=lambda c:start[c]);best,second=ranked[:2]
+        for c in range(26):
+            cost=abs(codes[i]-c)
+            curr[c*3]=cost+nxt[c*3+1]
+            curr[c*3+1]=cost+nxt[c*3+2]
+            other=start[best if best!=c else second]
+            curr[c*3+2]=min(cost+nxt[c*3+2],other)
+        table[i]=curr
+    remaining=min(abs(codes[0]-c)+table[1][c*3] for c in range(26))
+    out=[];prev=-1;run=0
+    order=range(26) if UPDATED else range(25,-1,-1)
+    for i in range(n):
+        for c in order:
+            if prev!=-1 and c!=prev and run<3:continue
+            newrun=min(3,run+1) if c==prev else 1
+            cost=abs(codes[i]-c)
+            if cost+table[i+1][c*3+newrun-1]==remaining:
+                out.append(chr(c+97));remaining-=cost;prev=c;run=newrun;break
+    return ''.join(out)
+
+# TASK 151
+def solve(s,numOps):
+    runs=[];old=None
+    for ch in s:
+        if ch==old:runs[-1][1]+=1
+        else:runs.append([ch,1]);old=ch
+    def needed(limit):
+        if not UPDATED:
+            return sum(length//(limit+1) for ch,length in runs if ch=='1')
+        if limit==1:
+            mismatch=sum(int(ch)!=i%2 for i,ch in enumerate(s))
+            return min(mismatch,len(s)-mismatch)
+        return sum(length//(limit+1) for ch,length in runs)
+    lo=1 if UPDATED else 0;hi=len(s)
+    while lo<hi:
+        mid=(lo+hi)//2
+        if needed(mid)<=numOps:hi=mid
+        else:lo=mid+1
+    return lo
+
+# TASK 331
+def solve(s,p):
+    from bisect import bisect_left
+    pieces=p.split('*')
+    positions=[]
+    for piece in pieces:
+        if not piece:positions.append(list(range(len(s)+1)));continue
+        found=[];start=0
+        while True:
+            at=s.find(piece,start)
+            if at<0:break
+            found.append(at);start=at+1
+        positions.append(found)
+    best=len(s)+1
+    for start in positions[0]:
+        end=start+len(pieces[0])
+        for j in range(1,len(pieces)):
+            k=bisect_left(positions[j],end)
+            if k==len(positions[j]):break
+            end=positions[j][k]+len(pieces[j])
+        else:best=min(best,end-start)
+    return best if best<=len(s) else -1
+
+# TASK 154
+def solve(n,m,k):
+    mod=10**9+7
+    equal=k if UPDATED else n-1-k
+    if not 0<=equal<n:return 0
+    choose=min(equal,n-1-equal);num=den=1
+    for i in range(1,choose+1):num=num*(n-i)%mod;den=den*i%mod
+    return num*pow(den,mod-2,mod)%mod*m%mod*pow(m-1,n-1-equal,mod)%mod
+
+# TASK 325
+def solve(m,n,k):
+    mod=10**9+7;cells=m*n
+    if k<2:return 0
+    choose=min(k-2,cells-k);num=den=1
+    for i in range(1,choose+1):num=num*(cells-1-i)%mod;den=den*i%mod
+    ways=num*pow(den,mod-2,mod)%mod
+    pair_sum=(n*n*m*(m*m-1)+m*m*n*(n*n-1))//6
+    return pair_sum*ways*(1 if UPDATED else 2)%mod
+
+# TASK 117
+def solve(nums):
+    from collections import defaultdict
+    mod=10**9+(7 if UPDATED else 9);count=defaultdict(int);sums=defaultdict(int)
+    answer=0
+    for x in nums:
+        nc=(1+count[x-1]+count[x+1])%mod
+        ns=(x*nc+sums[x-1]+sums[x+1])%mod
+        count[x]=(count[x]+nc)%mod;sums[x]=(sums[x]+ns)%mod
+        answer=(answer+ns)%mod
+    return answer
+
+# TASK 162
+def solve(intervals):
+    from bisect import bisect_left
+    rows=sorted((r,l,w,i) for i,(l,r,w) in enumerate(intervals));ends=[r for r,l,w,i in rows]
+    prev=[bisect_left(ends,l) for r,l,w,i in rows];n=len(rows);K=4 if UPDATED else 5
+    earlier=[(0,())]*(n+1)
+    def best(a,b):return a if a[0]>b[0] or (a[0]==b[0] and a[1]<b[1]) else b
+    for layer in range(1,K+1):
+        current=[(0,())]*(n+1)
+        for j,(r,l,w,index) in enumerate(rows,1):
+            score,chosen=earlier[prev[j-1]]
+            take=(score+w,tuple(sorted(chosen+(index,))))
+            current[j]=best(current[j-1],take)
+        earlier=current
+    return list(earlier[n][1])
+
+# TASK 148
+def solve(s):
+    from collections import Counter
+    c=[s.count(chr(97+i)) for i in range(26)]
+    if not UPDATED:c.reverse()
+    result=len(s)
+    for target in range(1,max(c)+1):
+        previous=[c[0],abs(c[0]-target)]
+        for i in range(1,26):
+            current=[10**9,10**9]
+            for choice in range(2):
+                goal=target*choice;deficit=max(0,goal-c[i]);cost=abs(c[i]-goal)
+                for old in range(2):
+                    surplus=max(0,c[i-1]-target*old)
+                    current[choice]=min(current[choice],previous[old]+cost-min(surplus,deficit))
+            previous=current
+        result=min(result,*previous)
+    return result

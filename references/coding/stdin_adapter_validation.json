@@ -1,0 +1,38 @@
+{
+  "scope": "software_stdin_adapter_small_followup",
+  "paid_calls": 0,
+  "attempt": "One bounded follow-up after Docker responsiveness failures",
+  "checks": {
+    "fresh_process_fresh_workdir_stdin_sys_exit": {
+      "passed": true,
+      "results": [
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        }
+      ],
+      "mode": "stdin",
+      "container_batches": 1
+    },
+    "self_asserted_pass_rejected": true
+  },
+  "environment": {
+    "docker_version": "29.8.2",
+    "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+    "image_id": "sha256:7efd45553a98be3d940b73600550669831c0be34f30c521159e7030a91fcdee6",
+    "architecture": "arm64",
+    "os": "linux"
+  },
+  "passed": true
+}

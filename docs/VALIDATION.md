@@ -1,33 +1,89 @@
-# Validation performed — 2026-10-24
+# Validation record — 2026-10-24 qualification update
 
-No paid model calls were made. Real OpenAI model availability and effective manipulation have **not** been tested. The three-call paid smoke and the 200-response pilot have **not** run. Source/reference qualification is blocked; the implementation does not present software checks as benchmark qualification.
+No paid model call was made. Real provider behavior, the three-call smoke, and
+the 200-response campaign remain untested and explicitly blocked. Reference
+construction and software checks are not experimental outcomes.
 
-| Check actually run | Result |
-| --- | --- |
-| Python runtime | Python 3.12.13 on macOS arm64 |
-| Editable installation with data/paid extras | Succeeded in a project-local temporary virtual environment |
-| Unit/integration suite | **76 tests passed**, no skips, `python -m unittest discover -s tests -v` |
-| Actual `openai==3.37.0` SDK serialization through offline `httpx2.MockTransport` | Passed; three mocked Responses HTTP exchanges; no external request |
-| Source acquisition/cache verification | **43 artifacts verified**, pinned bytes and SHA256; GitHub blobs also matched Git object hashes |
-| Actual Parquet audit with `pyarrow==23.0.1` | **1,401 rows parsed**: 1,060 math, 341 coding; 401 target-family candidates |
-| Source qualification | **Blocked**, zero qualified pairs; initial revised graders missing |
-| Docker software isolation/grade qualification | **17 checks passed**, Docker 29.8.2, arm64 Linux image |
-| Benchmark reference execution | **Not run**: required assets absent/unqualified |
-| API spend | **$0**, no paid calls |
+The review covers **22 math candidates** (14 verified references, 8 exclusions)
+and **64 coding candidates** (21 verified references, 42 exclusions, 1 pending).
+The deterministic resolved prefix supports **12 math + 9 coding**, a **3-coding
+shortfall**. Candidate 276 remains pending at one-based coding rank 45. Its exact
+minimum solver is not adequate for the full released suite. No new 24-case
+manifest or smoke/control assignment has been frozen.
 
-The actual environment was a temporary virtual environment under the project's `work/provider/venv`. Commands were run from the implementation repository. The source cache was in the parent project's `work/source-cache`; use the README defaults for a clean checkout.
+## Checks actually performed
+
+- Source acquisition and checksum audit: 43 pinned source artifacts; 1,401 released
+  rows parsed; 401 AIME/LiveCodeBench candidates retained in the unchanged order.
+- All 14 complete math references: exact derivations, independent review, and
+  correct/equivalent/wrong/stale grading checks. Eight exclusions have specific
+  contradictions or ambiguities and independent reviews.
+- The trigonometric pair: outward-rounded integer interval certification gives
+  1,244 initial and 385 updated intersections, with no unresolved intervals.
+  Independent higher precision and asymmetric subdivision reproduce both counts.
+- Coding: all 21 completed reference pairs have proof-based implementations,
+  pinned upstream matching, full published-input validation, and independent
+  exact tests. Test construction and every reference/oracle execution used
+  Docker. Per-case evidence is bound from `provenance/coding_review.json`.
+- An erroneous upstream label for candidate 258 is retained and explicitly
+  corrected after the published theorem and a separate 7,714-state exact minimax
+  agree. No test input is removed or silently relabeled.
+- Candidate 276: 9,999 exact small checks validate the initial interval recurrence;
+  its updated maximum reference passes all 43 published files. Full initial
+  validation is **not complete**: the largest published input has 4,736 items,
+  requiring 4,428,930,784 partner transitions for the known cubic algorithm.
+- Docker function adapter: correct/tuple-equivalent results accepted; wrong,
+  self-asserted-pass and boolean-as-number results rejected. Expected answers
+  remain outside the container. The original targeted command and output are
+  retained in `references/coding/function_adapter_validation_recovered.json`.
+- Final small stdin adapter follow-up: three fresh Python subprocesses/work
+  directories with `sys.exit(0)` pass; self-asserted-pass output fails. See
+  `references/coding/stdin_adapter_validation.json`.
+- The final offline suite passed **116 tests**. This includes bounded batch
+  retention, exact algebraic grading, source/evidence integrity, unchanged
+  review order, paid-execution holds, and infrastructure-deadline classification.
+  The full log is `REFERENCE_UNIT_TESTS.txt`; the consolidated record is
+  `REFERENCE_QUALIFICATION.json`.
+
+## Reproducibility and observed failures
+
+The first complete asset-reconstruction rerun failed during Docker execution.
+The broader live stdin attempt also observed Docker latency and cleanup-command
+failure; its actual failed outputs are retained separately. Cleanup now kills the
+Docker client even if removal times out and reports infrastructure unavailability.
+The container-side hard deadline remains bounded; there is no host fallback.
+A separate small live retry passed. A reconstruction retry reached candidate 167
+before a timeout. Reference-construction batches now also have an eight-case
+bound, retaining every input and its order. The subsequent reconstruction
+**passed for all 21 coding pairs**, reproducing both variants’ reviewed fixture
+hashes in 135.581 seconds. Its result and previous failures are retained in
+`references/coding/asset_rebuild_validation.json`.
+
+The full final integrated 35-candidate grader qualification has **not been
+completed**. This is separate from the completed proofs, reference executions,
+asset reconstruction, and targeted adapter checks. Its status is recorded in
+`REFERENCE_QUALIFICATION.json`. The ordered campaign qualification remains
+blocked by candidate 276 regardless of that integration result.
+
+The prior 76-test/17-Docker-check baseline remains in `OFFLINE_QUALIFICATION.json`
+and `DOCKER_QUALIFICATION.json`. Those historical checks do not claim to validate
+later adapters. Current runtime is Python 3.12.13 on macOS arm64, Docker 29.8.2,
+with the image pinned in `sandbox/runner.py`. The host only parses data, compares
+outputs, and runs the trusted harness; submitted/reference/oracle code runs only
+inside Docker.
+
+## Commands for this checkout
 
 ```sh
-python -m pip install -e '.[data,paid]'
-python -m unittest discover -s tests -v
-python -m native_pilot.cli prepare --cache ../../work/source-cache
-python -m native_pilot.cli audit --cache ../../work/source-cache
+../../work/provider/venv/bin/python -m unittest discover -s tests -v
+../../work/provider/venv/bin/python -m native_pilot prepare-upstream --cache ../../work/source-cache
+../../work/provider/venv/bin/python -m native_pilot review --cache ../../work/source-cache
+../../work/provider/venv/bin/python -m native_pilot --asset-cache ../../work/source-cache qualify-reviewed --docker
 ```
 
-Docker qualification was executed through `native_pilot.sandbox.qualify_docker()` and its actual result is saved in [DOCKER_QUALIFICATION.json](DOCKER_QUALIFICATION.json). The final sandbox command includes a container-side PID1 timeout, tested after that change. The pinned image is `python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704`; resolved local image ID `sha256:7efd45553a98be3d940b73600550669831c0be34f30c521159e7030a91fcdee6`.
-
-The Docker checks accept correct/equivalent programs; reject wrong/stale programs; cross-grade the two software references; verify unprivileged UID, read-only root/submission, denied network, no forwarded credentials, only the program mounted, bounded runtime/output, and CPU/memory/process ceilings. Every submitted/reference fixture executed inside Docker; none executed on the host.
-
-Tests cover exactly two continuation repeats, shared immutable initial checkpoint, full reasoning/phase replay, retained/dropped equality except context, frozen settings, missing manipulation rejection, authentic wrong initial preservation, one transport retry, crash recovery, no duplicate resumed calls/charges, shared cap across versions, budget refusal before dispatch, malformed/missing usage reservation retention, provider availability classification, exact math false positives/negatives, source deduplication and strict qualification, task-level sign-flip known examples, initial-only eligibility, incomplete decisions, and manifest mutation/paid-flag barriers.
-
-Remaining qualification requires new source evidence, as detailed in SOURCE_AUDIT.md. Software mocks do not establish real provider behavior; only a later explicit paid smoke on a qualified disjoint case can do so. All future changes require a new manifest version before paid execution.
+On a clean checkout use the virtual environment and default cache commands in
+README. `qualify-reviewed` validates completed candidate references; it cannot
+skip 276, freeze a complete sample, or authorize a paid call. A scalable exact
+initial reference for 276, independent review, and full retained-suite validation
+are required before selection can continue. The explicit user hold must remain
+in force throughout this work.

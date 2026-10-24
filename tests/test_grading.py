@@ -1,3 +1,4 @@
+import json
 import tempfile
 import unittest
 from fractions import Fraction
@@ -78,10 +79,12 @@ class CodingGradingTests(unittest.TestCase):
     def test_stdout_exact_comparison_outside_container(self):
         box = DockerSandbox()
         tests = [{"stdin": "3", "stdout": "9\n"}]
-        with patch.object(box, "run", return_value={"status": "completed", "returncode": 0, "stdout": " 9 \n", "stderr": ""}):
+        def raw(output):
+            return {"status": "completed", "returncode": 0, "stdout": json.dumps([{"status": "completed", "returncode": 0, "stdout": output}]), "stderr": ""}
+        with patch.object(box, "run", return_value=raw(" 9 \n")):
             self.assertTrue(box.evaluate("arbitrary", tests)["passed"])
         for stdout in ["True", "9.0", "PASS", "9 10", "9e0"]:
-            with patch.object(box, "run", return_value={"status": "completed", "returncode": 0, "stdout": stdout, "stderr": ""}):
+            with patch.object(box, "run", return_value=raw(stdout)):
                 self.assertFalse(box.evaluate("arbitrary", tests)["passed"])
         self.assertEqual(normalize_output("a\n b"), "a b")
 
@@ -91,6 +94,14 @@ class CodingGradingTests(unittest.TestCase):
         box = DockerSandbox()
         with patch.object(box, "evaluate", side_effect=[{"passed": False}, {"passed": True}]):
             self.assertEqual(grade_response(task, "updated", "print(6)", sandbox=box)["status"], "old_answer_match")
+
+    def test_case_insensitive_scoring_requires_published_explicit_flag(self):
+        box = DockerSandbox()
+        raw = {"status": "completed", "returncode": 0, "stdout": json.dumps([{"status": "completed", "returncode": 0, "stdout": "fEnNeC\n"}]), "stderr": ""}
+        tests = [{"stdin": "1\n1\n", "stdout": "Fennec"}]
+        with patch.object(box, "run", return_value=raw):
+            self.assertFalse(box.evaluate("pass", tests)["passed"])
+            self.assertTrue(box.evaluate("pass", tests, case_insensitive=True)["passed"])
 
 
 if __name__ == "__main__":

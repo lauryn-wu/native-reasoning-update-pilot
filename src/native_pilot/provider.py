@@ -88,7 +88,10 @@ def build_request(task: Mapping, branch: str, checkpoint: Mapping | None = None,
         if checkpoint is not None:
             raise ProtocolError("Initial/fresh requests must not contain history")
         prompt = _text(task, "original_prompt" if branch == "initial" else "updated_prompt")
-        history = [{"role": "user", "content": prompt}]
+        history = []
+        if task.get('output_instructions'):
+            history.append({'role':'developer','content':_text(task,'output_instructions')})
+        history.append({"role": "user", "content": prompt})
     else:
         if not isinstance(checkpoint, Mapping):
             raise ProtocolError("Continuation requires an initial checkpoint")
@@ -257,6 +260,15 @@ class OpenAIProvider:
         if client is not None:  # Injection for offline tests; no SDK/network required.
             self.client = client
             return
+        # An explicit user hold is stronger than the ordinary CLI opt-in.
+        from pathlib import Path
+        policy_path = Path(__file__).resolve().parents[2] / "provenance/execution_policy.json"
+        try:
+            policy = json.loads(policy_path.read_text())
+        except (OSError, ValueError):
+            raise ProviderFailure("execution_policy_missing", uncertain_charge=False) from None
+        if policy.get("paid_execution_allowed") is not True:
+            raise ProviderFailure("paid_execution_policy_hold", uncertain_charge=False)
         try:
             version = importlib.metadata.version("openai")
         except importlib.metadata.PackageNotFoundError:

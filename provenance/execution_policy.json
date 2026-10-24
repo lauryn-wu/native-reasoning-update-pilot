@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "paid_execution_allowed": false,
+  "reason": "User explicitly requires paid execution to remain blocked during and after reference qualification. A future explicit user authorization and a new frozen manifest are required to change this policy.",
+  "applies_to": ["protocol_smoke", "pilot", "transport_retries"],
+  "recorded_date": "2026-10-24"
+}

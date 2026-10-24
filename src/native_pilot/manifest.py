@@ -10,21 +10,36 @@ ROOT = Path(__file__).resolve().parents[2]
 def implementation_hashes(root=ROOT):
     paths = list((root/'src').rglob('*.py')) + list((root/'sandbox').rglob('*.py')) + list((root/'tests').rglob('*.py'))
     paths += [root/'pyproject.toml'] + list((root/'docs').glob('*.md'))
+    paths += [p for p in (root/'references').rglob('*') if p.is_file() and '__pycache__' not in p.parts]
     return {str(p.relative_to(root)): file_digest(p) for p in sorted(paths) if p.is_file()}
 
 
-def freeze(destination, version, root=ROOT):
-    audit = json.loads((root/'provenance/audit.json').read_text())
+def freeze(destination, version, root=ROOT, *, audit_path=None):
+    audit = json.loads(Path(audit_path or root/'provenance/audit.json').read_text())
     from .data import select_tasks, SourceBlocked
     blockers = list(audit.get('blockers', []))
     tasks, smoke_task = [], None
     try:
         selection = select_tasks(audit, SEED)
         tasks, smoke_task = selection['tasks'], selection['smoke_task']
-    except SourceBlocked:
-        blockers.append('Deterministic selection requires a fully qualified pool and a disjoint smoke task')
-    if audit.get('paid_execution_allowed') is not True:
-        blockers.append('Source audit explicitly withholds paid execution')
+        # A stale qualified audit must not bless subsequently changed reviews.
+        from .qualification import assert_ordered_prefix
+        review_hashes = audit.get('review_hashes',{})
+        required_reviews = {'provenance/math_review.json','provenance/coding_review.json'}
+        if not required_reviews.issubset(review_hashes):
+            raise SourceBlocked('Qualified audit lacks current review bindings')
+        current_reviews = {}
+        for name, expected in review_hashes.items():
+            path = (root/name).resolve()
+            if not path.is_relative_to(root.resolve()) or not path.is_file() or file_digest(path) != expected:
+                raise SourceBlocked('Qualified audit review changed: '+name)
+            document=json.loads(path.read_text())
+            for record in document.get('candidates',document.get('reviewed_candidates',[])):
+                current_reviews[record['task_id']]=record
+        inventory=json.loads((root/'provenance/review_inventory.json').read_text())['candidates']
+        assert_ordered_prefix(inventory,current_reviews,{t['task_id'] for t in tasks},smoke_task['task_id'])
+    except SourceBlocked as exc:
+        blockers.append(str(exc))
     if audit.get('source_lock_sha256') != file_digest(root/'provenance/source_lock.json'):
         blockers.append('Source audit does not match the pinned source lock')
     for task in tasks + ([smoke_task] if smoke_task else []):
@@ -32,8 +47,9 @@ def freeze(destination, version, root=ROOT):
             if not isinstance(task.get(field),str) or not task[field].strip():
                 blockers.append(f"Task {task['task_id']} lacks audited {field}")
         for variant in ('original','updated'):
+            spec = task.get(variant,{})
             required = 'answer' if task.get('domain')=='math' else 'tests'
-            if required not in task.get(variant,{}):
+            if required not in spec and not (required == 'tests' and 'test_asset' in spec):
                 blockers.append(f"Task {task['task_id']} lacks {variant} {required}")
     schedule = make_schedule(tasks)
     try:
@@ -44,12 +60,17 @@ def freeze(destination, version, root=ROOT):
         blockers.append('No completed audit of unambiguous behavior-changing pairs and both graders')
     # Do not manufacture a 24-case selection from unqualified review candidates.
     if blockers:
-        tasks, schedule = [], []
+        tasks, schedule, smoke_task = [], [], None
     provenance = {str(p.relative_to(root)): file_digest(p)
                   for p in sorted((root/'provenance').glob('*.json'))}
+    policy_path = root/'provenance/execution_policy.json'
+    paid_allowed = policy_path.is_file() and json.loads(policy_path.read_text()).get('paid_execution_allowed') is True
     manifest = {
-        'schema_version': 1, 'version': version, 'created_at': utcnow(),
+        'schema_version': 2, 'version': version, 'created_at': utcnow(),
+        'source_audit_sha256': file_digest(Path(audit_path or root/'provenance/audit.json')),
         'source_qualified': not bool(blockers),
+        'paid_execution_allowed': bool(paid_allowed and not blockers),
+        'execution_blockers': [] if paid_allowed else ['Explicit user hold: paid execution remains blocked, including smoke and retries'],
         'status': 'blocked' if blockers else 'frozen', 'blockers': sorted(set(blockers)),
         'research_question': 'Does retained native reasoning impair adaptation beyond prior visible answer?',
         'adaptation': 'New user-turn correction after completed response; not mid-reasoning interruption replication',
@@ -99,6 +120,11 @@ def load_manifest(path, *, verify_files=True, root=ROOT):
 
 
 def paid_preflight(manifest, qualification, *, smoke=False):
+    policy_path = ROOT/'provenance/execution_policy.json'
+    if not policy_path.is_file() or json.loads(policy_path.read_text()).get('paid_execution_allowed') is not True:
+        raise ValueError('Paid execution blocked by explicit user policy; --allow-paid cannot override it')
+    if manifest.get('paid_execution_allowed') is not True:
+        raise ValueError('Frozen manifest does not authorize paid execution')
     if manifest['status'] != 'frozen' or manifest['blockers']:
         raise ValueError('Paid execution blocked: ' + '; '.join(manifest['blockers']))
     validate_design(manifest['tasks'], manifest['schedule'])

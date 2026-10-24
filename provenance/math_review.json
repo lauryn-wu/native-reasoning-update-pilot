@@ -1,0 +1,1059 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-10-24T21:55:29.474638+00:00",
+  "status": "math_reference_qualification_complete_paid_execution_blocked",
+  "review_order_source": "provenance/review_inventory.json",
+  "review_order_sha256": "ea408f5449afe644d154a2c063789a62d0420ac171aebe27e8961f55d1846ff8",
+  "reviewed_prefix_length": 22,
+  "total_available_math_candidates": 60,
+  "no_candidate_selected": true,
+  "paid_calls_made": 0,
+  "pending_earlier_candidate_blocks_final_selection": false,
+  "candidates": [
+    {
+      "task_id": "aime2024:1004",
+      "domain": "math",
+      "source_id": 1004,
+      "source": "aime2024",
+      "source_row_sha256": "8f2e9694580ebce7d0ac234549e700c35fb4ed8cb45f01c5aa5000d863c31e6f",
+      "original_identity": "4827451ee78b173fce0a2b248a10c01442ec7346d87aba46c59a0ad1218f71ed",
+      "source_original_prompt_sha256": "4827451ee78b173fce0a2b248a10c01442ec7346d87aba46c59a0ad1218f71ed",
+      "source_revised_prompt_sha256": "222c16d61b8c4649f20b52abfef1a126b775b4ea3cb4fd09a5bafa3b101fba1a",
+      "correction_prompt_sha256": "3bec1507e87666c28d50f09de6d577831212d16ceac1e6cd4ab7a338c553d2e8",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 1,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 1 \u2014 aime2024:1004",
+      "status": "qualified",
+      "original_answer": "399",
+      "updated_answer": "110",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "roots_mod_17_cubed": [
+            399,
+            1022,
+            3891,
+            4514
+          ],
+          "roots_mod_17_squared": [
+            110,
+            134,
+            155,
+            179
+          ]
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2024:1027",
+      "domain": "math",
+      "source_id": 1027,
+      "source": "aime2024",
+      "source_row_sha256": "2119ae2a723cae3f863a8cb289796b95e04f2e4ec35d3f4c8729b49f7fddbb28",
+      "original_identity": "10c80ba48d1803c48df550827e6e2c3b4b8ef3e0aba30c507798eabf30aeea2e",
+      "source_original_prompt_sha256": "10c80ba48d1803c48df550827e6e2c3b4b8ef3e0aba30c507798eabf30aeea2e",
+      "source_revised_prompt_sha256": "ac8737b48886531669d362e4014ac53ed455f854ba0a907bacb272c0345534b1",
+      "correction_prompt_sha256": "81a3497138af57e842c3872bb23d3feb8917c709bceee4504fb55a64ed2fe8a6",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 2,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 2 \u2014 aime2024:1027",
+      "status": "qualified",
+      "original_answer": "488",
+      "updated_answer": "699",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "initial_solutions": [
+            44444
+          ],
+          "updated_solutions": [
+            5624,
+            5694
+          ]
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2024:1003",
+      "domain": "math",
+      "source_id": 1003,
+      "source": "aime2024",
+      "source_row_sha256": "8ca971b1fcd60821d7d99b94bbb1fd94bf29f06d1ac828b101722b4bfcb921d2",
+      "original_identity": "d965cc0c83096dce50f756ecdd29990c906370987a63d3a8d0fd03d875ac6b3b",
+      "source_original_prompt_sha256": "d965cc0c83096dce50f756ecdd29990c906370987a63d3a8d0fd03d875ac6b3b",
+      "source_revised_prompt_sha256": "b74fb8072ee161386a2a1be2a893682ea4a84ef851741911c8633d0203d4981e",
+      "correction_prompt_sha256": "a759d98466e700d731078912f90d75fcb8fbdf13e0f381229ca60ef451e960a4",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 3,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "provider",
+        "review_file": "references/math/TRIG_INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 3 \u2014 aime2024:1003",
+      "status": "qualified",
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "run_file": "references/math/trig-verification-run.json",
+        "independent_run_file": "references/math/trig-independent-run.json",
+        "primary_checker_sha256": "b51bf740869a2a976b9b1cb5fd46a8455eea9d882ab7939dc7f3d1b22cfdb235",
+        "independent_checker_sha256": "ab6d30f5e541da280a459a3dec343c0b2d1267b0bc1bab5a9119b5f42825e69f",
+        "evidence": {
+          "initial_count": 1244,
+          "updated_count": 385,
+          "unresolved_initial": [],
+          "unresolved_updated": []
+        },
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "original_answer": "1244",
+      "updated_answer": "385",
+      "checker_file": "references/math/trig_certifier.py",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2024:1025",
+      "domain": "math",
+      "source_id": 1025,
+      "source": "aime2024",
+      "source_row_sha256": "00357fd8cfac46959282a0745be3a1145a076a8a6250ff47430dbb2edb6c1849",
+      "original_identity": "01f4378fc0aa8d4ad347260572db3350ecd0f93dff0e7f2847c7610963cae0b5",
+      "source_original_prompt_sha256": "01f4378fc0aa8d4ad347260572db3350ecd0f93dff0e7f2847c7610963cae0b5",
+      "source_revised_prompt_sha256": "78f647d850fb8cd887316f2ac3734b74998fa88082c092788d2dbdf6c30badb2",
+      "correction_prompt_sha256": "1fc14d227f97c6ba2ba0b2d452f344b17fb26abf4f384e4785e06e39c64cdac4",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": false,
+      "qualification_blockers": [
+        "Equiangular hexagon forces an equilateral extension triangle, contradicting unequal side lengths."
+      ],
+      "review_rank": 4,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 4 \u2014 aime2024:1025",
+      "status": "excluded",
+      "reason": "Equiangular hexagon forces an equilateral extension triangle, contradicting unequal side lengths.",
+      "validation": {
+        "proof": "Exact contradiction or explicit nonuniqueness construction; independently reviewed and approved"
+      }
+    },
+    {
+      "task_id": "aime2024:1024",
+      "domain": "math",
+      "source_id": 1024,
+      "source": "aime2024",
+      "source_row_sha256": "fbf393ce91a6ffd5c2788a13bd83949e3b156b3e3db8069072513d97641c50ff",
+      "original_identity": "d18a6d0b7b3fa01f0b19580ecc8f4d2c6778f0eb4e50e694c2ec08fc917870ed",
+      "source_original_prompt_sha256": "f785f38899d11791997f4c396dcf950e2979673d372c77988fd0379684b00927",
+      "source_revised_prompt_sha256": "d83c7aba8086e2d31b9e651483ae9a3029499bb40e9469c5b36e86c75241f55d",
+      "correction_prompt_sha256": "86f56967d0a28a0b3daa6e6d3d095fde3e7ddfdc256b364b9cfa29095d63b5be",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 5,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 5 \u2014 aime2024:1024",
+      "status": "qualified",
+      "original_answer": "221",
+      "updated_answer": "33",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "initial_log_value": "141/80",
+          "updated_log_value": "25/8"
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2025:1058",
+      "domain": "math",
+      "source_id": 1058,
+      "source": "aime2025",
+      "source_row_sha256": "03513f942c7aee3428fe0e780c61cc9751519cd0aa8e105da109e5d94f42d60e",
+      "original_identity": "abfbe923aafcc19320123129e3fa3061263d22d712bff1e32978b523da3a2741",
+      "source_original_prompt_sha256": "abfbe923aafcc19320123129e3fa3061263d22d712bff1e32978b523da3a2741",
+      "source_revised_prompt_sha256": "34c02c6df8fc94fbd783e97933085bfc4c28ba4a50bdb69da8a0b4972c29d7e1",
+      "correction_prompt_sha256": "5a10f63d27522df6af3db9237ce80a8e012d83d554de7c12d7a3971ea0de1ad3",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": false,
+      "qualification_blockers": [
+        "Right-angle hypotenuse AC>40 contradicts AL+LC=36."
+      ],
+      "review_rank": 6,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 6 \u2014 aime2025:1058",
+      "status": "excluded",
+      "reason": "Right-angle hypotenuse AC>40 contradicts AL+LC=36.",
+      "validation": {
+        "proof": "Exact contradiction or explicit nonuniqueness construction; independently reviewed and approved"
+      }
+    },
+    {
+      "task_id": "aime2024:1013",
+      "domain": "math",
+      "source_id": 1013,
+      "source": "aime2024",
+      "source_row_sha256": "04175972eb674b8c7e1a77e47a787b3700df0d9a06332e2a83b04f3d0eb006c2",
+      "original_identity": "d7b202873c9ff78edfbcd97652c0093c68f53f7582c9b20614780fe7288a87a7",
+      "source_original_prompt_sha256": "d7b202873c9ff78edfbcd97652c0093c68f53f7582c9b20614780fe7288a87a7",
+      "source_revised_prompt_sha256": "2152322d8b61f296f216c44d68c575b91e7ce7cc80eaedc518ea87cb9ae0e667",
+      "correction_prompt_sha256": "8d18a8f7bf33158d8b17ded752ed337f441db79fbcd8d4395f476e4753a42e63",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": false,
+      "qualification_blockers": [
+        "Missing shared-third-side tangency: explicit valid arrangements in triangles of leg5000 and6000 give different inradii."
+      ],
+      "review_rank": 7,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 7 \u2014 aime2024:1013",
+      "status": "excluded",
+      "reason": "Missing shared-third-side tangency: explicit valid arrangements in triangles of leg5000 and6000 give different inradii.",
+      "validation": {
+        "proof": "Exact contradiction or explicit nonuniqueness construction; independently reviewed and approved"
+      }
+    },
+    {
+      "task_id": "aime2025:1030",
+      "domain": "math",
+      "source_id": 1030,
+      "source": "aime2025",
+      "source_row_sha256": "ba0e9c3a2c19fb8e80d059d6aa1f496bf018d2ddabfb644798d3dd3fa59ca013",
+      "original_identity": "26a263ad81138dbfb41647a1e55af77c0b8ab02d4b051fc23722a7f0c403535d",
+      "source_original_prompt_sha256": "26a263ad81138dbfb41647a1e55af77c0b8ab02d4b051fc23722a7f0c403535d",
+      "source_revised_prompt_sha256": "3f073c7ea81727b5bdeca58300ba89bef43e3b396d2b3118e10da7f2a651e288",
+      "correction_prompt_sha256": "f2d4dc0942fdd91d1b951e78a2074f20d0084b7d4abf1b59c48666b8f7bd519a",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 8,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 8 \u2014 aime2025:1030",
+      "status": "qualified",
+      "original_answer": "1",
+      "updated_answer": "70",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "initial_bases": [],
+          "updated_bases": [
+            21,
+            49
+          ]
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2024:1006",
+      "domain": "math",
+      "source_id": 1006,
+      "source": "aime2024",
+      "source_row_sha256": "c0848643aa711ac61c1a6fde84d07746e8e32819f262dfe3de36f9376025aee0",
+      "original_identity": "7f3d2be0982807560fb814e16f111ef6e38f04e32a108355530732c9c64c22fb",
+      "source_original_prompt_sha256": "7f3d2be0982807560fb814e16f111ef6e38f04e32a108355530732c9c64c22fb",
+      "source_revised_prompt_sha256": "81ad7cf5cb9f4fb7b32050dda77f45eaef51f9525a6199c51d63dd25c31ba2bd",
+      "correction_prompt_sha256": "6ab289c4a8d802103781da89b8adab7ccaf5f1311d2c7d37652b99853d9352d6",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": false,
+      "qualification_blockers": [
+        "Initial squared sphere diameter is algebraic irrational, contradicting required positive rational p/q."
+      ],
+      "review_rank": 9,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 9 \u2014 aime2024:1006",
+      "status": "excluded",
+      "reason": "Initial squared sphere diameter is algebraic irrational, contradicting required positive rational p/q.",
+      "validation": {
+        "proof": "Exact contradiction or explicit nonuniqueness construction; independently reviewed and approved",
+        "run_file": "references/math/exclusion-verification-run.json"
+      },
+      "checker_file": "references/math/verify_exclusions.py"
+    },
+    {
+      "task_id": "aime2025:1059",
+      "domain": "math",
+      "source_id": 1059,
+      "source": "aime2025",
+      "source_row_sha256": "f86ba7c029f7ad80ce739b153978a215415db3ea704fd9f1f699226e66deb116",
+      "original_identity": "fe9269c9188b94f6e987a4aab767b41131fc4efb12c3bf074e8aa2aa869bb6dc",
+      "source_original_prompt_sha256": "fe9269c9188b94f6e987a4aab767b41131fc4efb12c3bf074e8aa2aa869bb6dc",
+      "source_revised_prompt_sha256": "ae66536232db91959c1e59a44a196010c48c2e239f3a47908c0f7c864b2384c5",
+      "correction_prompt_sha256": "6f9b0f392c1f3ddd4f1030fe07da3e14c7fdf5b24b629948fb174e75ad80018c",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": false,
+      "qualification_blockers": [
+        "Literal rational function is unbounded above; no requested global maximum."
+      ],
+      "review_rank": 10,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 10 \u2014 aime2025:1059",
+      "status": "excluded",
+      "reason": "Literal rational function is unbounded above; no requested global maximum.",
+      "validation": {
+        "proof": "Exact contradiction or explicit nonuniqueness construction; independently reviewed and approved"
+      }
+    },
+    {
+      "task_id": "aime2025:1044",
+      "domain": "math",
+      "source_id": 1044,
+      "source": "aime2025",
+      "source_row_sha256": "17ec3fdd677c7796c225f32f7d6050a0abda32a32623328feebcb812d922c15c",
+      "original_identity": "63326536fab5909240d6b85dfa0fbcdc50e4cc83005c744279472f492b052744",
+      "source_original_prompt_sha256": "63326536fab5909240d6b85dfa0fbcdc50e4cc83005c744279472f492b052744",
+      "source_revised_prompt_sha256": "773256f9ffba5cbb6d1eb76b7b458faa956da2059fc308b36e97f71ce5384ba3",
+      "correction_prompt_sha256": "e1850a54eba3260c8ecf94eab87dda1778d9c4eb1a14dbc002613e276151dde8",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 11,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 11 \u2014 aime2025:1044",
+      "status": "qualified",
+      "original_answer": "244",
+      "updated_answer": "735",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "initial_ordered_triples": 10174168,
+          "updated_ordered_triples": 885735
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2024:1028",
+      "domain": "math",
+      "source_id": 1028,
+      "source": "aime2024",
+      "source_row_sha256": "82440bcb57413cac7b0feafb5cd2d9741ae62e76bdb1fff5ad10b177916e40f8",
+      "original_identity": "b5acbabe1754e3a260608a2ac15284de192f2f2950221e5e008f391a6c6ffc9a",
+      "source_original_prompt_sha256": "3c4b599aa92bcd8347ba4bbf4a1bf1fc265c43dd6cc93810df56af814fc2a619",
+      "source_revised_prompt_sha256": "e745950a86fbcbdf82ad99678b73c3aea3c7a45bc980039127d4d084c0ad1a2a",
+      "correction_prompt_sha256": "277317c853e147d1e46dafe955ab9f6c4ad74fc872cbf95a9db1f58647f75dfc",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": false,
+      "qualification_blockers": [
+        "Initial internal tangency impossible; corrected source defines both radii by the same external tangency."
+      ],
+      "review_rank": 12,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 12 \u2014 aime2024:1028",
+      "status": "excluded",
+      "reason": "Initial internal tangency impossible; corrected source defines both radii by the same external tangency.",
+      "validation": {
+        "proof": "Exact contradiction or explicit nonuniqueness construction; independently reviewed and approved"
+      }
+    },
+    {
+      "task_id": "aime2025:1049",
+      "domain": "math",
+      "source_id": 1049,
+      "source": "aime2025",
+      "source_row_sha256": "6cfc61cfd6180abcb6392ac2614db5acc3f40a38bc6f884c6c185c05b9dd67e6",
+      "original_identity": "2bcca11a694a5238efc330a6e1f62d0a1c209421160e05d6236ecba8ecd189a0",
+      "source_original_prompt_sha256": "015286a5b3dcffd5034c2ca1f57fe161ccb59c2c2f862d30c4a34a45c5dc96ed",
+      "source_revised_prompt_sha256": "b5348778cd596cf50d44215045c4d21d767c992b45b98f00bd1392dac28fc327",
+      "correction_prompt_sha256": "aa62b914184e39b74d03eaaebd1e98dc74b347b5bcb876c400f99b01efe6233b",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": false,
+      "qualification_blockers": [
+        "Prose defines J on CF and angles54/42, while supplied Asymptote diagram explicitly defines J on AF and angles60/36."
+      ],
+      "review_rank": 13,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 13 \u2014 aime2025:1049",
+      "status": "excluded",
+      "reason": "Prose defines J on CF and angles54/42, while supplied Asymptote diagram explicitly defines J on AF and angles60/36.",
+      "validation": {
+        "proof": "Exact contradiction or explicit nonuniqueness construction; independently reviewed and approved"
+      }
+    },
+    {
+      "task_id": "aime2025:1042",
+      "domain": "math",
+      "source_id": 1042,
+      "source": "aime2025",
+      "source_row_sha256": "0a0f5f9e7e741c4b2687e5ea7df8b40e3fac25e6f109ce33e30a38f06de8199f",
+      "original_identity": "f1f6a6c4f0c73bba62b663e91288cea7afde372a3a2f9a38ef823e0d8ce9bcef",
+      "source_original_prompt_sha256": "f1f6a6c4f0c73bba62b663e91288cea7afde372a3a2f9a38ef823e0d8ce9bcef",
+      "source_revised_prompt_sha256": "ca89e4a598ac25eb8964a57725a22e1f8f8875999a0b801aa183be2ab95438e3",
+      "correction_prompt_sha256": "bb1bd67ec00bc52abf94c6bd1d5b5b91c6b2e0e341985e3835df586826d0aba9",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 14,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 14 \u2014 aime2025:1042",
+      "status": "qualified",
+      "original_answer": "1923/8",
+      "updated_answer": "204",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "adjacent_crossing_probability": "3/8",
+          "different_crossing_probability": "17/36"
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2024:1012",
+      "domain": "math",
+      "source_id": 1012,
+      "source": "aime2024",
+      "source_row_sha256": "cf9a8f85374e3329c70217e7c8300828e119fe98ef06af67bab9548c7207be4c",
+      "original_identity": "2347acb5eb3b35f1aa81bb03fa72115a21175fe3c04f58b7d13191b67531cd47",
+      "source_original_prompt_sha256": "2347acb5eb3b35f1aa81bb03fa72115a21175fe3c04f58b7d13191b67531cd47",
+      "source_revised_prompt_sha256": "29b3554aa700839911e8190710573259839a8a0b28d827745896659cd6b5bc46",
+      "correction_prompt_sha256": "e4d3da91987d165e07fb46f79eac5957a09dff16e503f536728b1e92d6479750",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 15,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 15 \u2014 aime2024:1012",
+      "status": "qualified",
+      "original_answer": "sqrt(241330)",
+      "updated_answer": "540",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "squared_maxima": [
+            "241330",
+            "291600"
+          ]
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2024:1016",
+      "domain": "math",
+      "source_id": 1016,
+      "source": "aime2024",
+      "source_row_sha256": "29d55372e842d6b69d46991c45d83843c3463800231f8ffcf38bf5d96a203b31",
+      "original_identity": "357603fe2192e4dc2b2a52cc90ade2f1f6a3fd452ceec23c194e28a3748e579b",
+      "source_original_prompt_sha256": "357603fe2192e4dc2b2a52cc90ade2f1f6a3fd452ceec23c194e28a3748e579b",
+      "source_revised_prompt_sha256": "386da5f601f922ef73671c836c9700348a849f2b44006df618d3d35e78f53c13",
+      "correction_prompt_sha256": "d94ea29416379ab6b86ac83e9c153d8b73a1971c2d5a508bc41e1f98c01ba51c",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 16,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 16 \u2014 aime2024:1016",
+      "status": "qualified",
+      "original_answer": "714",
+      "updated_answer": "468",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "proved_formula": "adjacent_side_product=6*R*r"
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2025:1053",
+      "domain": "math",
+      "source_id": 1053,
+      "source": "aime2025",
+      "source_row_sha256": "7c12ec9e3decdfb552aa609d83c9d41cae2830779ad2ec1baf552ac5f7d782c6",
+      "original_identity": "658a2a69f8bebb22a152c5fb532e4e823debf7ab86ac16ce9d80f0359f16e821",
+      "source_original_prompt_sha256": "658a2a69f8bebb22a152c5fb532e4e823debf7ab86ac16ce9d80f0359f16e821",
+      "source_revised_prompt_sha256": "efb3815a9552ce4c2da5c6b2d51a3e64d1d05e5c1003ddbf825328a9659b60f0",
+      "correction_prompt_sha256": "8406743f3e706fecc2d64ee33e612cf4aae268fb144b955689d8b97344e7c63e",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 17,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 17 \u2014 aime2025:1053",
+      "status": "qualified",
+      "original_answer": "203",
+      "updated_answer": "149",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "initial_n": 215,
+          "initial_t": 12,
+          "updated_n": 139,
+          "updated_t": 10
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2024:1019",
+      "domain": "math",
+      "source_id": 1019,
+      "source": "aime2024",
+      "source_row_sha256": "004a42797998ea9de4e48b3140b0de63186ce62d0f62f0a79be85c289da9b0f6",
+      "original_identity": "ac83b54c4a175d2bf53ac38d3983c677263253d3aba9749eaf448736752be37b",
+      "source_original_prompt_sha256": "2ae7df54989b82f448fff0d86e5d1996f777a9f6100bbbe8a6fb99ebe661bc4a",
+      "source_revised_prompt_sha256": "c9c31af235546fca99b81cd9e8971073f520f087533ba6e408bc1f69046b00ea",
+      "correction_prompt_sha256": "c080aad476bce0afc2ec097b4cdf6185c858891d53e02c248587bdcddeffd0e9",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 18,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 18 \u2014 aime2024:1019",
+      "status": "qualified",
+      "original_answer": "42",
+      "updated_answer": "321",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "initial_exact_product": 177542,
+          "updated_exact_product": 8321
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2025:1037",
+      "domain": "math",
+      "source_id": 1037,
+      "source": "aime2025",
+      "source_row_sha256": "b528d5ff290322088904b53935cbcfe77e1e36663a1b029af55e3069dc2a575e",
+      "original_identity": "16ad5525ed1870e84268b9187c71ac7a0813dbb1d8c035504a7381d27b195531",
+      "source_original_prompt_sha256": "16ad5525ed1870e84268b9187c71ac7a0813dbb1d8c035504a7381d27b195531",
+      "source_revised_prompt_sha256": "9dc90862fbcc6593ebc480b236135eea90140b8e8eb0226e7fb9d281df608448",
+      "correction_prompt_sha256": "df4143cd82e77c039221309c418629d7a2897ddfb9fb30dca2fec4801c269a1f",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": false,
+      "qualification_blockers": [
+        "Initial possible k product is -271, which cannot be m/n with positive m,n."
+      ],
+      "review_rank": 19,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 19 \u2014 aime2025:1037",
+      "status": "excluded",
+      "reason": "Initial possible k product is -271, which cannot be m/n with positive m,n.",
+      "validation": {
+        "proof": "Exact contradiction or explicit nonuniqueness construction; independently reviewed and approved"
+      }
+    },
+    {
+      "task_id": "aime2025:1057",
+      "domain": "math",
+      "source_id": 1057,
+      "source": "aime2025",
+      "source_row_sha256": "400b98b47cd55cd6e3e30b6c8149578aca5ae3d15d6e895eb5fa3f5cb29c9da1",
+      "original_identity": "b7e93c177f8150682444ac0f26c1edce7d25a5c91a90375bf28c231e1623fd8f",
+      "source_original_prompt_sha256": "bbd97ab65075c4b2eece0f7e41cc964f59dcab04f3242274cb377d47eebcae27",
+      "source_revised_prompt_sha256": "01954e46c1ac8fcd53625e12ca65debe9589bde29d50ce26315a7484c936bed8",
+      "correction_prompt_sha256": "84a4a1b3dccf36f788edf4d8030e605b40cfb7f2d9355137a9a054707d962416",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 20,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 20 \u2014 aime2025:1057",
+      "status": "qualified",
+      "original_answer": "809",
+      "updated_answer": "248",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "initial_steps": 2025,
+          "updated_sum_formula": "3*12^(2^2024)"
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2025:1031",
+      "domain": "math",
+      "source_id": 1031,
+      "source": "aime2025",
+      "source_row_sha256": "2cac2e46e844e3c8cf9e9f440f88dd992c81dfdd7e8d1f7b6c91e64228ecea08",
+      "original_identity": "c7835c9e4ce80bd43882dc4f2f76875e0445f944c314499a5ebfeb3a83f9941b",
+      "source_original_prompt_sha256": "c7835c9e4ce80bd43882dc4f2f76875e0445f944c314499a5ebfeb3a83f9941b",
+      "source_revised_prompt_sha256": "f4210c3f45ca643079c098c7b4c5b9f95d9e76809e2851dac77e5183d087500b",
+      "correction_prompt_sha256": "f137a4c7dafb00e3ab4218a4115051ea97dbd3f7417722de0bfceb610f16686b",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 21,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 21 \u2014 aime2025:1031",
+      "status": "qualified",
+      "original_answer": "735",
+      "updated_answer": "588",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "affine_area_ratio": "49/24"
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    },
+    {
+      "task_id": "aime2024:1008",
+      "domain": "math",
+      "source_id": 1008,
+      "source": "aime2024",
+      "source_row_sha256": "605598a7ac6847118fe3f4026a66d7db70df934c9821f81716091ab5242fea43",
+      "original_identity": "d03cff1d2f5fa63a31ab545f733b29d3e01b55cb8d23ec42d137ca54371d6ac8",
+      "source_original_prompt_sha256": "d03cff1d2f5fa63a31ab545f733b29d3e01b55cb8d23ec42d137ca54371d6ac8",
+      "source_revised_prompt_sha256": "5c939ce07df86f95ab9901ffd0bcb9a1074e93d99ba19ac83a29255310c20189",
+      "correction_prompt_sha256": "7fde07faf9c5f3bd85ef2cc1d3ca6e9a6cd04af7c12069dc66286a98425008e9",
+      "published_difficulty": null,
+      "changed_tokens": 4,
+      "qualified": true,
+      "qualification_blockers": [],
+      "review_rank": 22,
+      "proof_file": "references/math/proofs.md",
+      "source_pair_file": "references/math/source_pairs.json",
+      "independent_review": {
+        "status": "passed",
+        "reviewer": "root",
+        "review_file": "references/math/INDEPENDENT_REVIEW.md"
+      },
+      "proof_section": "Rank 22 \u2014 aime2024:1008",
+      "status": "qualified",
+      "original_answer": "1012",
+      "updated_answer": "809",
+      "checker_file": "references/math/verify_exact.py",
+      "validation": {
+        "docker_status": "completed",
+        "docker_returncode": 0,
+        "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+        "evidence": {
+          "initial_strategy": "Every permitted move odd; even total gives Bob win in misere play."
+        },
+        "run_file": "references/math/verification-run.json",
+        "grader_checks": {
+          "changed_answer": true,
+          "original_reference": true,
+          "original_equivalent": true,
+          "original_wrong_rejected": true,
+          "updated_reference": true,
+          "updated_equivalent": true,
+          "updated_wrong_rejected": true,
+          "stale_rejected": true
+        }
+      },
+      "reason": "Exact reference derivation, independent review, and equivalent/wrong/stale grading checks passed.",
+      "grader_qualification_file": "references/math/grader-qualification.json",
+      "grader_qualification_sha256": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df"
+    }
+  ],
+  "unreviewed_task_ids": [
+    "aime2025:1038",
+    "aime2025:1033",
+    "aime2025:1045",
+    "aime2025:1043",
+    "aime2024:1026",
+    "aime2024:1001",
+    "aime2025:1047",
+    "aime2024:1010",
+    "aime2025:1046",
+    "aime2024:1011",
+    "aime2024:1017",
+    "aime2024:1029",
+    "aime2024:1005",
+    "aime2025:1056",
+    "aime2025:1034",
+    "aime2024:1021",
+    "aime2024:1007",
+    "aime2024:1009",
+    "aime2024:1022",
+    "aime2025:1035",
+    "aime2024:1000",
+    "aime2024:1020",
+    "aime2025:1051",
+    "aime2025:1040",
+    "aime2024:1014",
+    "aime2024:1015",
+    "aime2024:1002",
+    "aime2025:1036",
+    "aime2025:1041",
+    "aime2025:1054",
+    "aime2025:1052",
+    "aime2025:1050",
+    "aime2024:1023",
+    "aime2025:1032",
+    "aime2025:1048",
+    "aime2025:1039",
+    "aime2024:1018",
+    "aime2025:1055"
+  ],
+  "reference_verified_count": 14,
+  "independently_reviewed_exclusion_count": 8,
+  "first_twelve_reference_verified_task_ids": [
+    "aime2024:1004",
+    "aime2024:1027",
+    "aime2024:1003",
+    "aime2024:1024",
+    "aime2025:1030",
+    "aime2025:1044",
+    "aime2025:1042",
+    "aime2024:1012",
+    "aime2024:1016",
+    "aime2025:1053",
+    "aime2024:1019",
+    "aime2025:1057"
+  ],
+  "qualified_count": 14
+}

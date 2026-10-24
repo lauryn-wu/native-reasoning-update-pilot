@@ -1,0 +1,204 @@
+{
+  "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+  "checks": {
+    "all_cases_and_sys_exit": {
+      "passed": false,
+      "results": [
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": -9
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": -9
+        },
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": -9
+        },
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": -9
+        }
+      ],
+      "mode": "stdin",
+      "container_batches": 6
+    },
+    "fresh_python_and_workdir": {
+      "passed": false,
+      "results": [
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": -9
+        },
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": 0
+        },
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": 0
+        }
+      ],
+      "mode": "stdin",
+      "container_batches": 9
+    },
+    "read_only_and_no_network": {
+      "passed": true,
+      "results": [
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        },
+        {
+          "passed": true,
+          "status": "completed",
+          "returncode": 0
+        }
+      ],
+      "mode": "stdin",
+      "container_batches": 1
+    },
+    "wrong_rejected": true,
+    "self_asserted_pass_rejected": true,
+    "exit_nonzero_rejected": true,
+    "case_timeout_and_next_case": {
+      "passed": false,
+      "results": [
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": 137
+        },
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": -9
+        }
+      ],
+      "mode": "stdin",
+      "container_batches": 3
+    },
+    "case_output_bounded": {
+      "passed": false,
+      "results": [
+        {
+          "passed": false,
+          "status": "timeout",
+          "returncode": 137
+        }
+      ],
+      "mode": "stdin",
+      "container_batches": 1
+    }
+  },
+  "paid_calls": 0
+}

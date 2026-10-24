@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "scope": "historical_software_function_adapter_only",
+  "recovery_method": "Exact completed commandExecution item recovered through Codex read_thread; this is not a new execution.",
+  "thread_id": "01a16fd4-9ca1-76e2-9ac5-019d596cbd4b",
+  "turn_id": "01a16fe4-b932-7180-a17d-fff05dde8138",
+  "command_execution": {
+    "type": "commandExecution",
+    "id": "exec-1ed5e6f9-e8de-4a4b-b9aa-adce010c2e10",
+    "command": "/bin/zsh -lc \"PYTHONPATH=src /opt/homebrew/bin/python3.12 - <<'PY'\nimport json\nfrom native_pilot.sandbox import DockerSandbox\nbox=DockerSandbox()\nentry={'class':'Solution','method':'f'}\ncases=[{'args':[3],'expected':[3,4]},{'args':[8],'expected':[8,9]}]\ncorrect='class Solution:\\\\n def f(self,n):\\\\n  print(\\\"debug diagnostic\\\")\\\\n  return (n,n+1)\\\\n'\nchecks={}\nchecks['correct_tuple_and_diagnostic']=box.evaluate(correct,cases,mode='function',entrypoint=entry)['passed']\nchecks['wrong_rejected']=not box.evaluate('class Solution:\\\\n def f(self,n): return [0,0]',cases,mode='function',entrypoint=entry)['passed']\nchecks['spoof_pass_rejected']=not box.evaluate('class Solution:\\\\n def f(self,n): return {\\\"passed\\\":True}',cases,mode='function',entrypoint=entry)['passed']\nchecks['boolean_numeric_rejected']=not box.evaluate('class Solution:\\\\n def f(self,n): return True',[{'args':[1],'expected':1}],mode='function',entrypoint=entry)['passed']\nprint(json.dumps(checks)); assert all(checks.values())\nPY\"",
+    "cwd": "/Users/laurynwu/Documents/Codex/2026-10-24/files-pasted-by-the-user-implement/outputs/native-reasoning-update-pilot",
+    "status": "completed",
+    "exitCode": 0,
+    "durationMs": 665,
+    "output": {
+      "text": "{\"correct_tuple_and_diagnostic\": true, \"wrong_rejected\": true, \"spoof_pass_rejected\": true, \"boolean_numeric_rejected\": true}\n",
+      "truncated": false
+    }
+  },
+  "checks": {
+    "correct_tuple_and_diagnostic": true,
+    "wrong_rejected": true,
+    "spoof_pass_rejected": true,
+    "boolean_numeric_rejected": true
+  },
+  "paid_calls": 0,
+  "limitations": "This targeted historical run does not establish current full Docker qualification or integrated grading of all source candidates. Correct tuple/list equivalence and diagnostic handling were tested together; there was no separately named equivalent-answer check."
+}

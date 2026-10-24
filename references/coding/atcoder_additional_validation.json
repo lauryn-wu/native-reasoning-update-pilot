@@ -1,0 +1,36 @@
+[
+  {
+    "source_id": 258,
+    "variants": {
+      "updated": {
+        "cases": 43
+      },
+      "original": {
+        "cases": 43
+      }
+    },
+    "adjudications": [
+      {
+        "source_case_index": 20,
+        "upstream_case_sha256": "e267118d6b1df3e8774d48dfe9c3d79d28a47ae50b89877d713fe49159b0810e",
+        "upstream_expected": "Snuke\n",
+        "corrected_stdout": "Fennec\n",
+        "stdin": "10\n7 16 3 3 9 8 16 12 8 3"
+      }
+    ],
+    "different_outputs": 43
+  },
+  {
+    "source_id": 167,
+    "variants": {
+      "updated": {
+        "cases": 43
+      },
+      "original": {
+        "cases": 43
+      }
+    },
+    "adjudications": [],
+    "different_outputs": 13
+  }
+]

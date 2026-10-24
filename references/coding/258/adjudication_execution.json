@@ -1,0 +1,6 @@
+{
+  "status": "completed",
+  "returncode": 0,
+  "stdout": "{\"first_player_wins\": true, \"updated_winner\": \"Fennec\", \"original_winner\": \"Snuke\", \"states\": 7714}\n",
+  "stderr": ""
+}
