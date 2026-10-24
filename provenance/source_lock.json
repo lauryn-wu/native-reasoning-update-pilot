@@ -1,0 +1,359 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-10-24",
+  "github": {
+    "repository": "dynamic-lm/interrupt-lrm",
+    "revision": "b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6",
+    "license": "Apache-2.0"
+  },
+  "huggingface": {
+    "repository": "dynamic-lm/update-interrupt-benchmark",
+    "revision": "6ac4ea4baadeccafbb452c1649c90e24ffac4cfc",
+    "license_declared": "Apache-2.0"
+  },
+  "upstream_livecodebench": {
+    "repository": "livecodebench/code_generation_lite",
+    "revision": "0fe84c3912ea0c4d4a78037083943e8f0c4dd505",
+    "version_tag": "release_v6",
+    "license_card": "cc (unspecified Creative Commons variant)",
+    "license_loader": "MIT License",
+    "test_payloads_downloaded": false
+  },
+  "artifacts": [
+    {
+      "path": "github/.python-version",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/.python-version",
+      "sha256": "49a506dd32096b010d75205acf3430c9ae6c40351888129499e5a5e487126c93",
+      "bytes": 5,
+      "category": "github",
+      "git_blob_sha": "2c0733315e415bfb5e5b353f9996ecd964d395b2"
+    },
+    {
+      "path": "github/LICENSE",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "bytes": 11357,
+      "category": "github",
+      "git_blob_sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64"
+    },
+    {
+      "path": "github/README.md",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/README.md",
+      "sha256": "36197f22d83580c8df3e0760fa9bb97d451c2ec414bbdcc100950d148f541217",
+      "bytes": 9635,
+      "category": "github",
+      "git_blob_sha": "e8595e18be69d86fdeafe7ec9a0d3161745543bd"
+    },
+    {
+      "path": "github/data/augmentation/code_intervene_stage1.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/data/augmentation/code_intervene_stage1.py",
+      "sha256": "6081d631060ae36237982ecaa105f7e63564b6a937a7230972e42386eae3cce6",
+      "bytes": 2516,
+      "category": "github",
+      "git_blob_sha": "ea8f84c7f634b8e1b8729948ae54902294758d83"
+    },
+    {
+      "path": "github/data/augmentation/code_intervene_stage2.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/data/augmentation/code_intervene_stage2.py",
+      "sha256": "c8dbcb1af5b05afa3fcf01b74c31c8bf12fdcba130707365104c19ed984d5f6f",
+      "bytes": 955,
+      "category": "github",
+      "git_blob_sha": "05ed7eaf226d2ee5279b5a4654f5a93db264f81d"
+    },
+    {
+      "path": "github/data/augmentation/code_intervene_stage3.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/data/augmentation/code_intervene_stage3.py",
+      "sha256": "2620d88e121bfc2a3068668ab4cc8c5f79f34a3107913e7850f7ece7e9aca350",
+      "bytes": 2608,
+      "category": "github",
+      "git_blob_sha": "c6c88fcc93107a522ce224109f0d87ea1bbf27e5"
+    },
+    {
+      "path": "github/data/augmentation/math_intervene.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/data/augmentation/math_intervene.py",
+      "sha256": "e7b6adc6551f57816556ffb881c7f559057d5d57ee44c2c35080f2996f7919ad",
+      "bytes": 1864,
+      "category": "github",
+      "git_blob_sha": "2fb584b57b1f0597586119a336834d639904bb5b"
+    },
+    {
+      "path": "github/data/augmentation/prompts.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/data/augmentation/prompts.py",
+      "sha256": "00e1020c0d6f493667a2a280b3e5289e46f2d8a48b83a372ae17491c3f0478e3",
+      "bytes": 12459,
+      "category": "github",
+      "git_blob_sha": "1488bc4f1198c035b1007e0da43ff990513c344e"
+    },
+    {
+      "path": "github/data/augmentation/utils.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/data/augmentation/utils.py",
+      "sha256": "d74987800eef941d04b182890dd678979d47e05f6b04d6c134b90264b4209605",
+      "bytes": 2785,
+      "category": "github",
+      "git_blob_sha": "cb9916949a129a819b6b909b89d3a2c4cc4549fc"
+    },
+    {
+      "path": "github/data/loading/load_data_code.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/data/loading/load_data_code.py",
+      "sha256": "88473b9d3ed0d5997fcf060fb2d2e661b8e97cfbad3f51332879fa7a6fb026c7",
+      "bytes": 1727,
+      "category": "github",
+      "git_blob_sha": "c1ed2a8604a2bf0f1c8513fe6c6e82456347eb4e"
+    },
+    {
+      "path": "github/data/loading/load_data_math.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/data/loading/load_data_math.py",
+      "sha256": "7f8c692e1812e7ed21339f676e107e715920ca477cd4142603fac76d2d88f802",
+      "bytes": 2759,
+      "category": "github",
+      "git_blob_sha": "7f37072095e69925d6fcd0d081b9d30803d1cc1c"
+    },
+    {
+      "path": "github/eval/code/compute_code_generation_metrics.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/eval/code/compute_code_generation_metrics.py",
+      "sha256": "c6de3ab1a5f426b386e2c6af2bd3ecda768804947e8a822f811f23d263209f06",
+      "bytes": 8235,
+      "category": "github",
+      "git_blob_sha": "413a41bcfdb82b95411d8e1ff928dd7799ac0bc6"
+    },
+    {
+      "path": "github/eval/code/pass_k_utils.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/eval/code/pass_k_utils.py",
+      "sha256": "6af3ee55d40f96fa06fa511bd5e43d94b19604750e82454b4b3c1f45c5199010",
+      "bytes": 2063,
+      "category": "github",
+      "git_blob_sha": "a49382f0857448ef494d77a4c6107db952c9823a"
+    },
+    {
+      "path": "github/eval/code/run_code_tests.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/eval/code/run_code_tests.py",
+      "sha256": "329b61fe8f83b5c4244f08d39f24313b13c2b4a463a79aa2fd45267b05c0fc16",
+      "bytes": 4356,
+      "category": "github",
+      "git_blob_sha": "d109765ce478104eed6c46d5f988f0721942a00f"
+    },
+    {
+      "path": "github/eval/code/testing_util.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/eval/code/testing_util.py",
+      "sha256": "c2d23dc589cd6e2d45d73329375c572586b7873001c3632fa9e979728583c194",
+      "bytes": 18275,
+      "category": "github",
+      "git_blob_sha": "034aa3593a78efea246fd40c11b906193b7479d8"
+    },
+    {
+      "path": "github/eval/math/math_parsing_util.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/eval/math/math_parsing_util.py",
+      "sha256": "e173e1cfbf123b986ba05a263cdd7917a7cd7fbda3e9b0a1c4129aff7a2d49e8",
+      "bytes": 19298,
+      "category": "github",
+      "git_blob_sha": "9c194c5bb5fe70b8390aa2723760518c237bc8c2"
+    },
+    {
+      "path": "github/eval/math/run_math_tests.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/eval/math/run_math_tests.py",
+      "sha256": "768a4d6ffe14ef2b51a7d0edb6b3fe569ad61aa2d72b0bd4816ae4e5903ec1f2",
+      "bytes": 2122,
+      "category": "github",
+      "git_blob_sha": "1cb6dcae73e04290af9c46ea73b4a8e45a603004"
+    },
+    {
+      "path": "github/eval/math/utils.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/eval/math/utils.py",
+      "sha256": "ccda2a60eecab188372908f42be7413646ac41a86ac4250d8472d37eaca97dda",
+      "bytes": 2752,
+      "category": "github",
+      "git_blob_sha": "a747354ee6cd660de172d357f23b124c4764fe7e"
+    },
+    {
+      "path": "github/pyproject.toml",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/pyproject.toml",
+      "sha256": "8322d4cc1df30d9ee2beed336da35663eebf2097f5009e86152ed88e269bf6f3",
+      "bytes": 490,
+      "category": "github",
+      "git_blob_sha": "96e74f5c7ebabf1938bf672ed496305627955b8f"
+    },
+    {
+      "path": "github/scripts/common_config.sh",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/scripts/common_config.sh",
+      "sha256": "b8c57505404fc3037aa0ba9a4c29e9073d09aacbf4f6f5a9822376fcba5a9b73",
+      "bytes": 7628,
+      "category": "github",
+      "git_blob_sha": "2dca53e184e32d96fe3e1a1edd37af94e465ffb9"
+    },
+    {
+      "path": "github/scripts/run_full_thinking.sh",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/scripts/run_full_thinking.sh",
+      "sha256": "ad92165eae6a7ea02eb07af41b94c7dfc84aec8788a535569d617723929402fc",
+      "bytes": 1377,
+      "category": "github",
+      "git_blob_sha": "0ae65808661965204af705a43764f1cb199fa9e5"
+    },
+    {
+      "path": "github/scripts/run_interrupt.sh",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/scripts/run_interrupt.sh",
+      "sha256": "06bdedd436da7713cd3efabc13c7cc9d9934536fb473f73662dcb020c6c72cb2",
+      "bytes": 1440,
+      "category": "github",
+      "git_blob_sha": "e138dba2b2583584725f5131e0b90ae7f3b20e36"
+    },
+    {
+      "path": "github/src/inference_utils.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/inference_utils.py",
+      "sha256": "94684c876ea441062747c32a9bbdfa091098490db7e570520de46b52a8892bfe",
+      "bytes": 7648,
+      "category": "github",
+      "git_blob_sha": "1d810bf47359d8ca8e568bfd26ca62d59941dddd"
+    },
+    {
+      "path": "github/src/parser_utils.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/parser_utils.py",
+      "sha256": "395ecd81eef489497ee25fe43eb07eff7109e5c8c082868efd00297590746b66",
+      "bytes": 3231,
+      "category": "github",
+      "git_blob_sha": "c32d4e76f25499bee3b2deba49c663df270267f4"
+    },
+    {
+      "path": "github/src/prompt_utils.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/prompt_utils.py",
+      "sha256": "4e95d9e3078e9d797a47e4139b81b5002444d0736e271c0c6661cceb9ff6df56",
+      "bytes": 21271,
+      "category": "github",
+      "git_blob_sha": "db8171cc7591cec3b16517c00f334d616e7c44cb"
+    },
+    {
+      "path": "github/src/prompts/interrupt/extreme.json",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/prompts/interrupt/extreme.json",
+      "sha256": "9e0ef4b4d679c5a1fc5dc58bf2c11c7d18c73c16ca7da61f55e2773b97afebd8",
+      "bytes": 502,
+      "category": "github",
+      "git_blob_sha": "759ded0698cb70c960165793dcda90dd56789e2b"
+    },
+    {
+      "path": "github/src/prompts/interrupt/hard.json",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/prompts/interrupt/hard.json",
+      "sha256": "564faee2ca587c080cdf44e379ab2660d7f0b5ad844dfa9139bc41e59b220d3f",
+      "bytes": 406,
+      "category": "github",
+      "git_blob_sha": "b8427136cc80cfeffb1fa3296a799813262c08e0"
+    },
+    {
+      "path": "github/src/prompts/interrupt/soft.json",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/prompts/interrupt/soft.json",
+      "sha256": "202e21027196a143b296628ea9eb005d330b19096f4b5f5a3b258eeed4305136",
+      "bytes": 428,
+      "category": "github",
+      "git_blob_sha": "a150022d83c721db7803409cbe40c6f4642869ac"
+    },
+    {
+      "path": "github/src/prompts/interrupt/soft_user_turn.json",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/prompts/interrupt/soft_user_turn.json",
+      "sha256": "5a223968416db7c1ead44e5939bb9b2019361aa85c9abe04f2e5a8b7d99a50e0",
+      "bytes": 314,
+      "category": "github",
+      "git_blob_sha": "6b49549388557a08cb476ed1616d3096fb064f6d"
+    },
+    {
+      "path": "github/src/prompts/intervene/speedup.json",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/prompts/intervene/speedup.json",
+      "sha256": "36539cb6e97faacde1b71d3e45a492d388e1a1220a52c37a0f3f3c54c96b4694",
+      "bytes": 671,
+      "category": "github",
+      "git_blob_sha": "6fcf64a83e9bdbe5b764c23399a1bb2baba84005"
+    },
+    {
+      "path": "github/src/prompts/intervene/user_turn.json",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/prompts/intervene/user_turn.json",
+      "sha256": "015e64fe48f83bce49d845d3331fe4a29bb8a44d40e7ecbac82316621591af8f",
+      "bytes": 198,
+      "category": "github",
+      "git_blob_sha": "58bb6b6db1b50cc6ec8b6acd1e4a0d9803285d2a"
+    },
+    {
+      "path": "github/src/prompts/intervene/w_prompt_guidance.json",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/prompts/intervene/w_prompt_guidance.json",
+      "sha256": "5108777179a4385cef92bbd1227c10f5529d2ac20d726f9d1f61831864ce15f8",
+      "bytes": 527,
+      "category": "github",
+      "git_blob_sha": "7967df2db65ae6140e2f05ccad2c6b1e03b949be"
+    },
+    {
+      "path": "github/src/prompts/intervene/wo_prompt_guidance.json",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/prompts/intervene/wo_prompt_guidance.json",
+      "sha256": "c8c2eff691410da2e3cd8216186107465d921bf6d7c7e06185b9eb232fe7ca42",
+      "bytes": 317,
+      "category": "github",
+      "git_blob_sha": "206e16d947353cc22b0ac244381038f729c41859"
+    },
+    {
+      "path": "github/src/run.py",
+      "url": "https://raw.githubusercontent.com/dynamic-lm/interrupt-lrm/b87d61bd2e5e998f34878fb0ee5fb2f5550f98c6/src/run.py",
+      "sha256": "bef30fc6dba72ea18bf28fdac427446524a45d308f05127582f53a32fd6ae134",
+      "bytes": 922,
+      "category": "github",
+      "git_blob_sha": "ae7962e72ef81b99c94fb40c0ba3c8200c75647d"
+    },
+    {
+      "path": "data_math.parquet",
+      "url": "https://huggingface.co/datasets/dynamic-lm/update-interrupt-benchmark/resolve/6ac4ea4baadeccafbb452c1649c90e24ffac4cfc/data_math.parquet",
+      "sha256": "413effdcf69b6042f12f9104feec3f97e841e46758f177e78d902eb5371bb217",
+      "bytes": 489593,
+      "category": "huggingface"
+    },
+    {
+      "path": "data_code.parquet",
+      "url": "https://huggingface.co/datasets/dynamic-lm/update-interrupt-benchmark/resolve/6ac4ea4baadeccafbb452c1649c90e24ffac4cfc/data_code.parquet",
+      "sha256": "5a56392bb5e18b716fcf3e38158ec0e77fc2da5bf434e0aeeccca66a20b853b4",
+      "bytes": 369415,
+      "category": "huggingface"
+    },
+    {
+      "path": "hf-README.md",
+      "url": "https://huggingface.co/datasets/dynamic-lm/update-interrupt-benchmark/resolve/6ac4ea4baadeccafbb452c1649c90e24ffac4cfc/README.md",
+      "sha256": "52221ca34897393aa053162cdc63a94b30285b2a0c08214bd866cfa8989b0312",
+      "bytes": 4966,
+      "category": "huggingface"
+    },
+    {
+      "path": "lcb-README.md",
+      "url": "https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/README.md",
+      "sha256": "fbf0df23c9fb430778f037691bd191ece41d49373c0695151d87549b6f45d809",
+      "bytes": 3390,
+      "category": "upstream_metadata"
+    },
+    {
+      "path": "lcb-code_generation_lite.py",
+      "url": "https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/0fe84c3912ea0c4d4a78037083943e8f0c4dd505/code_generation_lite.py",
+      "sha256": "973e37989fed0f069c8246776e918d0d96600d64a3730cd6242dd76bccf2f7bb",
+      "bytes": 5013,
+      "category": "upstream_metadata"
+    },
+    {
+      "path": "paper-2510.11713v3.html",
+      "url": "https://arxiv.org/html/2510.11713v3",
+      "sha256": "b17fceed4311ab708d5748b642fddbbe6c815ba9b54c9fe14a4c302d1a157bad",
+      "bytes": 700034,
+      "category": "paper"
+    },
+    {
+      "path": "paper-2610.25760v1.html",
+      "url": "https://arxiv.org/html/2610.25760v1",
+      "sha256": "a10729d495d775b337dbffda5ec76a9f2fb97d8db835351d3638a0779b90ad34",
+      "bytes": 320722,
+      "category": "paper"
+    },
+    {
+      "path": "paper-2608.10502v2.html",
+      "url": "https://arxiv.org/html/2608.10502v2",
+      "sha256": "97c96aa29b62f2ae196d333ba2cee78e3be350d1ce3a535ae51842f27a2e9b78",
+      "bytes": 413840,
+      "category": "paper"
+    },
+    {
+      "path": "paper-2610.25123v2.html",
+      "url": "https://arxiv.org/html/2610.25123v2",
+      "sha256": "1b4af938cf298c240758ed8844f6682262240e7fc53292a2e0aef419a435b43c",
+      "bytes": 572303,
+      "category": "paper"
+    }
+  ]
+}

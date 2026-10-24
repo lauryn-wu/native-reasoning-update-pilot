@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "provider": "OpenAI",
+  "model": "gpt-6.1-sol",
+  "verified_date": "2026-10-24",
+  "currency": "USD",
+  "unit": "per_1000000_tokens",
+  "service_tier": "default",
+  "reasoning_mode": "standard",
+  "rates_per_million": {
+    "input": 2.0,
+    "cached_input": 0.1,
+    "cache_write_30m": 2.5,
+    "cache_write_12h": 5.0,
+    "output": 10.0
+  },
+  "long_context": {
+    "input_threshold_exclusive": 272000,
+    "input_and_cache_multiplier": 2.0,
+    "output_multiplier": 1.5
+  },
+  "regional_processing_multiplier": 1.1,
+  "endpoint": "https://api.openai.com/v1",
+  "cache_policy": {
+    "mode": "explicit",
+    "ttl": "30m",
+    "breakpoints": 0,
+    "expected_cached_tokens": 0,
+    "expected_cache_write_tokens": 0
+  },
+  "usage_fields": {
+    "input": "usage.input_tokens",
+    "cached_input": "usage.input_tokens_details.cached_tokens",
+    "cache_write": "usage.input_tokens_details.cache_write_tokens",
+    "output": "usage.output_tokens",
+    "reasoning_subset_of_output": "usage.output_tokens_details.reasoning_tokens"
+  },
+  "accounting": "Uncached input=input_tokens-cached_tokens-cache_write_tokens. Cache reads and writes replace the ordinary input charge for those tokens; output_tokens already includes reasoning_tokens. Reserve without expected cache savings; missing usage or uncertain transport charges retain the full reservation.",
+  "source_documents": [
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol.md",
+      "retrieved_at_utc": "2026-10-24T21:35:05.970422+00:00",
+      "sha256": "acfe91d19882aaf7bb52877898684614035a947de02f2955c9de905a7efb1362",
+      "bytes": 4436
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/guides/prompt-caching.md",
+      "retrieved_at_utc": "2026-10-24T21:35:06.070324+00:00",
+      "sha256": "5ef36de765cb4e16fdab153e13799d9f22b46ee1ff0d602375442c4cae2cc379",
+      "bytes": 56544
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/pricing.md",
+      "retrieved_at_utc": "2026-10-24T21:35:06.135790+00:00",
+      "sha256": "606acc6693f882253e203e30da2fbfd23f28b02540a98f26fce93c5cdc04e9dd",
+      "bytes": 22449
+    }
+  ]
+}

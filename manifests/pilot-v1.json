@@ -1,0 +1,164 @@
+{
+  "adaptation": "New user-turn correction after completed response; not mid-reasoning interruption replication",
+  "analysis": {
+    "bootstrap_repeats": 10000,
+    "bootstrap_seed": 20261024,
+    "eligible": "single initial answer correct on original grader",
+    "fresh_accuracy_minimum": 0.75,
+    "gap_minimum": 0.1,
+    "minimum_eligible": 18,
+    "one_sided_p_maximum": 0.1,
+    "permutation": "exact sign-flip of paired task means, repeats kept together",
+    "required": "valid manipulation and complete required outcomes",
+    "unit": "original problem"
+  },
+  "blockers": [
+    "All 341 coding initial/source revised behaviors lack released executable graders; official LiveCodeBench tests cover the restored/source original task only.",
+    "All 60 AIME initial/source revised problems lack released reference answers; original-correct eligibility and answer-change validation cannot be certified.",
+    "Coding updates also carry withheld constraints, input/output specifications and examples; source original_problem alone is not a certified complete fresh-updated prompt.",
+    "Deterministic selection requires a fully qualified pool and a disjoint smoke task",
+    "Need exactly 12 math and 12 coding distinct originals",
+    "No 12+12 qualified sample, eight controls or disjoint qualified smoke case can be frozen from this pinned release; do not replace them with invented or easier tasks.",
+    "No completed audit of unambiguous behavior-changing pairs and both graders",
+    "Semantic qualification is incomplete: released revisions include impossible initial tasks (AIME ids 1001 and 1026); textual edits alone do not establish genuine answer/behavior changes.",
+    "Source audit explicitly withholds paid execution"
+  ],
+  "created_at": "2026-10-24T21:40:22.528564+00:00",
+  "hard_budget_usd": 40,
+  "implementation_hashes": {
+    "docs/GRADING.md": "e036ea16c17fa86b5a28d8f9376721602bc8fc80f4b52d2cbb9d1c0ce5c20ec3",
+    "docs/PROTOCOL.md": "495e5a9e6d936032a4de59f38efa07071dbb1561af2e7d6ca10d739d2efc2650",
+    "docs/PROVIDER.md": "47ee6ed74ba1aa342d02659a57a49c6741802842e0b6bba2f50045978db34847",
+    "docs/SOURCE_AUDIT.md": "61169fd659ec760399501fcd1a70bea89c0e02233f31bee34de7e44a05fe088b",
+    "docs/VALIDATION.md": "af12e38a4e771f0eddb294c8a3edbec31924aa48ec6e3491fd4a7a1f27f196f6",
+    "pyproject.toml": "884053ad405380d72472181a52ed0f7a593900164ae8d54bf075b094c05d2e94",
+    "src/native_pilot/__init__.py": "3a85346489f8c54141d76c8c2ead68ff50507ce8ed03ee63ecf36fef265c857d",
+    "src/native_pilot/__main__.py": "79ee6f134c5c5193377cf9b189cbdcc3e2095e49ba9cec310114441c15a917c4",
+    "src/native_pilot/analysis.py": "ba126d33f085e3b528dd271ce921bb4437c9e127d35af4092f3f56bef84c802c",
+    "src/native_pilot/budget.py": "55e6be4e4ab2d9d35505f8f2a0574c95f5f7463d543baf1cc6cd1bd842604151",
+    "src/native_pilot/cli.py": "a81661e669eb2eb864acd1887be4e2d689a8ca1430308e19310d8c75dddc040c",
+    "src/native_pilot/data.py": "be57bf1d9ec2c676539181efc9307977ddee4f57b335de70a4a59cd4573f2030",
+    "src/native_pilot/design.py": "650b129a849d965c24208aaf27a0ae5d86179b52484c5fa8c30da56b024da8cd",
+    "src/native_pilot/grading.py": "c16b75cd6472e92e79cb96244d3c487f14b5ab4e5e86b658ed099dfd0361b4ec",
+    "src/native_pilot/manifest.py": "e4f404fe1fb1330a24caf48b83c45b5e9cb2377681af5651ebe341c273d0fe68",
+    "src/native_pilot/provider.py": "f576f25e9f635192b38507b42349d28bf83c47c1f90af8a39efe581c39ba8ff1",
+    "src/native_pilot/runner.py": "35fa422f27559d00b1f9e3c97789c8d991d0f72d343ad6ed0eeeb1881a497158",
+    "src/native_pilot/sandbox/__init__.py": "a65b6192d8662cb844b0f084a0a9d351d9aae3b128da9f34e45eb0db1109a041",
+    "src/native_pilot/sandbox/runner.py": "4a4a64f9ac0e5a2acec03c3d01f48767f99336c4d87eb063e59e7276f5d7a95e",
+    "src/native_pilot/util.py": "5cf73f5f6e2b9d336d57f974c4b1b42b4187b0851a7e6963372ed92e2d66aeb4",
+    "tests/test_analysis.py": "40a3f71d3c6afe015794f9b7012737e5de6a0e5a90cfbd15c817c5aedebbdff8",
+    "tests/test_budget_design.py": "477081746ebfb4da7e01bf6ba4c372645bde510ed262624b8f40d30a880a3424",
+    "tests/test_data.py": "73009564b5a1ba9d6d68cc341098f6d872e814702572e5ae0530d82ba71ba148",
+    "tests/test_grading.py": "62e843cec54af08003d56b46b46c2a03936d40d4a1f004ab304ecb842f1d80e6",
+    "tests/test_manifest.py": "1057b1118b0b6c2f95940479c86d041cc6d85451ab4b6cae29bf83bb0290dd63",
+    "tests/test_provider.py": "28544fb6b0bbbeca0d743bd402e3797dc20fa5661fe165e560d8f1373a01ddca",
+    "tests/test_runner.py": "44ec07d36a6a610fc45b3ff0aba93794f90fb6873ffe9f7180fd123bbd17402d"
+  },
+  "manifest_sha256": "22fbb188f17d491fb82609f802cef8b30f0527466a81a0f604416ea9ed1fc471",
+  "planned_counts": {
+    "coding": 12,
+    "initial": 24,
+    "math": 12,
+    "problems": 24,
+    "responses": 200,
+    "smoke": 3,
+    "unchanged": 32,
+    "updated_and_fresh": 144
+  },
+  "pricing": {
+    "accounting": "Uncached input=input_tokens-cached_tokens-cache_write_tokens. Cache reads and writes replace the ordinary input charge for those tokens; output_tokens already includes reasoning_tokens. Reserve without expected cache savings; missing usage or uncertain transport charges retain the full reservation.",
+    "cache_policy": {
+      "breakpoints": 0,
+      "expected_cache_write_tokens": 0,
+      "expected_cached_tokens": 0,
+      "mode": "explicit",
+      "ttl": "30m"
+    },
+    "currency": "USD",
+    "endpoint": "https://api.openai.com/v1",
+    "long_context": {
+      "input_and_cache_multiplier": 2.0,
+      "input_threshold_exclusive": 272000,
+      "output_multiplier": 1.5
+    },
+    "model": "gpt-6.1-sol",
+    "provider": "OpenAI",
+    "rates_per_million": {
+      "cache_write_12h": 5.0,
+      "cache_write_30m": 2.5,
+      "cached_input": 0.1,
+      "input": 2.0,
+      "output": 10.0
+    },
+    "reasoning_mode": "standard",
+    "regional_processing_multiplier": 1.1,
+    "schema_version": 1,
+    "service_tier": "default",
+    "source_documents": [
+      {
+        "bytes": 4436,
+        "retrieved_at_utc": "2026-10-24T21:35:05.970422+00:00",
+        "sha256": "acfe91d19882aaf7bb52877898684614035a947de02f2955c9de905a7efb1362",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol.md"
+      },
+      {
+        "bytes": 56544,
+        "retrieved_at_utc": "2026-10-24T21:35:06.070324+00:00",
+        "sha256": "5ef36de765cb4e16fdab153e13799d9f22b46ee1ff0d602375442c4cae2cc379",
+        "url": "https://developers.openai.com/api/docs/guides/prompt-caching.md"
+      },
+      {
+        "bytes": 22449,
+        "retrieved_at_utc": "2026-10-24T21:35:06.135790+00:00",
+        "sha256": "606acc6693f882253e203e30da2fbfd23f28b02540a98f26fce93c5cdc04e9dd",
+        "url": "https://developers.openai.com/api/docs/pricing.md"
+      }
+    ],
+    "unit": "per_1000000_tokens",
+    "usage_fields": {
+      "cache_write": "usage.input_tokens_details.cache_write_tokens",
+      "cached_input": "usage.input_tokens_details.cached_tokens",
+      "input": "usage.input_tokens",
+      "output": "usage.output_tokens",
+      "reasoning_subset_of_output": "usage.output_tokens_details.reasoning_tokens"
+    },
+    "verified_date": "2026-10-24"
+  },
+  "provenance_hashes": {
+    "provenance/audit.json": "fb0866620f6d4d557e0a5e08ab1b79965bdfe780a3272baa28785ae5ecd02c41",
+    "provenance/pricing.json": "ccf370052ed1021cd2dea1abea70344fc05a3b043d0bda368054b9072bafb40c",
+    "provenance/provider_docs.json": "9754a49b805de391f45e5439abf9e9014b6f5567e5f61e1585ff1643c865dafc",
+    "provenance/review_inventory.json": "ea408f5449afe644d154a2c063789a62d0420ac171aebe27e8961f55d1846ff8",
+    "provenance/source_lock.json": "7ef4249ecc1c3ae361781d67bc80ffa5e809f2e795c39f7a5621e52fbdae7218"
+  },
+  "research_question": "Does retained native reasoning impair adaptation beyond prior visible answer?",
+  "schedule": [],
+  "schedule_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "schema_version": 1,
+  "seed": 20261024,
+  "selection_rule": {
+    "controls": "Four per domain using SHA256 of seed:control:task_id among selected tasks",
+    "deduplication": "Whitespace-normalized source original prompt SHA256 plus source identity; reject duplicate originals",
+    "population": "AIME 2024/2025 only, plus LiveCodeBench-derived coding rows",
+    "qualification": "Both initial and updated graders, changed answer/behavior evidence, and unambiguous complete prompts must pass before selection",
+    "ranking": [
+      "Published coding difficulty: hard, medium, easy; AIME rows tied because no per-item difficulty is released",
+      "Ascending changed-token count between source revised and original prompts, including starter code",
+      "SHA256 of seed:task_id as stable tie-break; no model outputs are consulted"
+    ],
+    "seed": 20261024,
+    "smoke": "First qualified unselected candidate in the same frozen ranking; separate original identity",
+    "version": 1
+  },
+  "settings": {
+    "max_output_tokens": 32768,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high"
+  },
+  "smoke_task": null,
+  "source_qualified": false,
+  "status": "blocked",
+  "tasks": [],
+  "tasks_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "version": "pilot-v1"
+}

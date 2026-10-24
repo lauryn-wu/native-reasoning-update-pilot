@@ -1,0 +1,61 @@
+{
+  "at": "2026-10-24T21:40:36.068961+00:00",
+  "cli_checks": {
+    "archive": "created and inspected",
+    "dry_run": "passed, zero unqualified assignments",
+    "freeze": "blocked manifest created",
+    "report": "inconclusive, zero spend"
+  },
+  "docker": {
+    "architecture": "arm64",
+    "checks": {
+      "correct_accept": true,
+      "cpu_limit": true,
+      "equivalent_accept": true,
+      "memory_limit": true,
+      "network_denied": true,
+      "no_credentials": true,
+      "old_reference_accept": true,
+      "only_program_mounted": true,
+      "output_bounded": true,
+      "process_limit": true,
+      "program_readonly": true,
+      "root_readonly": true,
+      "runtime_bounded": true,
+      "stale_reject_update": true,
+      "unprivileged": true,
+      "updated_reference_fails_original": true,
+      "wrong_reject": true
+    },
+    "docker_version": "29.8.2",
+    "image": "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+    "image_id": "sha256:7efd45553a98be3d940b73600550669831c0be34f30c521159e7030a91fcdee6",
+    "os": "linux",
+    "passed": true,
+    "scope": "software_sandbox_only",
+    "source_grading_qualified": false,
+    "status": "passed"
+  },
+  "docker_passed": true,
+  "manifest_sha256": "22fbb188f17d491fb82609f802cef8b30f0527466a81a0f604416ea9ed1fc471",
+  "offline_passed": true,
+  "paid_calls_made": 0,
+  "source_reference_passed": false,
+  "source_references": {
+    "blockers": [
+      "No source-qualified tasks with original and updated grading assets"
+    ],
+    "checks": {},
+    "passed": false,
+    "status": "blocked"
+  },
+  "unit_tests": {
+    "passed": 76,
+    "skipped": 0,
+    "summary": [
+      "Ran 76 tests in 1.487s",
+      "",
+      "OK"
+    ]
+  }
+}

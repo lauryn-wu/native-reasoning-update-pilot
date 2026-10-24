@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "native-reasoning-update-pilot"
+version = "0.1.0"
+description = "Fail-closed exploratory native reasoning retention pilot"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+paid = ["openai==3.37.0"]
+data = ["pyarrow==23.0.1"]
+
+[project.scripts]
+native-pilot = "native_pilot.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
