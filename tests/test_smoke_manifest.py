@@ -17,15 +17,15 @@ class SmokeManifestTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         (self.root/'provenance').mkdir()
         self.m = json.loads((ROOT/'manifests/pilot-v2.json').read_text())
-        self.m.update(version='pilot-v4', protocol_smoke_authorization=copy.deepcopy(SMOKE_AUTHORIZATION))
-        for name in ('provenance/authentication_recovery_v4.json',
-                     'provenance/execution_policy_v3.json', 'provenance/smoke_authorization_v3.json',
-                     'manifests/pilot-v3.json'):
+        self.m.update(version='pilot-v5', protocol_smoke_authorization=copy.deepcopy(SMOKE_AUTHORIZATION))
+        for name in ('provenance/continuation_recovery_v5.json',
+                     'provenance/execution_policy_v4.json', 'provenance/authentication_recovery_v4.json',
+                     'manifests/pilot-v4.json'):
             target=self.root/name; target.parent.mkdir(parents=True,exist_ok=True)
             shutil.copy(ROOT/name,target)
-        recovery={'path':'provenance/authentication_recovery_v4.json',
-                  'sha256':file_digest(self.root/'provenance/authentication_recovery_v4.json')}
-        self.m['authentication_recovery']=recovery
+        recovery={'path':'provenance/continuation_recovery_v5.json',
+                  'sha256':file_digest(self.root/'provenance/continuation_recovery_v5.json')}
+        self.m['continuation_recovery']=recovery
         self.m['provenance_hashes'][recovery['path']]=recovery['sha256']
         self.policy = {'paid_execution_allowed':False,'protocol_smoke':copy.deepcopy(SMOKE_AUTHORIZATION)}
         (self.root/'provenance/execution_policy.json').write_text(json.dumps(self.policy))
@@ -45,7 +45,7 @@ class SmokeManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'explicit user policy'):
             paid_preflight(self.m,self.q,smoke=False)
     def test_different_version_task_or_scope_rejected(self):
-        for change in ({'version':'pilot-v5'}, {'paid_execution_allowed':True},
+        for change in ({'version':'pilot-v6'}, {'paid_execution_allowed':True},
                        {'protocol_smoke_authorization':None},
                        {'smoke_task':dict(self.m['smoke_task'],task_id='livecodebench:338')}):
             with self.subTest(change=change), self.assertRaises(ValueError):
@@ -69,15 +69,15 @@ class SmokeManifestTests(unittest.TestCase):
                 paid_preflight(self.m,self.q,smoke=True)
 
     def test_missing_recovery_or_changed_historical_authorization_rejected(self):
-        changed=copy.deepcopy(self.m); changed.pop('authentication_recovery')
+        changed=copy.deepcopy(self.m); changed.pop('continuation_recovery')
         with self.assertRaisesRegex(ValueError,'recovery binding'):
             paid_preflight(changed,self.q,smoke=True)
-        (self.root/'provenance/smoke_authorization_v3.json').write_text('{}')
-        with self.assertRaisesRegex(ValueError,'Historical authentication evidence'):
+        (self.root/'provenance/authentication_recovery_v4.json').write_text('{}')
+        with self.assertRaisesRegex(ValueError,'Historical continuation evidence'):
             paid_preflight(self.m,self.q,smoke=True)
 
     def test_changed_recovery_origin_rejected(self):
-        path=self.root/'provenance/authentication_recovery_v4.json'
+        path=self.root/'provenance/continuation_recovery_v5.json'
         record=json.loads(path.read_text()); record['recovery']['failed_attempt']=2
         path.write_text(json.dumps(record))
         with self.assertRaisesRegex(ValueError,'explicit authorization'):

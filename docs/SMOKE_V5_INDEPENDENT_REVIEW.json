@@ -1,0 +1,55 @@
+{
+  "actual_ledger_writes": 0,
+  "checks": [
+    "Exactly two continuations from the hash-bound existing v4 initial; no initial or fresh dispatch",
+    "Pure normalization removes only four null reasoning-status keys; raw checkpoint and all other fields preserved",
+    "Paired requests differ only in reasoning.context",
+    "Global recovery claim cannot be reset using another authorization label or manifest",
+    "Current v5 provider failures stop dispatch and resume; incomplete smoke exits nonzero",
+    "Sanitized API type, code and parameter plus fixed safe explanation exclude arbitrary server text",
+    "Reports preserve old HTTP401 and HTTP400 attempts and reservations and count inherited initial usage once",
+    "Whole design, task selection, prompts, grading, settings, controls and analysis remain unchanged"
+  ],
+  "conservation": {
+    "eighteen_historical_files_unchanged": true,
+    "existing_initial_response_preserved": true,
+    "historical_attempt_count": 3,
+    "historical_meta_count": 7,
+    "ledger_file_sha256_unchanged": "d77620519bda8aa913d108581613302d23f00e63ee59868432ccc9b6ce8932a3",
+    "prior_failures_and_reservations_preserved": true
+  },
+  "fresh_validation": {
+    "docker_checks": 24,
+    "documented_launcher_offline_checks": 3,
+    "dry_run_passed": true,
+    "full_pilot_preflight_blocked": true,
+    "manifest_bound_preflight_passed": true,
+    "reused_reference_checks": 200,
+    "unit_tests": 205,
+    "verified_source_and_grading_assets": 108
+  },
+  "manifest_sha256": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a",
+  "null_status_cause": "suspected until live verification succeeds",
+  "paid_calls_made": 0,
+  "passed": true,
+  "recorded_at": "2026-10-25T01:37:50.514331+00:00",
+  "reviewed_files": {
+    "README.md": "a543109303fe005aaac2e1cd3e10073c6fc5a8f93af342a0c0a98b1fd6cfd89f",
+    "docs/SMOKE_V5.md": "8b82d5660bb45bcad88cc52fbc855a9e54827a2a78ebe03594fb578d47ed8f61",
+    "docs/SMOKE_V5_CHECKPOINT_CHECK.json": "4220e75d601b91d2a966da0296f6fcb4337946c643ace4ad2da849d010c1caf4",
+    "provenance/continuation_recovery_v5.json": "6304db5c412572003c53d9a8f7b1d63f17d9c0218d281f3a7f961a0d786001a8",
+    "provenance/execution_policy.json": "b5def36df6c8f41ef3a8e008347e00ad23b4824175cf0e201fe417510ac118aa",
+    "provenance/execution_policy_v4.json": "82968b7f37eff36b21f2344ee9b2657a0415e5d6ad86cf6596adfb0821c42fb0",
+    "src/native_pilot/budget.py": "55e6be4e4ab2d9d35505f8f2a0574c95f5f7463d543baf1cc6cd1bd842604151",
+    "src/native_pilot/cli.py": "9b340f09e997489480da215290c22e12a1f7cbcf7e5e39a66e460eb73a541549",
+    "src/native_pilot/manifest.py": "d5f6a25ab7897f3f7d0e5d566907c0c6bb5322f00b06afbd47fd6aec38d97047",
+    "src/native_pilot/provider.py": "06ed23f887ba559a0d106172e6e363dd2ca0f5c85919b378c440c0938e277c0e",
+    "src/native_pilot/qualification_reuse.py": "636bd6f2b4c7d9035bd8831c5100aa00e666286b8a3a0082130d867b7a300a5b",
+    "src/native_pilot/runner.py": "0c2c842eddc14663a45e74ab1ec9872e27d7d99c40972f568be3a00a77d8c5cd",
+    "tests/test_cli_smoke_exit.py": "447581b1cf685ef4527f025876044a8445388bf3a93a3545026119bf6e689f8e",
+    "tests/test_provider.py": "c64e3f1a417b1d03f06cb35365d0f32dbad1d95fa69f0ad1d66d6427f247f181",
+    "tests/test_runner.py": "91ed402ee3e6591370db5740fa5e82c2eb71e0630a1956a71b559acd76a70fc4",
+    "tests/test_smoke_manifest.py": "d75cd2458bfbd13952342f00ab5558bedba34998a52c54879c2ff22f020afc1e"
+  },
+  "reviewer": "Independent source_audit agent; read-only review"
+}

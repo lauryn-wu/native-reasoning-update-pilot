@@ -11,6 +11,7 @@ import importlib.metadata
 import json
 import logging
 import os
+import re
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -30,17 +31,18 @@ BRANCHES = {
     "unchanged_retained", "unchanged_dropped",
 }
 ROOT = Path(__file__).resolve().parents[2]
-SMOKE_MANIFEST_PATH = ROOT / "manifests/pilot-v4.json"
+SMOKE_MANIFEST_PATH = ROOT / "manifests/pilot-v5.json"
 SHARED_LEDGER_PATH = ROOT / "runs/budget.sqlite"
 SMOKE_AUTHORIZATION = {
     "allowed": True,
     "task_id": "livecodebench:337",
-    "authorization_id": "user-2026-10-24-auth-recovery-smoke-v4",
-    "max_logical_calls": 3,
+    "authorization_id": "user-2026-10-24-continuation-recovery-smoke-v5",
+    "max_logical_calls": 2,
     "max_transport_retries_per_call": 1,
     "shared_budget_usd": 40,
-    "manifest_version": "pilot-v4",
-    "max_authentication_recoveries": 1,
+    "manifest_version": "pilot-v5",
+    "max_continuation_recoveries": 1,
+    "initial_generation_allowed": False,
 }
 AUTHENTICATION_RECOVERY_PATH = "provenance/authentication_recovery_v4.json"
 AUTHENTICATION_RECOVERY = {
@@ -54,6 +56,21 @@ AUTHENTICATION_RECOVERY = {
     "max_recoveries": 1,
     "recovery_condition": "initial",
 }
+CONTINUATION_RECOVERY_PATH = "provenance/continuation_recovery_v5.json"
+CONTINUATION_RECOVERY = {
+    "prior_manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+    "initial_call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/initial/0",
+    "initial_attempt": 1,
+    "initial_attempt_sha256": "76efa8d8d8708a4f518524bf26ace0ed9480aacf80156a01cdc1a849e5dbe016",
+    "initial_response_sha256": "4ec551c960e1ee21c6bfb0902ae70a52ec74ba43c714da1b27dde1a3f23706e5",
+    "initial_checkpoint_sha256": "39c6528a75d1016a7196f22165fec99476a871aeafd91a99ed8f38ea9171f961",
+    "failed_call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/updated_retained/1",
+    "failed_attempt": 1,
+    "failed_attempt_sha256": "21990bfcc5c4cbcd5fe6b8332b2f6fde85a2a0635f0ac3bf62660d3953146224",
+    "prior_authorization_id": "user-2026-10-24-auth-recovery-smoke-v4",
+    "required_http_status": 400,
+    "max_recoveries": 1,
+}
 
 
 class ProtocolError(ValueError):
@@ -64,17 +81,83 @@ class ProviderFailure(RuntimeError):
     """Safe exception metadata; deliberately excludes server bodies/credentials."""
 
     def __init__(self, kind: str, *, retryable: bool = False,
-                 uncertain_charge: bool = True, status_code: int | None = None):
+                 uncertain_charge: bool = True, status_code: int | None = None,
+                 api_error: dict | None = None):
         self.kind = kind
         self.retryable = retryable
         self.uncertain_charge = uncertain_charge
         self.status_code = status_code
+        self.api_error = copy.deepcopy(api_error)
         super().__init__(kind)
 
     def as_dict(self) -> dict:
-        return {"kind": self.kind, "retryable": self.retryable,
+        result = {"kind": self.kind, "retryable": self.retryable,
                 "uncertain_charge": self.uncertain_charge,
                 "status_code": self.status_code}
+        if self.api_error is not None:
+            result["api_error"] = copy.deepcopy(self.api_error)
+        return result
+
+
+def sanitize_api_error(exc, status_code=None) -> dict:
+    """Retain structural API diagnostics without copying free-form server text."""
+    body = getattr(exc, "body", None)
+    data = body.get("error", body) if isinstance(body, Mapping) else {}
+    data = data if isinstance(data, Mapping) else {}
+    types = {"invalid_request_error", "authentication_error", "permission_error",
+             "rate_limit_error", "server_error", "api_error", "not_found_error"}
+    codes = {"invalid_api_key", "invalid_value", "invalid_type", "invalid_parameter",
+             "invalid_request_error", "unsupported_value", "unsupported_parameter",
+             "unknown_parameter", "missing_required_parameter", "missing_required_field",
+             "context_length_exceeded", "model_not_found", "rate_limit_exceeded",
+             "insufficient_quota", "permission_denied", "invalid_json", "server_error"}
+    def identifier(field, allowed):
+        value = data.get(field, getattr(exc, field, None))
+        return value if isinstance(value, str) and len(value) <= 64 and value in allowed else None
+    error_type, code = identifier("type", types), identifier("code", codes)
+    param = data.get("param", getattr(exc, "param", None))
+    roots = "input|reasoning|model|max_output_tokens|store|include|service_tier|truncation|prompt_cache_options"
+    fields = "status|type|role|phase|content|text|summary|encrypted_content|effort|context|mode|ttl"
+    if (not isinstance(param, str) or len(param) > 128 or not re.fullmatch(
+            rf"(?:{roots})(?:(?:\[[0-9]{{1,4}}\])|(?:\.(?:{fields}))){{0,8}}", param)):
+        param = None
+    message = data.get("message")
+    # Inspect bounded text solely to select a fixed explanation. No substring,
+    # quoted value, URL, header, key, prompt, or ciphertext is ever emitted.
+    message = message[:8192].lower() if isinstance(message, str) else ""
+    if status_code == 401 or code == "invalid_api_key" or error_type == "authentication_error":
+        explanation = "Provider rejected authentication; credential details omitted."
+    elif param and param.endswith(".status") and re.search(r"\b(null|none)\b", message) and any(
+            word in message for word in ("invalid", "expected", "must", "not allowed", "unsupported")):
+        explanation = "Provider rejected a null status value in an input item; other supplied values omitted."
+    elif "unsupported" in message or code in {"unsupported_value", "unsupported_parameter"}:
+        explanation = "Provider reported an unsupported parameter or value; supplied values omitted."
+    elif "unknown parameter" in message or code == "unknown_parameter":
+        explanation = "Provider reported an unknown parameter; supplied values omitted."
+    elif "required" in message or code in {"missing_required_parameter", "missing_required_field"}:
+        explanation = "Provider reported a missing required field; supplied values omitted."
+    elif "invalid type" in message or "expected" in message or code == "invalid_type":
+        explanation = "Provider reported a parameter type mismatch; supplied values omitted."
+    elif "invalid" in message or code in {"invalid_value", "invalid_parameter", "invalid_json"}:
+        explanation = "Provider rejected a parameter value or request format; supplied values omitted."
+    else:
+        explanation = "Provider request failed; unrecognized free-form details omitted."
+    result = {"type":error_type, "code":code, "param":param, "explanation":explanation}
+    if param and param.endswith('.status') and any(word in message for word in ('supported','expected','one of')):
+        values = [value for value in ('in_progress','completed','incomplete')
+                  if re.search(r'\b'+value+r'\b',message)]
+        if values:
+            result['recognized_status_values'] = values
+    return result
+
+
+def normalize_replay_output(output):
+    """Copy output and omit only null status on reasoning items for API replay."""
+    normalized = copy.deepcopy(output)
+    for item in normalized:
+        if isinstance(item, dict) and item.get("type") == "reasoning" and item.get("status") is None:
+            item.pop("status", None)
+    return normalized
 
 
 def _text(task: Mapping, key: str) -> str:
@@ -129,7 +212,7 @@ def build_request(task: Mapping, branch: str, checkpoint: Mapping | None = None,
         if not result["valid"]:
             raise ProtocolError("Unusable initial checkpoint: " + "; ".join(result["errors"]))
         history = copy.deepcopy(initial_request["input"])
-        history.extend(copy.deepcopy(response["output"]))
+        history.extend(normalize_replay_output(response["output"]))
         if branch.startswith("unchanged_"):
             followup = UNCHANGED_REQUEST
         else:
@@ -359,10 +442,102 @@ def _verify_authentication_recovery(manifest, ledger) -> str:
     return "authentication_recovery/" + recovery["failed_call_id"] + "/" + str(recovery["failed_attempt"])
 
 
+def _read_continuation_recovery_record(manifest) -> dict:
+    from .util import file_digest
+    descriptor = manifest.get("continuation_recovery")
+    path = ROOT / CONTINUATION_RECOVERY_PATH
+    try:
+        if (not isinstance(descriptor, Mapping) or set(descriptor) != {"path", "sha256"} or
+                descriptor["path"] != CONTINUATION_RECOVERY_PATH or
+                descriptor["sha256"] != file_digest(path) or
+                manifest.get("provenance_hashes", {}).get(CONTINUATION_RECOVERY_PATH) != descriptor["sha256"]):
+            raise ValueError("Continuation recovery descriptor mismatch")
+        record = json.loads(path.read_text())
+        if not isinstance(record, dict) or record.get("recovery") != CONTINUATION_RECOVERY:
+            raise ValueError("Continuation recovery authorization mismatch")
+        return record["recovery"]
+    except (OSError, ValueError, TypeError, KeyError):
+        raise ProviderFailure("continuation_recovery_record_unverified", uncertain_charge=False) from None
+
+
+def _read_continuation_prior_manifest(manifest) -> dict:
+    """Load the hash-bound v4 manifest solely as preserved historical evidence."""
+    from .manifest import load_manifest
+    from .util import file_digest
+    recovery = _read_continuation_recovery_record(manifest)
+    try:
+        record = json.loads((ROOT / CONTINUATION_RECOVERY_PATH).read_text())
+        descriptor = record["prior_manifest"]
+        path = ROOT / "manifests/pilot-v4.json"
+        if (descriptor.get("path") != "manifests/pilot-v4.json" or
+                descriptor.get("sha256") != file_digest(path)):
+            raise ValueError("Historical manifest file mismatch")
+        prior = load_manifest(path, verify_files=False)
+        if (prior.get("manifest_sha256") != recovery["prior_manifest_sha256"] or
+                descriptor.get("manifest_sha256") != prior["manifest_sha256"] or
+                prior.get("version") != "pilot-v4" or
+                prior.get("protocol_smoke_authorization", {}).get("authorization_id") != recovery["prior_authorization_id"] or
+                prior["smoke_task"] != manifest["smoke_task"] or prior["settings"] != manifest["settings"]):
+            raise ValueError("Historical checkpoint design mismatch")
+        return prior
+    except (OSError, ValueError, TypeError, KeyError):
+        raise ProviderFailure("continuation_recovery_prior_manifest_unverified", uncertain_charge=False) from None
+
+
+def _verify_continuation_recovery(manifest, ledger) -> str:
+    """Read-only verification of the unchanged v3 and v4 history and raw checkpoint."""
+    from .util import canonical, digest
+    historical_manifest = _read_continuation_prior_manifest(manifest)
+    authentication_binding = _verify_authentication_recovery(historical_manifest, ledger)
+    recovery = _read_continuation_recovery_record(manifest)
+    if recovery != CONTINUATION_RECOVERY:
+        raise ProviderFailure("continuation_recovery_record_unverified", uncertain_charge=False)
+    prior = ledger.rows(recovery["prior_manifest_sha256"])
+    by_call = {row["call_id"]:row for row in prior}
+    if len(prior) != 2 or set(by_call) != {recovery["initial_call_id"], recovery["failed_call_id"]}:
+        raise ProviderFailure("continuation_recovery_predecessor_changed", uncertain_charge=False)
+    initial, failed = by_call[recovery["initial_call_id"]], by_call[recovery["failed_call_id"]]
+    if (initial["attempt"] != recovery["initial_attempt"] or
+            digest(initial) != recovery["initial_attempt_sha256"] or initial["state"] != "completed" or
+            initial["kind"] != "smoke" or not initial["response"] or type(initial["charged"]) is not int or
+            failed["attempt"] != recovery["failed_attempt"] or digest(failed) != recovery["failed_attempt_sha256"] or
+            failed["state"] != "provider_failure" or failed["kind"] != "smoke" or
+            failed["error_kind"] != "protocol_failure" or failed["response"] is not None or failed["charged"] is not None):
+        raise ProviderFailure("continuation_recovery_predecessor_changed", uncertain_charge=False)
+    try:
+        checkpoint = {"request":json.loads(initial["request"]), "response":json.loads(initial["response"])}
+        failure = json.loads(failed["outcome"])
+        if (digest(checkpoint["response"]) != recovery["initial_response_sha256"] or
+                digest(checkpoint) != recovery["initial_checkpoint_sha256"] or
+                not validate_response(checkpoint["response"], "current_turn", require_checkpoint=True)["valid"] or
+                failure.get("status") != "protocol_failure" or
+                failure.get("provider_error") != {"kind":"protocol_failure", "retryable":False,
+                    "uncertain_charge":False, "status_code":recovery["required_http_status"]}):
+            raise ValueError("Invalid inherited checkpoint or prior protocol failure")
+    except (TypeError, ValueError, AttributeError):
+        raise ProviderFailure("continuation_recovery_predecessor_changed", uncertain_charge=False) from None
+    if checkpoint["request"] != build_request(manifest["smoke_task"], "initial", settings=manifest["settings"]):
+        raise ProviderFailure("continuation_recovery_request_changed", uncertain_charge=False)
+    historical = build_request(manifest["smoke_task"], "updated_retained", checkpoint, manifest["settings"])
+    historical["input"] = (copy.deepcopy(checkpoint["request"]["input"]) +
+                           copy.deepcopy(checkpoint["response"]["output"]) + historical["input"][-1:])
+    if failed["request"] != canonical(historical).decode():
+        raise ProviderFailure("continuation_recovery_request_changed", uncertain_charge=False)
+    required_claims = (authentication_binding,
+        "execution_authorization/" + recovery["prior_authorization_id"],
+        "provider_dispatch/" + recovery["initial_call_id"] + "/" + str(recovery["initial_attempt"]),
+        "provider_dispatch/" + recovery["failed_call_id"] + "/" + str(recovery["failed_attempt"]))
+    for key in required_claims:
+        claim = ledger.db.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
+        if not claim or claim[0] != recovery["prior_manifest_sha256"]:
+            raise ProviderFailure("continuation_recovery_prior_authorization_changed", uncertain_charge=False)
+    return "continuation_recovery/" + recovery["failed_call_id"] + "/" + str(recovery["failed_attempt"])
+
+
 def _require_paid_execution_policy(*, execution_scope=None, manifest=None,
                                    ledger=None, campaign_guard=None,
                                    request=None, execution_context=None) -> None:
-    """Authorize only the explicitly approved three-call smoke, never a pilot.
+    """Authorize only two remaining forks from the pinned v4 initial checkpoint.
 
     A stable authorization is durably bound to one verified manifest and the
     repository-wide ledger. Each dispatched attempt gets a unique claim before
@@ -383,7 +558,7 @@ def _require_paid_execution_policy(*, execution_scope=None, manifest=None,
             frozen.get("smoke_task", {}).get("task_id") != SMOKE_AUTHORIZATION["task_id"]):
         raise ProviderFailure("smoke_manifest_not_authorized", uncertain_charge=False)
     from .budget import CAP_MICRO_USD, Ledger, reservation
-    from .runner import require_campaign_lock, smoke_schedule
+    from .runner import continuation_schedule, require_campaign_lock
     from .util import canonical
     if not isinstance(ledger, Ledger) or ledger.path.resolve() != SHARED_LEDGER_PATH.resolve():
         raise ProviderFailure("shared_budget_ledger_required", uncertain_charge=False)
@@ -397,7 +572,7 @@ def _require_paid_execution_policy(*, execution_scope=None, manifest=None,
         raise ProviderFailure("shared_budget_ledger_required", uncertain_charge=False)
     manifest_hash = frozen["manifest_sha256"]
     binding = "execution_authorization/" + SMOKE_AUTHORIZATION["authorization_id"]
-    recovery_binding = _verify_authentication_recovery(frozen, ledger)
+    recovery_binding = _verify_continuation_recovery(frozen, ledger)
     with ledger.transaction():
         for key in (binding, recovery_binding):
             ledger.db.execute("INSERT OR IGNORE INTO meta VALUES (?,?)", (key, manifest_hash))
@@ -409,20 +584,17 @@ def _require_paid_execution_policy(*, execution_scope=None, manifest=None,
     if not isinstance(execution_context, Mapping) or set(execution_context) != required:
         raise ProviderFailure("scoped_dispatch_metadata_required", uncertain_charge=False)
     context = execution_context
-    schedule = smoke_schedule(frozen["smoke_task"])
+    schedule = continuation_schedule(frozen["smoke_task"])
     allowed = {manifest_hash + "/" + call["call_id"]: call for call in schedule}
     call = allowed.get(context["call_id"])
     if (call is None or context["manifest_sha256"] != manifest_hash or
             any(context[key] != call[key] for key in ("task_id", "condition", "sample")) or
             type(context["attempt"]) is not int or context["attempt"] not in (1, 2)):
         raise ProviderFailure("smoke_call_not_authorized", uncertain_charge=False)
-    checkpoint = None
-    if call["condition"] != "initial":
-        initial = ledger.latest(manifest_hash + "/" + schedule[0]["call_id"])
-        if not initial or initial["state"] != "completed" or not initial["response"]:
-            raise ProviderFailure("smoke_initial_checkpoint_required", uncertain_charge=False)
-        checkpoint = {"request": json.loads(initial["request"]),
-                      "response": json.loads(initial["response"])}
+    recovery = _read_continuation_recovery_record(frozen)
+    initial = ledger.latest(recovery["initial_call_id"])
+    checkpoint = {"request": json.loads(initial["request"]),
+                  "response": json.loads(initial["response"])}
     expected = build_request(frozen["smoke_task"], call["condition"], checkpoint, frozen["settings"])
     if request != expected:
         raise ProviderFailure("smoke_request_not_frozen", uncertain_charge=False)
@@ -496,12 +668,12 @@ class OpenAIProvider:
 
     def authorize_schedule(self, manifest, ledger, schedule, tasks, *, execution_scope,
                            campaign_guard=None):
-        """Reject a pilot or modified smoke before the runner reserves a call."""
-        from .runner import smoke_schedule
+        """Reject new initial/fresh calls or changed forks before reserving a call."""
+        from .runner import continuation_schedule
         if (execution_scope != "protocol_smoke" or execution_scope != self.execution_scope or
                 manifest != self.manifest or ledger is not self.ledger or
                 campaign_guard is not self.campaign_guard or
-                schedule != smoke_schedule(manifest["smoke_task"]) or
+                schedule != continuation_schedule(manifest["smoke_task"]) or
                 [task.get("task_id") for task in tasks] != [SMOKE_AUTHORIZATION["task_id"]]):
             raise ProviderFailure("smoke_schedule_not_authorized", uncertain_charge=False)
         _require_paid_execution_policy(execution_scope=self.execution_scope,
@@ -528,7 +700,8 @@ class OpenAIProvider:
             status = status if type(status) is int else None
             if status in {400, 422}:
                 raise ProviderFailure("protocol_failure", status_code=status,
-                                      uncertain_charge=False) from None
+                                      uncertain_charge=False, api_error=sanitize_api_error(exc, status)) from None
             # No retry of provider rejections, semantic failures, or truncations.
             raise ProviderFailure("provider_failure", status_code=status,
-                                  uncertain_charge=status is None or status >= 500) from None
+                                  uncertain_charge=status is None or status >= 500,
+                                  api_error=sanitize_api_error(exc, status)) from None

@@ -1,0 +1,203 @@
+{
+  "authorization": {
+    "allowed": true,
+    "authorization_id": "user-2026-10-24-continuation-recovery-smoke-v5",
+    "initial_generation_allowed": false,
+    "manifest_version": "pilot-v5",
+    "max_continuation_recoveries": 1,
+    "max_logical_calls": 2,
+    "max_transport_retries_per_call": 1,
+    "shared_budget_usd": 40,
+    "task_id": "livecodebench:337"
+  },
+  "checkpoint_structure": [
+    {
+      "encrypted_length": 7992,
+      "encrypted_sha256": "c630bb7a54ed861b5de0cb5eab2ef8ed86d5dcb47873fc99e968805cb582056f",
+      "index": 0,
+      "keys": [
+        "content",
+        "encrypted_content",
+        "id",
+        "status",
+        "summary",
+        "type"
+      ],
+      "phase": null,
+      "status": null,
+      "status_present": true,
+      "type": "reasoning"
+    },
+    {
+      "encrypted_length": 7992,
+      "encrypted_sha256": "e5e5dea9e4b34c08197ffa114e6a1806e73f39e989af799c98fe041cbddee7e5",
+      "index": 1,
+      "keys": [
+        "content",
+        "encrypted_content",
+        "id",
+        "status",
+        "summary",
+        "type"
+      ],
+      "phase": null,
+      "status": null,
+      "status_present": true,
+      "type": "reasoning"
+    },
+    {
+      "encrypted_length": 7460,
+      "encrypted_sha256": "32406a5bd6d090354f79693abe05083b734d7311ff16b441d9050ab3c66d802a",
+      "index": 2,
+      "keys": [
+        "content",
+        "encrypted_content",
+        "id",
+        "status",
+        "summary",
+        "type"
+      ],
+      "phase": null,
+      "status": null,
+      "status_present": true,
+      "type": "reasoning"
+    },
+    {
+      "encrypted_length": 4132,
+      "encrypted_sha256": "3de5d8ae03bcf548ad1a6e88a927a2c7d2bdb332b8292cb674df9f22e262ef98",
+      "index": 3,
+      "keys": [
+        "content",
+        "encrypted_content",
+        "id",
+        "status",
+        "summary",
+        "type"
+      ],
+      "phase": null,
+      "status": null,
+      "status_present": true,
+      "type": "reasoning"
+    },
+    {
+      "encrypted_length": 0,
+      "encrypted_sha256": null,
+      "index": 4,
+      "keys": [
+        "content",
+        "id",
+        "phase",
+        "role",
+        "status",
+        "type"
+      ],
+      "phase": "final_answer",
+      "status": "completed",
+      "status_present": true,
+      "type": "message"
+    }
+  ],
+  "design_changes_authorized": false,
+  "diagnosis": "suspected_null_reasoning_status_serialization; prior HTTP400 detailed body unavailable; live verification pending",
+  "execution_this_turn": "prepare/test/freeze/push only; user resumes two continuations from Terminal",
+  "new_initial_authorized": false,
+  "normalization": "For replay copies only, delete status when item.type == reasoning and item.status is None. No other field or item changes.",
+  "pilot_authorized": false,
+  "preservation": {
+    "attempt_rows_sha256": "fbe8bdb5930a03e8fd98ae6276060bfe3075ac09485051523563cb1615783531",
+    "historical_attempts": [
+      {
+        "attempt": 1,
+        "call_id": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28/smoke/livecodebench:337/initial/0",
+        "charged_micro_usd": null,
+        "manifest_sha256": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28",
+        "reserved_micro_usd": 354210,
+        "row_sha256": "837396fed306676e968c1da846b2059c1dd1ad97d2904db4cfafcbb1f5665c0a",
+        "state": "provider_failure"
+      },
+      {
+        "attempt": 1,
+        "call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/initial/0",
+        "charged_micro_usd": 21978,
+        "manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+        "reserved_micro_usd": 354210,
+        "row_sha256": "76efa8d8d8708a4f518524bf26ace0ed9480aacf80156a01cdc1a849e5dbe016",
+        "state": "completed"
+      },
+      {
+        "attempt": 1,
+        "call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/updated_retained/1",
+        "charged_micro_usd": null,
+        "manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+        "reserved_micro_usd": 526420,
+        "row_sha256": "21990bfcc5c4cbcd5fe6b8332b2f6fde85a2a0635f0ac3bf62660d3953146224",
+        "state": "provider_failure"
+      }
+    ],
+    "historical_meta": [
+      {
+        "key": "authentication_recovery/2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28/smoke/livecodebench:337/initial/0/1",
+        "value": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f"
+      },
+      {
+        "key": "cap_micro_usd",
+        "value": "40000000"
+      },
+      {
+        "key": "execution_authorization/user-2026-10-24-auth-recovery-smoke-v4",
+        "value": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f"
+      },
+      {
+        "key": "execution_authorization/user-2026-10-24-three-call-smoke-v3",
+        "value": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28"
+      },
+      {
+        "key": "provider_dispatch/2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28/smoke/livecodebench:337/initial/0/1",
+        "value": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28"
+      },
+      {
+        "key": "provider_dispatch/4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/initial/0/1",
+        "value": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f"
+      },
+      {
+        "key": "provider_dispatch/4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/updated_retained/1/1",
+        "value": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f"
+      }
+    ],
+    "known_charges_micro_usd": 21978,
+    "ledger_file_sha256_before": "d77620519bda8aa913d108581613302d23f00e63ee59868432ccc9b6ce8932a3",
+    "meta_rows_sha256": "01518abe44a2d2b918ed8405cc18b7e74439566b31de83402f81004c71ff87a8",
+    "outstanding_reservations_micro_usd": 880630
+  },
+  "prior_authorization_record": {
+    "path": "provenance/authentication_recovery_v4.json",
+    "sha256": "45744c08fb141f1c325a0a1731e39df1e3358e669dd83be616eafd8d45bfbaab"
+  },
+  "prior_manifest": {
+    "manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+    "path": "manifests/pilot-v4.json",
+    "sha256": "758684792134780173902aa7f26cc0c4b881ab381a67deec55ee3b1ba76f48ae"
+  },
+  "prior_policy": {
+    "path": "provenance/execution_policy_v4.json",
+    "sha256": "82968b7f37eff36b21f2344ee9b2657a0415e5d6ad86cf6596adfb0821c42fb0"
+  },
+  "recorded_at": "2026-10-25T01:32:12.228837+00:00",
+  "recovery": {
+    "failed_attempt": 1,
+    "failed_attempt_sha256": "21990bfcc5c4cbcd5fe6b8332b2f6fde85a2a0635f0ac3bf62660d3953146224",
+    "failed_call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/updated_retained/1",
+    "initial_attempt": 1,
+    "initial_attempt_sha256": "76efa8d8d8708a4f518524bf26ace0ed9480aacf80156a01cdc1a849e5dbe016",
+    "initial_call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/initial/0",
+    "initial_checkpoint_sha256": "39c6528a75d1016a7196f22165fec99476a871aeafd91a99ed8f38ea9171f961",
+    "initial_response_sha256": "4ec551c960e1ee21c6bfb0902ae70a52ec74ba43c714da1b27dde1a3f23706e5",
+    "max_recoveries": 1,
+    "prior_authorization_id": "user-2026-10-24-auth-recovery-smoke-v4",
+    "prior_manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+    "required_http_status": 400
+  },
+  "schema_version": 1,
+  "source": "Explicit user instruction in this task",
+  "user_instruction": "Repair the continuation serialization narrowly: when a replayed item has type == reasoning and status is None, omit only its status field. Preserve the raw checkpoint unchanged. Keep all four reasoning items, their order, encrypted contents, and the assistant phase. Apply identical normalization to both branches; their requests must still differ only in reasoning.context. Update replay checks accordingly. Add regression tests using the observed request structure. Preserve non-null statuses. Also retain sanitized API error type, code, parameter, and a safely redacted explanation so future HTTP 400s are diagnosable. Freeze a continuation-recovery version bound to the existing successful v4 initial checkpoint. Permit only the two remaining continuations—do not generate another initial answer. Preserve previous attempts, reservations, and the shared budget. Reuse unchanged reference qualification evidence. Push the fix and provide the Terminal command. Keep the full pilot blocked, and describe null-status serialization as a suspected cause until live verification succeeds."
+}

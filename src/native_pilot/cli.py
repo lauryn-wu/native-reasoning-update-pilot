@@ -192,12 +192,13 @@ def main(argv=None):
             q=read_json(qpath) if qpath.exists() else {}
             paid_preflight(manifest,q,smoke=args.command=='smoke')
             from .budget import Ledger
-            from .runner import campaign_lock, execute, smoke_schedule, outcomes_from_ledger
+            from .runner import campaign_lock, execute, smoke_schedule, continuation_schedule, outcomes_from_ledger
             from .provider import OpenAIProvider
             with campaign_lock(run_dir/'campaign.lock') as campaign_guard:
                 ledger=Ledger(ledger_path)
                 try:
-                    smoke_calls=smoke_schedule(manifest['smoke_task'])
+                    smoke_calls=(continuation_schedule(manifest['smoke_task'])
+                        if manifest.get('continuation_recovery') else smoke_schedule(manifest['smoke_task']))
                     if args.command=='run':
                         smoke_outcomes=outcomes_from_ledger(ledger,manifest,smoke_calls)
                         if any(o.get('protocol_valid') is not True for o in smoke_outcomes):
@@ -221,6 +222,10 @@ def main(argv=None):
                             outstanding_reservations_usd_all_versions=protocol.get('accounting',{}).get(
                                 'outstanding_reservations_usd_all_versions'),
                             authentication_recovery_prior_failure=protocol.get('authentication_recovery_prior_failure'))
+                        summary.update(inherited_initial_checkpoint=protocol.get('inherited_initial_checkpoint'),
+                                       continuation_recovery_prior_failure=protocol.get('continuation_recovery_prior_failure'),
+                                       replay_normalization=protocol.get('replay_normalization'),
+                                       logical_calls=protocol.get('logical_calls'))
                     show(summary)
                 finally:
                     ledger.close()

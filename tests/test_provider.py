@@ -11,6 +11,8 @@ from native_pilot.provider import (
     UNCHANGED_REQUEST, build_request, extract_visible_answer, validate_response,
     AUTHENTICATION_RECOVERY, AUTHENTICATION_RECOVERY_PATH, SMOKE_AUTHORIZATION,
     _read_authentication_recovery_record as read_authentication_recovery_record,
+    CONTINUATION_RECOVERY, CONTINUATION_RECOVERY_PATH, normalize_replay_output,
+    _read_continuation_recovery_record as read_continuation_recovery_record,
 )
 from native_pilot.budget import Ledger, reservation
 from native_pilot.util import digest, file_digest
@@ -47,6 +49,16 @@ def response(context="current_turn", **overrides):
 
 def checkpoint():
     return {"request": build_request(TASK, "initial"), "response": response()}
+
+
+def observed_structure_response(context="current_turn"):
+    """Observed field structure, using only synthetic content and identifiers."""
+    value = response(context)
+    value['output'] = [
+        {'id':f'rs_synthetic_{index}', 'type':'reasoning', 'content':None, 'status':None,
+         'summary':[], 'encrypted_content':f'synthetic-opaque-{index}-not-native-reasoning'}
+        for index in range(4)] + [value['output'][-1]]
+    return value
 
 
 def scoped_smoke_fixture():
@@ -87,6 +99,47 @@ def seed_authentication_recovery(ledger, manifest):
     return recovery
 
 
+def seed_continuation_recovery(ledger, manifest):
+    """Build synthetic v3/v4 history in a temporary ledger; return both records."""
+    authentication = seed_authentication_recovery(ledger, manifest)
+    recovery = copy.deepcopy(CONTINUATION_RECOVERY)
+    request = build_request(manifest['smoke_task'], 'initial', settings=manifest['settings'])
+    value = observed_structure_response()
+    state = {'request':request, 'response':value}
+    attempt = ledger.reserve(recovery['initial_call_id'], recovery['prior_manifest_sha256'], request,
+                             reservation(request)['micro_usd'], 'smoke')
+    ledger.dispatched(recovery['initial_call_id'], attempt)
+    ledger.finish(recovery['initial_call_id'], attempt, value, {
+        'call_id':'smoke/livecodebench:337/initial/0', 'task_id':'livecodebench:337',
+        'condition':'initial', 'sample':0, 'status':'correct', 'protocol_valid':True,
+        'response_status':'completed', 'returned_model':value['model'],
+        'returned_reasoning':value['reasoning'], 'returned_service_tier':'default',
+        'usage':value['usage'], 'grade':{'status':'correct','correct':True}})
+    historical = build_request(manifest['smoke_task'], 'updated_retained', state, manifest['settings'])
+    historical['input'] = copy.deepcopy(request['input']) + copy.deepcopy(value['output']) + historical['input'][-1:]
+    attempt = ledger.reserve(recovery['failed_call_id'], recovery['prior_manifest_sha256'], historical,
+                             reservation(historical,state)['micro_usd'], 'smoke')
+    ledger.dispatched(recovery['failed_call_id'], attempt)
+    ledger.provider_failure(recovery['failed_call_id'], attempt, 'protocol_failure', {
+        'call_id':'smoke/livecodebench:337/updated_retained/1', 'task_id':'livecodebench:337',
+        'condition':'updated_retained', 'sample':1, 'status':'protocol_failure', 'protocol_valid':False,
+        'error_kind':'protocol_failure', 'provider_error':{
+            'kind':'protocol_failure','retryable':False,'uncertain_charge':False,'status_code':400}})
+    recovery['initial_attempt_sha256'] = digest(ledger.latest(recovery['initial_call_id']))
+    recovery['initial_response_sha256'] = digest(value)
+    recovery['initial_checkpoint_sha256'] = digest(state)
+    recovery['failed_attempt_sha256'] = digest(ledger.latest(recovery['failed_call_id']))
+    with ledger.transaction():
+        for key in ('execution_authorization/'+recovery['prior_authorization_id'],
+                    'authentication_recovery/'+authentication['failed_call_id']+'/1',
+                    'provider_dispatch/'+recovery['initial_call_id']+'/1',
+                    'provider_dispatch/'+recovery['failed_call_id']+'/1'):
+            ledger.db.execute('INSERT INTO meta VALUES (?,?)', (key,recovery['prior_manifest_sha256']))
+    manifest['continuation_recovery'] = {'path':CONTINUATION_RECOVERY_PATH,'sha256':'d'*64}
+    manifest['provenance_hashes'][CONTINUATION_RECOVERY_PATH] = 'd'*64
+    return authentication, recovery
+
+
 class ScopedProviderTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -98,14 +151,19 @@ class ScopedProviderTests(unittest.TestCase):
         self.guard = self.lock.__enter__()
         self.addCleanup(self.lock.__exit__, None, None, None)
         self.manifest = scoped_smoke_fixture()
-        self.recovery = seed_authentication_recovery(self.ledger, self.manifest)
+        self.recovery, self.continuation = seed_continuation_recovery(self.ledger, self.manifest)
+        self.prior_manifest = copy.deepcopy(self.manifest)
+        self.manifest.pop('authentication_recovery')
         self.policy = {"paid_execution_allowed": False,
                        "protocol_smoke": copy.deepcopy(SMOKE_AUTHORIZATION)}
         for target, value in (("SHARED_LEDGER_PATH", self.ledger.path),
                               ("_read_frozen_smoke_manifest", self.manifest),
                               ("_read_execution_policy", self.policy),
                               ("AUTHENTICATION_RECOVERY", self.recovery),
-                              ("_read_authentication_recovery_record", self.recovery)):
+                              ("_read_authentication_recovery_record", self.recovery),
+                              ("CONTINUATION_RECOVERY", self.continuation),
+                              ("_read_continuation_recovery_record", self.continuation),
+                              ("_read_continuation_prior_manifest", self.prior_manifest)):
             patcher = (patch("native_pilot.provider." + target, value) if target.isupper()
                        else patch("native_pilot.provider." + target, return_value=value))
             patcher.start()
@@ -119,14 +177,18 @@ class ScopedProviderTests(unittest.TestCase):
         options.update(changes)
         return OpenAIProvider(**options)
 
-    def reserve_initial(self):
-        from native_pilot.runner import smoke_schedule
-        call = smoke_schedule(self.manifest["smoke_task"])[0]
-        request = build_request(self.manifest["smoke_task"], "initial")
+    def checkpoint(self):
+        row = self.ledger.latest(self.continuation['initial_call_id'])
+        return {'request':json.loads(row['request']), 'response':json.loads(row['response'])}
+
+    def reserve_continuation(self):
+        from native_pilot.runner import continuation_schedule
+        call = continuation_schedule(self.manifest["smoke_task"])[0]
+        request = build_request(self.manifest["smoke_task"], "updated_retained", self.checkpoint())
         context = dict(call, manifest_sha256=self.manifest["manifest_sha256"],
                        call_id=self.manifest["manifest_sha256"] + "/" + call["call_id"], attempt=1)
         self.ledger.reserve(context["call_id"], self.manifest["manifest_sha256"], request,
-                            reservation(request)["micro_usd"], "smoke")
+                            reservation(request,self.checkpoint())["micro_usd"], "smoke")
         self.ledger.dispatched(context["call_id"], 1)
         return request, context
 
@@ -134,7 +196,7 @@ class ScopedProviderTests(unittest.TestCase):
         for scope in (None, "pilot", "smoke"):
             with self.subTest(scope=scope), self.assertRaises(ProviderFailure):
                 self.provider(execution_scope=scope)
-        for field, value in (("version", "pilot-v5"), ("manifest_sha256", "b" * 64),
+        for field, value in (("version", "pilot-v6"), ("manifest_sha256", "b" * 64),
                              ("paid_execution_allowed", True)):
             altered = dict(self.manifest, **{field: value})
             with self.subTest(field=field), self.assertRaises(ProviderFailure):
@@ -151,7 +213,7 @@ class ScopedProviderTests(unittest.TestCase):
             with self.assertRaisesRegex(ProviderFailure, "active_campaign_lock_required"):
                 self.provider(campaign_guard=foreign)
         provider = self.provider()
-        request, context = self.reserve_initial()
+        request, context = self.reserve_continuation()
         self.lock.__exit__(None, None, None)
         with self.assertRaisesRegex(ProviderFailure, "active_campaign_lock_required"):
             provider.create(request, execution_context=context)
@@ -159,9 +221,9 @@ class ScopedProviderTests(unittest.TestCase):
 
     def test_authorized_dispatch_requires_reservation_context_and_frozen_request(self):
         provider = self.provider()
-        request, context = self.reserve_initial()
+        request, context = self.reserve_continuation()
         for change in ({"task_id": "livecodebench:338"}, {"sample": 2}, {"attempt": 3},
-                       {"call_id": context["call_id"].replace("initial/0", "fresh/1")},
+                       {"call_id": context["call_id"].replace("updated_retained/1", "fresh/1")},
                        {"manifest_sha256": "b" * 64}):
             with self.subTest(change=change), self.assertRaises(ProviderFailure):
                 provider.create(request, execution_context=dict(context, **change))
@@ -178,13 +240,13 @@ class ScopedProviderTests(unittest.TestCase):
         self.client.responses.create.assert_called_once()
 
     def test_unreserved_request_and_different_physical_ledger_are_rejected(self):
-        from native_pilot.runner import smoke_schedule
+        from native_pilot.runner import continuation_schedule
         provider = self.provider()
-        call = smoke_schedule(self.manifest["smoke_task"])[0]
+        call = continuation_schedule(self.manifest["smoke_task"])[0]
         context = dict(call, call_id=self.manifest["manifest_sha256"] + "/" + call["call_id"],
                        manifest_sha256=self.manifest["manifest_sha256"], attempt=1)
         with self.assertRaisesRegex(ProviderFailure, "reservation_required"):
-            provider.create(build_request(self.manifest["smoke_task"], "initial"), execution_context=context)
+            provider.create(build_request(self.manifest["smoke_task"], "updated_retained", self.checkpoint()), execution_context=context)
         other = Ledger(Path(self.temp.name) / "other.sqlite")
         try:
             other.path = self.ledger.path
@@ -204,36 +266,33 @@ class ScopedProviderTests(unittest.TestCase):
 
     def test_reinstated_policy_stops_before_sdk_dispatch(self):
         provider = self.provider()
-        request, context = self.reserve_initial()
+        request, context = self.reserve_continuation()
         with patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": False}):
             with self.assertRaisesRegex(ProviderFailure, "policy_hold"):
                 provider.create(request, execution_context=context)
         self.client.responses.create.assert_not_called()
 
-    def test_explicit_recovery_preserves_failed_auth_attempt_and_reservation(self):
-        before = copy.deepcopy(self.ledger.rows(self.recovery['failed_manifest_sha256']))
+    def test_explicit_recovery_preserves_all_historical_attempts_and_reservations(self):
+        before = copy.deepcopy(self.ledger.rows())
+        total = self.ledger.total()
         provider = self.provider()
-        request, context = self.reserve_initial()
+        request, context = self.reserve_continuation()
         provider.create(request, execution_context=context)
-        self.assertEqual(self.ledger.rows(self.recovery['failed_manifest_sha256']), before)
+        self.assertEqual(self.ledger.rows()[:len(before)], before)
         self.assertEqual(before[0]['state'], 'provider_failure')
         self.assertIsNone(before[0]['charged'])
-        self.assertEqual(self.ledger.total(), before[0]['reserved'] + reservation(request)['micro_usd'])
+        self.assertEqual(self.ledger.total(), total + reservation(request,self.checkpoint())['micro_usd'])
         self.assertEqual(context['attempt'], 1)
         self.assertNotEqual(context['call_id'], self.recovery['failed_call_id'])
 
     def test_new_provider_failure_stops_direct_dispatch_of_later_continuation(self):
-        from native_pilot.runner import smoke_schedule
+        from native_pilot.runner import continuation_schedule
         class APIError(Exception):
             status_code = 401
-        self.client.responses.create.side_effect = [response(), APIError('private authentication body')]
+        self.client.responses.create.side_effect = APIError('private authentication body')
         provider = self.provider()
-        request, context = self.reserve_initial()
-        initial_response = provider.create(request, execution_context=context)
-        self.ledger.finish(context['call_id'], 1, initial_response,
-                           {'status':'correct','protocol_valid':True})
-        state = {'request':request, 'response':initial_response}
-        for call in smoke_schedule(self.manifest['smoke_task'])[1:]:
+        state = self.checkpoint()
+        for call in continuation_schedule(self.manifest['smoke_task']):
             continuation = build_request(self.manifest['smoke_task'], call['condition'], state)
             scoped = dict(call, call_id=self.manifest['manifest_sha256']+'/'+call['call_id'],
                           manifest_sha256=self.manifest['manifest_sha256'], attempt=1)
@@ -250,7 +309,69 @@ class ScopedProviderTests(unittest.TestCase):
             else:
                 with self.assertRaisesRegex(ProviderFailure, 'smoke_stopped_after_provider_failure'):
                     provider.create(continuation, execution_context=scoped)
-        self.assertEqual(self.client.responses.create.call_count, 2)
+        self.assertEqual(self.client.responses.create.call_count, 1)
+
+    def test_new_initial_or_changed_v4_checkpoint_cannot_dispatch(self):
+        provider = self.provider()
+        for branch, sample in (('initial',0),('fresh',1)):
+            request = build_request(self.manifest['smoke_task'], branch)
+            context = {'manifest_sha256':self.manifest['manifest_sha256'], 'task_id':'livecodebench:337',
+                       'call_id':self.manifest['manifest_sha256']+'/smoke/livecodebench:337/'+branch+'/'+str(sample),
+                       'condition':branch,'sample':sample,'attempt':1}
+            with self.subTest(branch=branch), self.assertRaisesRegex(ProviderFailure, 'smoke_call_not_authorized'):
+                provider.create(request, execution_context=context)
+        row = self.ledger.latest(self.continuation['initial_call_id'])
+        for field, value in (('response','{}'), ('charged',row['charged']+1), ('state','provider_failure')):
+            with self.ledger.transaction():
+                self.ledger.db.execute('UPDATE attempts SET '+field+'=? WHERE call_id=?',(value,row['call_id']))
+            with self.subTest(field=field), self.assertRaisesRegex(ProviderFailure,'predecessor_changed'):
+                self.provider()
+            with self.ledger.transaction():
+                self.ledger.db.execute('UPDATE attempts SET '+field+'=? WHERE call_id=?',(row[field],row['call_id']))
+        self.client.responses.create.assert_not_called()
+
+    def test_old_v4_claims_and_exact_two_rows_are_required(self):
+        keys = ('authentication_recovery/'+self.recovery['failed_call_id']+'/1',
+                'execution_authorization/'+self.continuation['prior_authorization_id'],
+                'provider_dispatch/'+self.continuation['initial_call_id']+'/1',
+                'provider_dispatch/'+self.continuation['failed_call_id']+'/1')
+        for key in keys:
+            with self.ledger.transaction():
+                self.ledger.db.execute('DELETE FROM meta WHERE key=?',(key,))
+            with self.subTest(key=key), self.assertRaisesRegex(ProviderFailure,'prior_authorization_changed'):
+                self.provider()
+            with self.ledger.transaction():
+                self.ledger.db.execute('INSERT INTO meta VALUES (?,?)',
+                                       (key,self.continuation['prior_manifest_sha256']))
+        request = build_request(self.manifest['smoke_task'],'updated_dropped',self.checkpoint())
+        self.ledger.reserve(self.continuation['failed_call_id']+'/unapproved-dropped',
+                            self.continuation['prior_manifest_sha256'],request,
+                            reservation(request,self.checkpoint())['micro_usd'],'smoke')
+        with self.assertRaisesRegex(ProviderFailure,'predecessor_changed'):
+            self.provider()
+        self.client.responses.create.assert_not_called()
+
+    def test_continuation_record_requires_exact_core_and_frozen_hash(self):
+        root = Path(self.temp.name); path = root/CONTINUATION_RECOVERY_PATH
+        path.parent.mkdir()
+        record = {'recovery':self.continuation}
+        path.write_text(json.dumps(record))
+        manifest = copy.deepcopy(self.manifest)
+        sha = file_digest(path)
+        manifest['continuation_recovery']['sha256'] = sha
+        manifest['provenance_hashes'][CONTINUATION_RECOVERY_PATH] = sha
+        with patch('native_pilot.provider.ROOT',root):
+            self.assertEqual(read_continuation_recovery_record(manifest),self.continuation)
+            bad = copy.deepcopy(manifest); bad['continuation_recovery']['path'] = '../unbound.json'
+            with self.assertRaisesRegex(ProviderFailure,'record_unverified'):
+                read_continuation_recovery_record(bad)
+            record['recovery'] = dict(self.continuation, initial_attempt=2)
+            path.write_text(json.dumps(record))
+            sha = file_digest(path)
+            manifest['continuation_recovery']['sha256'] = sha
+            manifest['provenance_hashes'][CONTINUATION_RECOVERY_PATH] = sha
+            with self.assertRaisesRegex(ProviderFailure,'record_unverified'):
+                read_continuation_recovery_record(manifest)
 
     def test_missing_changed_or_extended_predecessor_cannot_recover(self):
         row = self.ledger.latest(self.recovery['failed_call_id'])
@@ -303,7 +424,7 @@ class ScopedProviderTests(unittest.TestCase):
         path.parent.mkdir()
         record = {'recovery':self.recovery, 'note':'Synthetic offline record'}
         path.write_text(json.dumps(record))
-        manifest = copy.deepcopy(self.manifest)
+        manifest = copy.deepcopy(self.prior_manifest)
         sha = file_digest(path)
         manifest['authentication_recovery']['sha256'] = sha
         manifest['provenance_hashes'][AUTHENTICATION_RECOVERY_PATH] = sha
@@ -323,6 +444,85 @@ class ScopedProviderTests(unittest.TestCase):
 
 
 class ProviderTests(unittest.TestCase):
+    def test_replay_normalization_only_omits_null_reasoning_status_and_never_mutates(self):
+        raw = observed_structure_response()['output'] + [
+            {'type':'reasoning','status':'completed','content':None,'encrypted_content':'extra-synthetic'},
+            {'type':'message','status':None,'phase':'commentary','content':[]},
+            {'type':'reasoning','summary':[],'content':{'status':None}}]
+        before = copy.deepcopy(raw)
+        normalized = normalize_replay_output(raw)
+        expected = copy.deepcopy(raw)
+        for item in expected[:4]:
+            del item['status']
+        self.assertEqual(normalized, expected)
+        self.assertEqual(raw, before)
+        self.assertIsNot(normalized, raw)
+        self.assertEqual(normalized[5]['status'], 'completed')
+        self.assertIn('status', normalized[6])
+        self.assertIsNone(normalized[6]['status'])
+        self.assertIsNone(normalized[7]['content']['status'])
+        normalized[0]['summary'].append('local mutation')
+        self.assertEqual(raw, before)
+
+    def test_four_reasoning_items_and_raw_checkpoint_survive_both_serializations(self):
+        state = {'request':build_request(TASK,'initial'), 'response':observed_structure_response()}
+        before = copy.deepcopy(state)
+        retained = build_request(TASK,'updated_retained',state)
+        dropped = build_request(TASK,'updated_dropped',state)
+        for request in (retained,dropped):
+            output = request['input'][len(state['request']['input']):-1]
+            self.assertEqual(output,normalize_replay_output(state['response']['output']))
+            self.assertEqual(len([item for item in output if item['type']=='reasoning']),4)
+            self.assertEqual([item['encrypted_content'] for item in output[:4]],
+                             [item['encrypted_content'] for item in before['response']['output'][:4]])
+            self.assertEqual(output[-1]['phase'],'final_answer')
+            self.assertEqual(output[-1]['status'],'completed')
+        retained['reasoning'].pop('context'); dropped['reasoning'].pop('context')
+        self.assertEqual(retained,dropped)
+        self.assertEqual(state,before)
+
+    @patch('native_pilot.provider._require_paid_execution_policy')
+    def test_safe_api_error_details_never_copy_echoed_secrets_or_freeform_text(self, _policy):
+        class APIError(Exception):
+            status_code = 400
+        secrets = ['sk-secret-test-key','opaque-encrypted-private-value', 'PRIVATE PROMPT CONTENT',
+                   'def private_solution(): return 7', 'https://private.example/token', 'Bearer hidden-token']
+        error = APIError('exception string includes '+' '.join(secrets))
+        error.body = {'error':{'type':'invalid_request_error','code':'invalid_value','param':'input[2].status',
+            'message':"Invalid null status; supported values are 'in_progress', 'completed', 'incomplete'. "+' '.join(secrets),
+            'nested':{'message':' '.join(secrets)}}}
+        client = Mock(); client.responses.create.side_effect = error
+        with self.assertRaises(ProviderFailure) as caught:
+            OpenAIProvider(allow_paid=True,client=client).create(build_request(TASK,'initial'))
+        detail = caught.exception.as_dict()['api_error']
+        self.assertEqual(detail['type'],'invalid_request_error')
+        self.assertEqual(detail['code'],'invalid_value')
+        self.assertEqual(detail['param'],'input[2].status')
+        self.assertIn('null status',detail['explanation'])
+        self.assertEqual(detail['recognized_status_values'], ['in_progress','completed','incomplete'])
+        for secret in secrets:
+            self.assertNotIn(secret,json.dumps(caught.exception.as_dict()))
+        self.assertFalse(caught.exception.retryable)
+
+    @patch('native_pilot.provider._require_paid_execution_policy')
+    def test_unknown_error_fields_and_exception_text_are_redacted(self, _policy):
+        class APIError(Exception):
+            status_code = 422
+        error = APIError('private unknown exception')
+        error.body = {'type':'sk_secret_identifier','code':'private_prompt_as_code',
+                      'param':'input[2].https://private/path', 'message':'private unknown explanation'}
+        client = Mock(); client.responses.create.side_effect = error
+        with self.assertRaises(ProviderFailure) as caught:
+            OpenAIProvider(allow_paid=True,client=client).create(build_request(TASK,'initial'))
+        detail = caught.exception.as_dict()['api_error']
+        self.assertEqual({key:detail[key] for key in ('type','code','param')},
+                         {'type':None,'code':None,'param':None})
+        self.assertNotIn('private',json.dumps(detail))
+        client.responses.create.side_effect = RuntimeError('secret unknown exception with no API body')
+        with self.assertRaises(ProviderFailure) as caught:
+            OpenAIProvider(allow_paid=True,client=client).create(build_request(TASK,'initial'))
+        self.assertNotIn('secret',json.dumps(caught.exception.as_dict()))
+
     def test_paired_payloads_differ_only_in_context(self):
         for prefix in ("updated", "unchanged"):
             retained = build_request(TASK, prefix + "_retained", checkpoint())
@@ -485,7 +685,7 @@ class ProviderTests(unittest.TestCase):
             # MockTransport never opens a socket or contacts OpenAI.
             payload = json.loads(request.content)
             seen.append(payload)
-            value = response(payload["reasoning"]["context"])
+            value = observed_structure_response(payload["reasoning"]["context"])
             value.update({"object": "response", "created_at": 1})
             return httpx2.Response(200, json=value)
         with openai.OpenAI(api_key="offline-unit-placeholder", max_retries=0,
@@ -495,14 +695,28 @@ class ProviderTests(unittest.TestCase):
             initial = provider.create(initial_request)
             self.assertTrue(validate_response(initial, "current_turn", True)["valid"])
             state = {"request": initial_request, "response": initial}
+            raw_before = copy.deepcopy(state)
             for branch in ("updated_retained", "updated_dropped"):
                 result = provider.create(build_request(TASK, branch, state))
                 self.assertTrue(validate_response(result, seen[-1]["reasoning"]["context"])["valid"])
             self.assertEqual(client.max_retries, 0)
-        retained, dropped = seen[1:]
-        retained["reasoning"]["context"] = dropped["reasoning"]["context"]
-        self.assertEqual(retained, dropped)
-        self.assertEqual(seen[1]["input"][1:-1], initial["output"])
+        for request in seen[1:]:
+            output = request['input'][len(initial_request['input']):-1]
+            self.assertEqual(output,normalize_replay_output(initial['output']))
+            self.assertEqual(len(output),5)
+            self.assertEqual([item['id'] for item in output],[item['id'] for item in initial['output']])
+            for replayed, raw in zip(output[:4],initial['output'][:4]):
+                self.assertEqual(replayed['encrypted_content'],raw['encrypted_content'])
+                self.assertNotIn('status',replayed)
+                expected = copy.deepcopy(raw); del expected['status']
+                self.assertEqual(replayed,expected)
+            self.assertEqual(output[-1],initial['output'][-1])
+            self.assertEqual(output[-1]['phase'],'final_answer')
+        self.assertEqual(state,raw_before)
+        paired = copy.deepcopy(seen[1:])
+        self.assertEqual([request['reasoning'].pop('context') for request in paired],
+                         ['all_turns','current_turn'])
+        self.assertEqual(paired[0],paired[1])
 
 
 if __name__ == "__main__":

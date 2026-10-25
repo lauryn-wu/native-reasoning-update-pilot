@@ -8,13 +8,15 @@ from native_pilot.cli import main
 
 
 class SmokeCliExitTests(unittest.TestCase):
-    def invoke(self, result):
+    def invoke(self, result, *, continuation_only=False):
         # Every operation is mocked or uses a temporary directory; no actual
         # ledger, provider, Docker process, or repository artifact is touched.
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             manifest = {'manifest_sha256': 'fixture', 'tasks': [], 'schedule': [],
                         'smoke_task': {'task_id': 'fixture:smoke'}}
+            if continuation_only:
+                manifest['continuation_recovery'] = {'path': 'fixture', 'sha256': 'fixture'}
             ledger = Mock()
             with patch('native_pilot.cli.ROOT', root), \
                  patch('native_pilot.cli.load_manifest', return_value=manifest), \
@@ -30,6 +32,9 @@ class SmokeCliExitTests(unittest.TestCase):
             ledger.close.assert_called_once()
             provider.assert_called_once()
             self.assertEqual(execute.call_args.kwargs['execution_scope'], 'protocol_smoke')
+            conditions = [call['condition'] for call in execute.call_args.kwargs['schedule']]
+            self.assertEqual(conditions, ['updated_retained', 'updated_dropped'] if continuation_only else
+                             ['initial', 'updated_retained', 'updated_dropped'])
             return code, show.call_args.args[0]
 
     @staticmethod
@@ -49,6 +54,23 @@ class SmokeCliExitTests(unittest.TestCase):
 
     def test_completed_valid_smoke_is_zero(self):
         self.assertEqual(self.invoke(self.result(True))[0], 0)
+
+    def test_continuation_recovery_selects_only_two_calls_and_reports_source(self):
+        result = self.result(True)
+        lineage = {'source_call_id': 'old-v4/initial/0', 'source_attempt_sha256': 'fixture',
+                   'ledger_row_copied': False, 'new_initial_dispatched': False}
+        normalization = {'verified': True, 'removed_status_item_indices': [0, 1, 2, 3]}
+        prior = {'call_id': 'old-v4/updated_retained/1', 'http_status': 400,
+                 'reserved_usd': 0.5, 'charged_micro_usd': None, 'preservation_verified': True}
+        result['protocol_report'].update(inherited_initial_checkpoint=lineage,
+                                        replay_normalization=normalization, logical_calls=2,
+                                        continuation_recovery_prior_failure=prior)
+        code, summary = self.invoke(result, continuation_only=True)
+        self.assertEqual(code, 0)
+        self.assertEqual(summary['inherited_initial_checkpoint'], lineage)
+        self.assertEqual(summary['replay_normalization'], normalization)
+        self.assertEqual(summary['logical_calls'], 2)
+        self.assertEqual(summary['continuation_recovery_prior_failure'], prior)
 
     def test_successful_recovery_summary_preserves_prior401_and_reservation(self):
         result = self.result(True)

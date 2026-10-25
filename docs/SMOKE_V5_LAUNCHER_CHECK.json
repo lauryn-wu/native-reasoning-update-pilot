@@ -1,0 +1,11 @@
+{
+  "api_calls": 0,
+  "campaign_ledger_writes": 0,
+  "checks": [
+    "hidden-key prompt reaches mocked CLI with exact v5 manifest and existing cache",
+    "non-Terminal exits before key prompt or CLI",
+    "empty key exits before CLI"
+  ],
+  "document": "docs/SMOKE_V5.md",
+  "passed": true
+}

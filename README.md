@@ -5,16 +5,20 @@ correction, beyond its previous visible answer? This is an exploratory screen,
 not evidence for a mechanism or a claim of novelty. The source interrupts ongoing
 reasoning; this pilot instead corrects a completed response in a new user turn.
 
-**V4 permits one explicit authentication recovery for the three-call smoke.
-The 200-response pilot remains blocked.** See the
-[recovery authorization](provenance/authentication_recovery_v4.json) and
-[exact Terminal resume command](docs/SMOKE_V4.md#resume-in-this-checkout).
+**V5 permits only the two remaining smoke continuations from the successful
+v4 initial checkpoint. A new initial response and the full pilot are blocked.**
+See the [recovery authorization](provenance/continuation_recovery_v5.json) and
+[exact Terminal command](docs/SMOKE_V5.md#resume-the-two-continuations).
 
-The v3 initial attempt received HTTP 401 without a response or checkpoint.
-Its original failure record and **$0.354210 reservation remain intact** in the
-shared $40 ledger. Known charges are $0; $39.645790 remains unreserved.
-No v4 call was made while preparing this fix. Protocol validity and answer
-grades remain untested.
+The repair omits only null `status` fields on replayed reasoning items. All four
+items, their encrypted contents/order, the assistant phase, and the raw stored
+checkpoint are preserved. Null-status serialization is a **suspected cause** of
+the previous HTTP 400 until live verification succeeds.
+
+All three historical attempts remain unchanged. Known charges are $0.021978;
+$0.880630 remains reserved, leaving $39.097392 unreserved. No v5 call was made
+while preparing this fix. The initial answer graded correct; continuation grades
+and the complete live smoke protocol remain unavailable.
 
 Candidate **276 is resolved** with a compiled version of the proved exact cubic
 DP and immutable gold outputs. The unchanged deterministic order supplies
@@ -22,17 +26,16 @@ DP and immutable gold outputs. The unchanged deterministic order supplies
 No reference-feasibility exclusion amendment is applied. All statements,
 corrections, earlier attempts and published inputs are preserved.
 
-The [v4 manifest](manifests/pilot-v4.json) preserves the exact v3 selection,
-separate smoke case, eight controls, 200-response schedule, graders, analysis,
-and model settings. The [v3 manifest](manifests/pilot-v3.json), its authorization
-and qualification, and earlier v1/v2 artifacts remain unchanged. V4 reuses
-passing reference checks only after verifying dependency hashes and all task
-assets, then binds fresh unit and Docker checks before execution.
+The [v5 manifest](manifests/pilot-v5.json) preserves the exact task selection,
+separate smoke case, controls, pilot schedule, graders, analysis and model settings.
+All historical manifests, authorizations and qualification evidence remain intact.
+V5 reuses passing reference evidence after checking dependencies and all task
+assets, and binds fresh unit and Docker checks before execution.
 
 All eight reference checks for each of the **25 qualified pairs** are retained.
-Current validation is recorded in [v4 qualification](docs/SMOKE_V4_QUALIFICATION.json).
-The [v4 status record](docs/SMOKE_V4_STATUS.json) links the original HTTP 401 to
-the authorized recovery and records the preserved ledger balance.
+See [v5 qualification](docs/SMOKE_V5_QUALIFICATION.json) and
+[recovery status](docs/SMOKE_V5_STATUS.json) for exact checks, checkpoint lineage
+and the preserved shared-ledger balance.
 
 ## References and grading
 
@@ -85,12 +88,12 @@ The committed validation record states what was actually run.
 
 ## Freezing and execution gates
 
-The committed v4 snapshot is source-qualified. Inspect it without dispatching:
+The committed v5 snapshot is source-qualified. Inspect it without dispatching:
 
 ```sh
-native-pilot --manifest manifests/pilot-v4.json dry-run
-native-pilot --manifest manifests/pilot-v4.json report
-native-pilot --manifest manifests/pilot-v4.json archive
+native-pilot --manifest manifests/pilot-v5.json dry-run
+native-pilot --manifest manifests/pilot-v5.json report
+native-pilot --manifest manifests/pilot-v5.json archive
 ```
 
 Four workers run independent offline task checks; each retains the same complete
@@ -108,25 +111,21 @@ native-pilot freeze --version UNUSED_VERSION --out manifests/UNUSED_VERSION.json
 
 A blocked audit cannot produce a 24-case schedule. Existing manifests cannot be
 overwritten; changing frozen implementation or evidence requires a new version.
-Historical v1/v2/v3 implementation-file hashes are expected to reject the updated
+Historical v1/v2/v3/v4 implementation-file hashes are expected to reject the updated
 checkout; they are archival snapshots, preserved byte-for-byte.
 
-The scoped `smoke --allow-paid` command requires the v4 manifest-bound
-qualification file, the canonical shared ledger and a locally configured
-`OPENAI_API_KEY`. It permits only initial, updated retained and updated dropped
-on `livecodebench:337`, with one transport retry per assignment. Re-running it
-skips completed calls and cannot create a second authentication recovery. The provider
-rechecks scope and the unchanged v3 failure before every dispatch. `run --allow-paid` remains blocked.
+The scoped `smoke --allow-paid` command requires v5 manifest-bound qualification,
+the canonical shared ledger and a locally entered key. It permits only updated
+retained and updated dropped on `livecodebench:337`, both from the same pinned
+v4 initial checkpoint. A new initial request is rejected before reservation.
+Completed continuations are skipped on resume; another recovery is not authorized.
+The provider rechecks the lineage and scope before each dispatch.
 
-```sh
-native-pilot --manifest manifests/pilot-v4.json --asset-cache PATH smoke --allow-paid
-```
-
-The private ledger stays at `runs/budget.sqlite` across all versions. Never
-reset or replace it. Do not commit credentials, raw responses or native reasoning.
-The user has authorized no pilot calls and no design changes based on smoke grades.
-The linked Terminal command always prompts for the key again. Provider failures
-produce explicit stop reasons, and incomplete smoke exits nonzero.
+Use the [hidden-key Terminal command](docs/SMOKE_V5.md#resume-the-two-continuations).
+Provider errors retain safely sanitized diagnostics. Incomplete smoke exits
+nonzero. `run --allow-paid` remains blocked. The ledger stays at
+`runs/budget.sqlite`; never reset or replace it. Credentials, raw responses and
+native reasoning remain private and excluded from Git.
 
 ## Design and limits
 

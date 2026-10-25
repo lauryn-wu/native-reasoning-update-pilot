@@ -11,8 +11,8 @@ from native_pilot.budget import CAP_MICRO_USD, Ledger, reservation, usage_cost
 from native_pilot.design import make_schedule
 from native_pilot.provider import (DEFAULT_SETTINGS, OpenAIProvider, ProviderFailure,
                                    SMOKE_AUTHORIZATION, UNCHANGED_REQUEST, build_request)
-from native_pilot.runner import campaign_lock, execute, smoke_schedule
-from test_provider import TASK, response, scoped_smoke_fixture, seed_authentication_recovery
+from native_pilot.runner import campaign_lock, execute, smoke_schedule, continuation_schedule, _replay_preservation
+from test_provider import TASK, response, scoped_smoke_fixture, seed_continuation_recovery
 
 
 def fixture_manifest(*, controls=True):
@@ -41,8 +41,45 @@ class FixtureProvider:
         return value
 
 
+class ReplayPreservationTests(unittest.TestCase):
+    def test_report_verifies_only_four_null_reasoning_status_omissions(self):
+        from native_pilot.provider import normalize_replay_output
+        raw = [{'type': 'reasoning', 'id': f'fixture-reasoning-{index}', 'status': None,
+                'encrypted_content': f'fixture-opaque-{index}', 'summary': []}
+               for index in range(4)]
+        raw.append({'type': 'message', 'id': 'fixture-final', 'status': 'completed',
+                    'phase': 'final_answer', 'role': 'assistant',
+                    'content': [{'type': 'output_text', 'text': 'fixture answer'}]})
+        before = copy.deepcopy(raw)
+        normalized = normalize_replay_output(raw)
+        check = _replay_preservation(raw, normalized)
+        self.assertTrue(check['verified'])
+        self.assertEqual(check['removed_status_item_indices'], [0, 1, 2, 3])
+        self.assertEqual(check['output_items'], 5)
+        self.assertEqual(check['reasoning_items'], 4)
+        self.assertEqual(raw, before)
+        self.assertEqual(normalized[-1], raw[-1])
+        for index in range(4):
+            self.assertEqual(normalized[index], {key: value for key, value in raw[index].items() if key != 'status'})
+        for change in ('order', 'ciphertext', 'phase', 'remove_item'):
+            changed = copy.deepcopy(normalized)
+            if change == 'order': changed[:2] = changed[1::-1]
+            elif change == 'ciphertext': changed[0]['encrypted_content'] = 'different'
+            elif change == 'phase': changed[-1]['phase'] = 'commentary'
+            else: changed.pop(2)
+            with self.subTest(change=change):
+                self.assertFalse(_replay_preservation(raw, changed)['verified'])
+
+    def test_non_null_reasoning_status_and_null_message_status_are_preserved(self):
+        from native_pilot.provider import normalize_replay_output
+        raw = [{'type': 'reasoning', 'status': 'completed'},
+               {'type': 'message', 'status': None, 'phase': 'final_answer'}]
+        self.assertEqual(normalize_replay_output(raw), raw)
+        self.assertEqual(_replay_preservation(raw, raw)['removed_status_item_indices'], [])
+
+
 class ScopedSmokeRunnerTests(unittest.TestCase):
-    """Live-provider interface exercised only through an injected local Mock."""
+    """Continuation-only recovery through an injected Mock and temporary ledger."""
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
@@ -52,17 +89,25 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         self.guard = self.lock.__enter__()
         self.addCleanup(self.lock.__exit__, None, None, None)
         self.manifest = scoped_smoke_fixture()
-        self.recovery = seed_authentication_recovery(self.ledger, self.manifest)
+        self.recovery, self.continuation = seed_continuation_recovery(self.ledger, self.manifest)
+        self.prior_manifest = copy.deepcopy(self.manifest)
+        self.manifest.pop('authentication_recovery')
         self.prior_rows = copy.deepcopy(self.ledger.rows())
-        self.prior_reserved = self.ledger.total()
-        self.schedule = smoke_schedule(self.manifest["smoke_task"])
-        patches = [patch("native_pilot.provider.SHARED_LEDGER_PATH", self.ledger.path),
-                   patch("native_pilot.provider._read_frozen_smoke_manifest", return_value=self.manifest),
-                   patch("native_pilot.provider._read_execution_policy", return_value={
-                       "paid_execution_allowed": False, "protocol_smoke": copy.deepcopy(SMOKE_AUTHORIZATION)}),
-                   patch('native_pilot.provider.AUTHENTICATION_RECOVERY', self.recovery),
-                   patch('native_pilot.provider._read_authentication_recovery_record', return_value=self.recovery)]
-        for patcher in patches:
+        self.prior_accounted = self.ledger.total()
+        self.prior_outstanding = sum(row['reserved'] for row in self.prior_rows if row['charged'] is None)
+        self.schedule = continuation_schedule(self.manifest["smoke_task"])
+        values = (("SHARED_LEDGER_PATH", self.ledger.path),
+                  ("_read_frozen_smoke_manifest", self.manifest),
+                  ("_read_execution_policy", {"paid_execution_allowed": False,
+                                               "protocol_smoke": copy.deepcopy(SMOKE_AUTHORIZATION)}),
+                  ('AUTHENTICATION_RECOVERY', self.recovery),
+                  ('_read_authentication_recovery_record', self.recovery),
+                  ('CONTINUATION_RECOVERY', self.continuation),
+                  ('_read_continuation_recovery_record', self.continuation),
+                  ('_read_continuation_prior_manifest', self.prior_manifest))
+        for target, value in values:
+            patcher = (patch('native_pilot.provider.' + target, value) if target.isupper()
+                       else patch('native_pilot.provider.' + target, return_value=value))
             patcher.start()
             self.addCleanup(patcher.stop)
         self.client = Mock()
@@ -80,25 +125,41 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         options.update(changes)
         return execute(self.manifest, self.ledger, self.provider(), **options)
 
-    def test_only_three_stable_calls_execute_and_resume_never_duplicates(self):
+    def initial_checkpoint(self):
+        row = self.ledger.latest(self.continuation['initial_call_id'])
+        return {'request': json.loads(row['request']), 'response': json.loads(row['response'])}
+
+    def assert_history_unchanged(self):
+        old_ids = {(row['call_id'], row['attempt']) for row in self.prior_rows}
+        self.assertEqual([row for row in self.ledger.rows()
+                          if (row['call_id'], row['attempt']) in old_ids], self.prior_rows)
+
+    def test_only_two_stable_continuations_execute_and_resume_never_duplicates(self):
+        from native_pilot.provider import normalize_replay_output
+        checkpoint = self.initial_checkpoint()
         first = self.run_smoke()
         self.assertIsNone(first["stop_reason"])
-        self.assertEqual(len(self.fixture_provider.requests), 3)
-        self.assertEqual([row["kind"] for row in self.ledger.rows(self.manifest['manifest_sha256'])], ["smoke"] * 3)
-        self.assertEqual(self.ledger.rows(self.recovery['failed_manifest_sha256']), self.prior_rows)
+        self.assertEqual(len(self.fixture_provider.requests), 2)
+        rows = self.ledger.rows(self.manifest['manifest_sha256'])
+        self.assertEqual([json.loads(row['outcome'])['condition'] for row in rows],
+                         ['updated_retained', 'updated_dropped'])
+        self.assertEqual([row['kind'] for row in rows], ['smoke', 'smoke'])
+        self.assert_history_unchanged()
         self.assertTrue(all(result["protocol_valid"] for result in first["outcomes"]))
         self.assertEqual([o["returned_reasoning"]["context"] for o in first["outcomes"]],
-                         ["current_turn", "all_turns", "current_turn"])
-        initial, retained, dropped = self.fixture_provider.requests
+                         ["all_turns", "current_turn"])
+        retained, dropped = self.fixture_provider.requests
         self.assertEqual(retained["input"], dropped["input"])
-        self.assertEqual(retained["input"][:len(initial["input"])], initial["input"])
+        self.assertEqual(retained['input'][:-1], checkpoint['request']['input']
+                         + normalize_replay_output(checkpoint['response']['output']))
+        self.assertEqual(self.initial_checkpoint(), checkpoint)
         before = copy.deepcopy(self.ledger.rows()), self.ledger.total()
         second = self.run_smoke()
-        self.assertEqual(len(self.fixture_provider.requests), 3)
+        self.assertEqual(len(self.fixture_provider.requests), 2)
         self.assertEqual((self.ledger.rows(), self.ledger.total()), before)
         self.assertEqual(first["outcomes"], second["outcomes"])
 
-    def test_public_smoke_report_verifies_forks_and_excludes_private_payloads(self):
+    def test_public_report_inherits_initial_and_preserves_all_historical_reservations(self):
         result = self.run_smoke()
         report = result["protocol_report"]
         self.assertTrue(report["protocol_passed"])
@@ -106,27 +167,53 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         self.assertTrue(report["paired_requests_differ_only_in_reasoning_context"])
         self.assertEqual(report["full_initial_output_replayed"],
                          {"updated_retained":True, "updated_dropped":True})
-        self.assertEqual(len(report["initial_checkpoint_sha256"]), 64)
+        self.assertEqual(report['logical_calls'], 2)
+        self.assertEqual(report['attempts'], 2)
+        self.assertEqual(report['inherited_completed_responses'], 1)
+        self.assertEqual(report['responses_in_full_smoke'], 3)
+        self.assertEqual(report['initial_checkpoint_sha256'], self.continuation['initial_checkpoint_sha256'])
+        lineage = report['inherited_initial_checkpoint']
+        self.assertTrue(lineage['verified'])
+        self.assertEqual(lineage['source_call_id'], self.continuation['initial_call_id'])
+        self.assertEqual(lineage['source_attempt_sha256'], self.continuation['initial_attempt_sha256'])
+        self.assertEqual(lineage['source_response_sha256'], self.continuation['initial_response_sha256'])
+        self.assertEqual(lineage['source_manifest_sha256'], self.continuation['prior_manifest_sha256'])
+        self.assertFalse(lineage['ledger_row_copied'])
+        self.assertFalse(lineage['new_initial_dispatched'])
+        self.assertTrue(report['calls'][0]['inherited'])
+        self.assertEqual(report['calls'][0]['source_call_id'], self.continuation['initial_call_id'])
+        self.assertEqual(report['replay_normalization']['removed_status_item_indices'], [0, 1, 2, 3])
+        self.assertTrue(report['replay_normalization']['verified'])
+        self.assertEqual(report['replay_normalization']['output_items'], 5)
         self.assertEqual(report["known_smoke_token_totals"]["input_tokens"], 60)
         self.assertEqual(report["known_smoke_token_totals"]["output_tokens"], 90)
-        self.assertEqual(report["accounting"]["outstanding_reservations_usd_all_versions"], self.prior_reserved/1_000_000)
+        self.assertEqual(report["accounting"]["outstanding_reservations_usd_all_versions"], self.prior_outstanding/1_000_000)
         prior = report['authentication_recovery_prior_failure']
         self.assertTrue(prior['preservation_verified'])
         self.assertEqual(prior['http_status'], 401)
         self.assertEqual(prior['call_id'], self.recovery['failed_call_id'])
         self.assertEqual(prior['attempt_sha256'], self.recovery['failed_attempt_sha256'])
         self.assertIsNone(prior['charged_micro_usd'])
-        self.assertEqual(prior['reserved_micro_usd'], self.prior_reserved)
+        self.assertEqual(prior['reserved_micro_usd'], self.recovery['retained_reservation_micro_usd'])
+        old_continuation = report['continuation_recovery_prior_failure']
+        old_failed_row = self.ledger.latest(self.continuation['failed_call_id'])
+        self.assertTrue(old_continuation['preservation_verified'])
+        self.assertEqual(old_continuation['http_status'], 400)
+        self.assertEqual(old_continuation['call_id'], self.continuation['failed_call_id'])
+        self.assertEqual(old_continuation['attempt_sha256'], self.continuation['failed_attempt_sha256'])
+        self.assertEqual(old_continuation['reserved_micro_usd'], old_failed_row['reserved'])
+        self.assertIsNone(old_continuation['charged_micro_usd'])
         self.assertEqual([call['grade'] for call in report['calls']],
                          [{'status':'correct','correct':True}] * 3)
         public = json.dumps(report)
-        self.assertNotIn('parsed_answer', public)
-        self.assertNotIn("opaque-test-fixture-not-native-state", public)
-        self.assertNotIn(TASK["original_prompt"], public)
-        self.assertNotIn("Working...", public)
+        for private in ('parsed_answer', 'opaque-test-fixture-not-native-state',
+                        'synthetic-opaque-', TASK["original_prompt"], 'Working...'):
+            self.assertNotIn(private, public)
+        self.assert_history_unchanged()
 
-    def test_pilot_subset_or_extra_calls_fail_before_any_reservation(self):
+    def test_pilot_initial_subset_or_extra_calls_fail_before_any_reservation(self):
         variants = [dict(execution_scope="pilot"), dict(schedule=self.schedule[:1]),
+                    dict(schedule=smoke_schedule(self.manifest['smoke_task'])),
                     dict(schedule=self.schedule + [dict(self.schedule[-1], sample=2)]),
                     dict(tasks=[])]
         for options in variants:
@@ -135,11 +222,19 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         self.assertEqual(self.ledger.rows(), self.prior_rows)
         self.client.responses.create.assert_not_called()
 
+    def test_checkpoint_tampering_fails_before_any_v5_reservation(self):
+        self.continuation['initial_checkpoint_sha256'] = '0' * 64
+        with self.assertRaises(ProviderFailure):
+            self.run_smoke()
+        self.assertEqual(self.ledger.rows(), self.prior_rows)
+        self.client.responses.create.assert_not_called()
+
     def test_real_runner_requires_active_lock_before_interrupted_recovery(self):
-        request = build_request(self.manifest['smoke_task'], 'initial')
+        checkpoint = self.initial_checkpoint()
+        request = build_request(self.manifest['smoke_task'], 'updated_retained', checkpoint)
         call_id = self.manifest['manifest_sha256'] + '/' + self.schedule[0]['call_id']
         attempt = self.ledger.reserve(call_id, self.manifest['manifest_sha256'], request,
-                                      reservation(request)['micro_usd'], 'smoke')
+                                      reservation(request, checkpoint)['micro_usd'], 'smoke')
         self.ledger.dispatched(call_id, attempt)
         with self.assertRaisesRegex(RuntimeError, 'active campaign lock'):
             self.run_smoke(campaign_guard=None)
@@ -157,15 +252,18 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
                 self.assertEqual(self.ledger.rows(self.manifest['manifest_sha256'])[0]['state'], 'dispatched')
         self.fixture_provider.behavior = reentrant
         self.assertIsNone(self.run_smoke()['stop_reason'])
-        self.assertEqual(len(self.ledger.rows(self.manifest['manifest_sha256'])), 3)
+        self.assertEqual(len(self.ledger.rows(self.manifest['manifest_sha256'])), 2)
+        self.assert_history_unchanged()
 
-    def test_malformed_initial_output_still_produces_safe_failure_report(self):
-        self.fixture_provider.behavior = lambda request, index: response(output=None)
+    def test_malformed_continuation_still_produces_safe_failure_report(self):
+        self.fixture_provider.behavior = lambda request, index: response('all_turns', output=None)
         result = self.run_smoke()
         self.assertEqual(result['stop_reason'], 'protocol_failure')
         self.assertFalse(result['protocol_report']['protocol_passed'])
-        self.assertFalse(result['protocol_report']['initial_checkpoint_usable'])
+        self.assertTrue(result['protocol_report']['initial_checkpoint_usable'])
+        self.assertTrue(result['protocol_report']['inherited_initial_checkpoint']['verified'])
         self.assertEqual(self.client.responses.create.call_count, 1)
+        self.assert_history_unchanged()
 
     def test_one_transport_retry_keeps_same_call_and_both_attempt_reservations(self):
         def transient(request, index):
@@ -175,22 +273,23 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         result = self.run_smoke()
         self.assertIsNone(result["stop_reason"])
         rows = self.ledger.rows(self.manifest['manifest_sha256'])
-        self.assertEqual(len(rows), 4)
+        self.assertEqual(len(rows), 3)
         self.assertEqual(rows[0]["call_id"], rows[1]["call_id"])
         self.assertEqual([rows[0]["attempt"], rows[1]["attempt"]], [1, 2])
         self.assertEqual(rows[0]["state"], "transport_uncertain")
-        self.assertEqual(self.ledger.total(), self.prior_reserved + rows[0]["reserved"] + sum(r["charged"] for r in rows[1:]))
+        self.assertEqual(self.ledger.total(), self.prior_accounted + rows[0]["reserved"] + sum(r["charged"] for r in rows[1:]))
         self.assertEqual(result['protocol_report']['accounting']['outstanding_reservations_usd_all_versions'],
-                         (self.prior_reserved+rows[0]['reserved'])/1_000_000)
+                         (self.prior_outstanding+rows[0]['reserved'])/1_000_000)
         record = result['protocol_report']['attempt_records'][0]
         self.assertEqual(record['error_kind'], 'transport_failure')
         self.assertIsNone(record['known_charge_usd'])
         self.assertEqual(record['outstanding_reservation_usd'], rows[0]['reserved']/1_000_000)
         self.run_smoke()
-        self.assertEqual(len(self.fixture_provider.requests), 4)
+        self.assertEqual(len(self.fixture_provider.requests), 3)
+        self.assert_history_unchanged()
 
     def test_protocol_failure_stops_and_stays_stopped_after_resume(self):
-        self.fixture_provider.behavior = lambda request, index: response("all_turns")
+        self.fixture_provider.behavior = lambda request, index: response("current_turn")
         first = self.run_smoke()
         self.assertEqual(first["stop_reason"], "protocol_failure")
         self.assertEqual(self.client.responses.create.call_count, 1)
@@ -203,25 +302,28 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
             status_code = 400
         self.client.responses.create.side_effect = APIError('private provider response body')
         report = self.run_smoke()['protocol_report']
-        self.assertEqual(report['calls'][0]['provider_error'], {
+        error = report['calls'][1]['provider_error']
+        self.assertEqual({key: error[key] for key in ('kind', 'retryable', 'uncertain_charge', 'status_code')}, {
             'kind':'protocol_failure','retryable':False,'uncertain_charge':False,'status_code':400})
         self.assertNotIn('private provider response body', json.dumps(report))
         second = self.run_smoke()
-        self.assertEqual(second["stop_reason"], "protocol_failure")
+        self.assertEqual(second["stop_reason"], "protocol_failure_http_400")
         self.assertEqual(self.client.responses.create.call_count, 1)
+        self.assert_history_unchanged()
 
-    def test_second_authentication_rejection_cannot_be_retried_by_resuming_v4(self):
+    def test_authentication_rejection_cannot_be_retried_by_resuming_v5(self):
         class APIError(Exception):
             status_code = 401
         self.client.responses.create.side_effect = APIError('private authentication body')
         first = self.run_smoke()
         self.assertEqual(first['stop_reason'], 'provider_failure_http_401')
-        self.assertEqual(first['protocol_report']['calls'][0]['provider_error']['status_code'], 401)
+        self.assertEqual(first['protocol_report']['calls'][1]['provider_error']['status_code'], 401)
         rows = copy.deepcopy(self.ledger.rows())
-        self.assertEqual(len(rows), 2)  # One preserved v3 failure, one v4 failure.
-        self.assertEqual(self.ledger.rows(self.recovery['failed_manifest_sha256']), self.prior_rows)
-        self.assertEqual(self.ledger.total(), sum(row['reserved'] for row in rows))
+        self.assertEqual(len(rows), 4)  # Three preserved historical rows and one new v5 failure.
+        new = self.ledger.rows(self.manifest['manifest_sha256'])
+        self.assertEqual(self.ledger.total(), self.prior_accounted + new[0]['reserved'])
         self.assertNotIn('private authentication body', json.dumps(first['protocol_report']))
+        self.assert_history_unchanged()
         second = self.run_smoke()
         self.assertEqual(second['stop_reason'], 'provider_failure_http_401')
         self.assertEqual(self.client.responses.create.call_count, 1)
@@ -434,7 +536,7 @@ class RunnerTests(unittest.TestCase):
         provider = FixtureProvider(rejected)
         result = execute(manifest, self.ledger, provider)
         self.assertEqual(len(provider.requests), 1)
-        self.assertEqual(result["stop_reason"], "protocol_failure")
+        self.assertEqual(result["stop_reason"], "protocol_failure_http_400")
         self.assertEqual(result["outcomes"][0]["status"], "protocol_failure")
         resumed = FixtureProvider()
         execute(manifest, self.ledger, resumed)

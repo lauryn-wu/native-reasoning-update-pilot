@@ -44,6 +44,45 @@ def smoke_schedule(task):
             for condition,sample in [('initial',0),('updated_retained',1),('updated_dropped',1)]]
 
 
+def continuation_schedule(task):
+    """Only the two authorized forks; never regenerate an initial response."""
+    return smoke_schedule(task)[1:]
+
+
+def _inherited_initial(ledger, manifest):
+    """Read the exact verified historical attempt without copying ledger rows."""
+    from .provider import _read_continuation_recovery_record, _verify_continuation_recovery
+    _verify_continuation_recovery(manifest, ledger)
+    recovery = _read_continuation_recovery_record(manifest)
+    matches = [row for row in ledger.rows(recovery['prior_manifest_sha256'])
+               if row['call_id'] == recovery['initial_call_id']
+               and row['attempt'] == recovery['initial_attempt']]
+    if len(matches) != 1:
+        raise RuntimeError('Verified initial checkpoint is missing or ambiguous')
+    return matches[0], recovery
+
+
+def _replay_preservation(raw, normalized):
+    """Independently verify that only null reasoning-status keys were omitted."""
+    import copy
+    from .util import digest
+    expected = copy.deepcopy(raw)
+    removed = []
+    if isinstance(expected, list):
+        for index, item in enumerate(expected):
+            if (isinstance(item, dict) and item.get('type') == 'reasoning'
+                    and 'status' in item and item['status'] is None):
+                del item['status']
+                removed.append(index)
+    return {'verified': isinstance(raw, list) and expected == normalized,
+            'rule': 'omit_status_only_when_reasoning_item_status_is_none',
+            'removed_status_item_indices': removed,
+            'output_items': len(raw) if isinstance(raw, list) else None,
+            'reasoning_items': sum(isinstance(item, dict) and item.get('type') == 'reasoning'
+                                   for item in raw) if isinstance(raw, list) else None,
+            'raw_output_sha256': digest(raw), 'normalized_output_sha256': digest(normalized)}
+
+
 def outcomes_from_ledger(ledger, manifest, schedule=None):
     schedule = manifest['schedule'] if schedule is None else schedule
     output = []
@@ -66,10 +105,9 @@ def outcomes_from_ledger(ledger, manifest, schedule=None):
 
 def _provider_stop_reason(outcome, error_kind=None):
     """A safe, persistent failure reason; never include a provider error body."""
-    if outcome.get('status') == 'protocol_failure':
-        return 'protocol_failure'
     error = outcome.get('provider_error') or {}
-    kind = outcome.get('error_kind') or error_kind or 'provider_failure'
+    kind = (outcome.get('error_kind') or error_kind or
+            ('protocol_failure' if outcome.get('status') == 'protocol_failure' else 'provider_failure'))
     status_code = error.get('status_code') if isinstance(error, dict) else None
     if type(status_code) is int:
         return f'{kind}_http_{status_code}'
@@ -79,27 +117,55 @@ def _provider_stop_reason(outcome, error_kind=None):
 def smoke_protocol_report(ledger, manifest):
     """Public diagnostics only: no answers, prompts, or opaque reasoning values."""
     from .budget import CAP_MICRO_USD
-    from .provider import validate_response
+    from .provider import validate_response, normalize_replay_output
     from .util import digest
     import copy
-    schedule = smoke_schedule(manifest['smoke_task'])
+    inherited = bool(manifest.get('continuation_recovery'))
+    schedule = (continuation_schedule(manifest['smoke_task']) if inherited
+                else smoke_schedule(manifest['smoke_task']))
     outcomes = outcomes_from_ledger(ledger, manifest, schedule)
     prefix = manifest['manifest_sha256'] + '/'
     rows = [ledger.latest(prefix + call['call_id']) for call in schedule]
-    initial = rows[0]
+    lineage = None
+    continuation_record = None
+    if inherited:
+        initial, recovery = _inherited_initial(ledger, manifest)
+        continuation_record = recovery
+        initial_outcome = dict(smoke_schedule(manifest['smoke_task'])[0],
+                               **{'attempt': initial['attempt'], 'status': 'unassigned', 'protocol_valid': False})
+        if initial['outcome']:
+            initial_outcome.update(json.loads(initial['outcome']))
+        outcomes.insert(0, initial_outcome)
+        rows.insert(0, initial)
+        lineage = {'source_manifest_sha256': initial['manifest_hash'],
+                   'source_call_id': initial['call_id'], 'source_attempt': initial['attempt'],
+                   'source_attempt_sha256': digest(initial),
+                   'source_response_sha256': digest(json.loads(initial['response'])),
+                   'authorized_checkpoint_sha256': recovery['initial_checkpoint_sha256'],
+                   'prior_failed_call_id': recovery['failed_call_id'],
+                   'prior_failed_attempt_sha256': recovery['failed_attempt_sha256'],
+                   'ledger_row_copied': False, 'new_initial_dispatched': False}
+    else:
+        initial = rows[0]
     checkpoint = None
     if initial and initial['request'] and initial['response']:
         checkpoint = {'request': json.loads(initial['request']),
                       'response': json.loads(initial['response'])}
     initial_valid = bool(checkpoint and validate_response(
         checkpoint['response'], 'current_turn', require_checkpoint=True)['valid'])
+    raw_output = checkpoint['response'].get('output') if checkpoint else None
+    normalized_output = normalize_replay_output(raw_output) if initial_valid else None
+    normalization = _replay_preservation(raw_output, normalized_output)
+    if lineage:
+        lineage['checkpoint_sha256'] = digest(checkpoint)
+        lineage['verified'] = lineage['checkpoint_sha256'] == lineage['authorized_checkpoint_sha256']
     full_replay = []
     paired = []
     for row in rows[1:]:
         request = json.loads(row['request']) if row and row['request'] else None
         paired.append(request)
-        full_replay.append(bool(initial_valid and request and request['input'][:-1] ==
-                               checkpoint['request']['input'] + checkpoint['response']['output']))
+        full_replay.append(bool(initial_valid and normalization['verified'] and request
+                               and request['input'][:-1] == checkpoint['request']['input'] + normalized_output))
     context_only = False
     if all(paired):
         retained, dropped = copy.deepcopy(paired)
@@ -107,10 +173,14 @@ def smoke_protocol_report(ledger, manifest):
         context_only = contexts == ['all_turns', 'current_turn'] and retained == dropped
     all_rows = ledger.rows()
     prior_failure = None
-    if manifest.get('authentication_recovery'):
+    authentication_manifest = manifest
+    if inherited:
+        from .provider import _read_continuation_prior_manifest
+        authentication_manifest = _read_continuation_prior_manifest(manifest)
+    if authentication_manifest.get('authentication_recovery'):
         from .provider import _read_authentication_recovery_record, ProviderFailure
         try:
-            recovery = _read_authentication_recovery_record(manifest)
+            recovery = _read_authentication_recovery_record(authentication_manifest)
             prior = [row for row in all_rows
                      if row['call_id'] == recovery['failed_call_id']
                      and row['attempt'] == recovery['failed_attempt']
@@ -133,13 +203,32 @@ def smoke_protocol_report(ledger, manifest):
         except (ProviderFailure, ValueError, TypeError, KeyError, AttributeError):
             prior_failure = {'preservation_verified': False,
                              'error_kind': 'authentication_recovery_predecessor_unverified'}
+    prior_continuation_failure = None
+    if continuation_record:
+        failed = next(row for row in all_rows
+                      if row['call_id'] == continuation_record['failed_call_id']
+                      and row['attempt'] == continuation_record['failed_attempt'])
+        error = json.loads(failed['outcome']).get('provider_error', {})
+        prior_continuation_failure = {
+            'call_id': failed['call_id'], 'attempt': failed['attempt'],
+            'manifest_sha256': failed['manifest_hash'], 'state': failed['state'],
+            'attempt_sha256': digest(failed),
+            'authorized_attempt_sha256': continuation_record['failed_attempt_sha256'],
+            'http_status': error.get('status_code'), 'reserved_micro_usd': failed['reserved'],
+            'reserved_usd': failed['reserved']/1_000_000,
+            'charged_micro_usd': failed['charged'],
+            'known_charge_usd': failed['charged']/1_000_000 if failed['charged'] is not None else None,
+            'preservation_verified': (digest(failed) == continuation_record['failed_attempt_sha256']
+                and failed['state'] == 'provider_failure' and error.get('status_code') == 400
+                and failed['charged'] is None)}
     smoke_rows = [row for row in all_rows if row['call_id'] in {prefix+c['call_id'] for c in schedule}]
     known = sum(row['charged'] for row in all_rows if row['charged'] is not None)
     outstanding = sum(row['reserved'] for row in all_rows if row['charged'] is None)
     token_totals = {'input_tokens': 0, 'output_tokens': 0, 'total_tokens': 0,
                     'reasoning_tokens': 0, 'cached_tokens': 0, 'cache_write_tokens': 0}
     usage_records = 0
-    for row in smoke_rows:
+    usage_rows = ([initial] if inherited else []) + smoke_rows
+    for row in usage_rows:
         value = json.loads(row['response']) if row['response'] else {}
         usage = value.get('usage') or {}
         if not isinstance(usage, dict):
@@ -173,6 +262,9 @@ def smoke_protocol_report(ledger, manifest):
         if isinstance(call['returned_reasoning'], dict):
             call['returned_reasoning'] = {key:call['returned_reasoning'].get(key)
                                          for key in ('context','effort','mode')}
+    if inherited:
+        calls[0].update(inherited=True, source_call_id=initial['call_id'],
+                        source_manifest_sha256=initial['manifest_hash'])
     attempts = [{key:row.get(key) for key in ('call_id','attempt','state','error_kind','started','finished')}
                 | {'reserved_usd':row['reserved']/1_000_000,
                    'known_charge_usd':row['charged']/1_000_000 if row['charged'] is not None else None,
@@ -182,17 +274,23 @@ def smoke_protocol_report(ledger, manifest):
     return {'schema_version':1, 'execution_scope':'protocol_smoke',
             'manifest_sha256':manifest['manifest_sha256'], 'task_id':manifest['smoke_task']['task_id'],
             'requested_settings':manifest['settings'], 'logical_calls':len(schedule),
+            'inherited_completed_responses': 1 if inherited and initial_valid else 0,
+            'responses_in_full_smoke': len(rows),
             'attempts':len(smoke_rows), 'completed_three_responses':complete,
             'protocol_passed':bool(complete and initial_valid and all(full_replay) and context_only and
                                    all(outcome.get('protocol_valid') is True for outcome in outcomes)
-                                   and (prior_failure is None or prior_failure['preservation_verified'])),
+                                   and (prior_failure is None or prior_failure['preservation_verified'])
+                                   and (prior_continuation_failure is None or prior_continuation_failure['preservation_verified'])
+                                   and (lineage is None or lineage['verified'])),
             'initial_checkpoint_sha256':digest(checkpoint) if checkpoint else None,
             'initial_checkpoint_usable':initial_valid,
+            'inherited_initial_checkpoint':lineage, 'replay_normalization':normalization,
             'full_initial_output_replayed':dict(zip(('updated_retained','updated_dropped'),full_replay)),
             'paired_requests_differ_only_in_reasoning_context':context_only,
             'same_initial_checkpoint_for_both_branches':all(full_replay), 'calls':calls,
             'attempt_records':attempts,
             'authentication_recovery_prior_failure':prior_failure,
+            'continuation_recovery_prior_failure':prior_continuation_failure,
             'known_usage_records':usage_records, 'known_smoke_token_totals':token_totals,
             'accounting':{'shared_cap_usd':CAP_MICRO_USD/1_000_000,
                           'known_charges_usd_all_versions':known/1_000_000,
@@ -237,6 +335,12 @@ def _execute(manifest, ledger, provider, *, schedule=None, tasks=None, grader=No
         require_campaign_lock(campaign_guard, ledger)
         provider.authorize_schedule(manifest, ledger, schedule, tasks,
                                     execution_scope=execution_scope, campaign_guard=campaign_guard)
+    inherited_initial = None
+    if manifest.get('continuation_recovery'):
+        if (execution_scope != 'protocol_smoke'
+                or schedule != continuation_schedule(manifest['smoke_task'])):
+            raise ValueError('Continuation recovery requires exactly the two frozen branches')
+        inherited_initial, _ = _inherited_initial(ledger, manifest)
     by_id = {task['task_id']:task for task in tasks}
     prefix = manifest['manifest_sha256']+'/'
     initial_ids = {c['task_id']:prefix+c['call_id'] for c in schedule if c['condition']=='initial'}
@@ -259,7 +363,7 @@ def _execute(manifest, ledger, provider, *, schedule=None, tasks=None, grader=No
         checkpoint = None
         if branch not in ('initial','fresh'):
             initial_id = initial_ids.get(call['task_id'])
-            initial = ledger.latest(initial_id) if initial_id else None
+            initial = inherited_initial if inherited_initial is not None else (ledger.latest(initial_id) if initial_id else None)
             if not initial or not initial.get('response'):
                 stop_reason = 'initial_checkpoint_missing'
                 break

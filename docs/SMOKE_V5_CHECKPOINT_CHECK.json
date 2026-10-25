@@ -1,0 +1,42 @@
+{
+  "all_encrypted_content_unchanged": true,
+  "all_other_keys_and_values_preserved": true,
+  "assistant_phase_preserved": "final_answer",
+  "both_branches_identically_normalized": true,
+  "dropped_request_sha256": "a02598580d2b1c9cfc5d135108d16bb67832f48baae8e0ba0110f4b92f2be560",
+  "four_ordered_reasoning_items_preserved": true,
+  "historical_attempt_rows_unchanged": true,
+  "historical_failed_request_sha256": "d9b4a30195bf6ad2328d30ca38861e1334d296ba362343c0b56f091599d6e6da",
+  "historical_meta_rows_unchanged": true,
+  "initial_attempt_sha256": "76efa8d8d8708a4f518524bf26ace0ed9480aacf80156a01cdc1a849e5dbe016",
+  "initial_checkpoint_sha256": "39c6528a75d1016a7196f22165fec99476a871aeafd91a99ed8f38ea9171f961",
+  "ledger_file_sha256_unchanged": "d77620519bda8aa913d108581613302d23f00e63ee59868432ccc9b6ce8932a3",
+  "live_verification": "pending; null-status serialization remains a suspected cause",
+  "non_null_assistant_status_preserved": "completed",
+  "offline_only": true,
+  "only_historical_request_changes": [
+    "input[2].status",
+    "input[3].status",
+    "input[4].status",
+    "input[5].status"
+  ],
+  "paid_calls": 0,
+  "paired_requests_differ_only_in_reasoning_context": true,
+  "raw_checkpoint_unchanged": true,
+  "replay_check": {
+    "normalized_output_sha256": "05bc22418cb6c5ac76a217751e901de0fae8de53f640f54b89883d80fe5043a6",
+    "output_items": 5,
+    "raw_output_sha256": "f8572224741df0730c6cfa2a4ce11682ad2dbd9ebe2d7ad734104c36a8aed55b",
+    "reasoning_items": 4,
+    "removed_status_item_indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "rule": "omit_status_only_when_reasoning_item_status_is_none",
+    "verified": true
+  },
+  "retained_request_sha256": "91488c1cb1a0fa33f2f6f8c4c839f6ecfb3173b531d56879f8a7bf132833396f",
+  "schema_version": 1
+}

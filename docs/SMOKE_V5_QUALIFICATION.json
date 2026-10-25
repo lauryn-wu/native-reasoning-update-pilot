@@ -1,0 +1,42 @@
+{
+  "assets_verified": 108,
+  "continuation_lineage_readonly_check": true,
+  "design_identity": {
+    "design_sha256": "942229b4bfc6b59f47db384b2220cc28c872d2119031568df85fcc8ff1bbc9b6",
+    "fields": [
+      "research_question",
+      "adaptation",
+      "seed",
+      "selection_rule",
+      "tasks",
+      "schedule",
+      "smoke_task",
+      "planned_counts",
+      "settings",
+      "pricing",
+      "hard_budget_usd",
+      "analysis",
+      "tasks_sha256",
+      "schedule_sha256"
+    ],
+    "passed": true
+  },
+  "docker_checks": 24,
+  "initial_checkpoint_sha256": "39c6528a75d1016a7196f22165fec99476a871aeafd91a99ed8f38ea9171f961",
+  "known_charges_usd_all_versions": 0.021978,
+  "manifest_bound_qualification_sha256": "7d8da8c16418785f966fc59c618307719c2559283d32c074796c5f107f3fdcce",
+  "manifest_file_sha256": "28f27406755e944baa1c57a9e8005e5784c62c0e924277fab73211ee9e1a509f",
+  "manifest_sha256": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a",
+  "new_initial_generation_allowed": false,
+  "offline_passed": true,
+  "outstanding_reservations_usd_all_versions": 0.88063,
+  "paid_calls_this_work": 0,
+  "pilot_blocked": true,
+  "prefreeze_qualification_sha256": "a906759699a928fb96a036389124242ecb435baea9347ed567f42be1794b972c",
+  "prior_ledger_file_sha256_preserved": "d77620519bda8aa913d108581613302d23f00e63ee59868432ccc9b6ce8932a3",
+  "recovery_not_consumed": true,
+  "reference_checks_reused": 200,
+  "remaining_continuations_only": true,
+  "remaining_unreserved_usd": 39.097392,
+  "v4_preserved": true
+}
