@@ -1,0 +1,112 @@
+{
+  "accounting": {
+    "accounted_usd_all_versions": 0.0,
+    "known_charges_usd_all_versions": 0.0,
+    "outstanding_reservations_usd_all_versions": 0.0,
+    "remaining_unreserved_usd": 40.0,
+    "shared_cap_usd": 40.0
+  },
+  "actual_spending_usd": 0,
+  "attempt_records": [],
+  "attempts": 0,
+  "calls": [
+    {
+      "attempt": null,
+      "call_id": "smoke/livecodebench:337/initial/0",
+      "condition": "initial",
+      "error_kind": null,
+      "grade": null,
+      "protocol_errors": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "returned_model": null,
+      "returned_reasoning": null,
+      "returned_service_tier": null,
+      "sample": 0,
+      "status": "unassigned",
+      "task_id": "livecodebench:337",
+      "usage": null
+    },
+    {
+      "attempt": null,
+      "call_id": "smoke/livecodebench:337/updated_retained/1",
+      "condition": "updated_retained",
+      "error_kind": null,
+      "grade": null,
+      "protocol_errors": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "returned_model": null,
+      "returned_reasoning": null,
+      "returned_service_tier": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "livecodebench:337",
+      "usage": null
+    },
+    {
+      "attempt": null,
+      "call_id": "smoke/livecodebench:337/updated_dropped/1",
+      "condition": "updated_dropped",
+      "error_kind": null,
+      "grade": null,
+      "protocol_errors": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "returned_model": null,
+      "returned_reasoning": null,
+      "returned_service_tier": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "livecodebench:337",
+      "usage": null
+    }
+  ],
+  "completed_three_responses": false,
+  "credential_action": "Configure OPENAI_API_KEY locally or provide the path of an authorized existing credential file; do not paste secrets into chat.",
+  "design_changed_after_results": false,
+  "errors": [
+    {
+      "api_request_dispatched": false,
+      "kind": "api_key_unavailable",
+      "stage": "local_provider_initialization"
+    }
+  ],
+  "execution_scope": "protocol_smoke",
+  "full_initial_output_replayed": {
+    "updated_dropped": false,
+    "updated_retained": false
+  },
+  "initial_checkpoint_sha256": null,
+  "initial_checkpoint_usable": false,
+  "interpretation": "No checkpoint or live effective settings exist. This is a local credential blocker, not a mathematical, model, or manipulation failure.",
+  "known_smoke_token_totals": {
+    "cache_write_tokens": 0,
+    "cached_tokens": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "reasoning_tokens": 0,
+    "total_tokens": 0
+  },
+  "known_usage_records": 0,
+  "logical_calls": 3,
+  "manifest_sha256": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28",
+  "paired_requests_differ_only_in_reasoning_context": false,
+  "pilot_calls": 0,
+  "protocol_passed": false,
+  "protocol_validity": "not_tested",
+  "recorded_at": "2026-10-25T00:54:15.054159+00:00",
+  "requested_settings": {
+    "max_output_tokens": 32768,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high"
+  },
+  "same_initial_checkpoint_for_both_branches": false,
+  "schema_version": 1,
+  "status": "not_run_credential_blocked",
+  "task_id": "livecodebench:337",
+  "transport_retries": 0
+}

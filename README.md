@@ -5,7 +5,14 @@ correction, beyond its previous visible answer? This is an exploratory screen,
 not evidence for a mechanism or a claim of novelty. The source interrupts ongoing
 reasoning; this pilot instead corrects a completed response in a new user turn.
 
-**Paid execution is explicitly blocked. No paid model calls have been made.**
+**Only the three-call v3 protocol smoke and its existing bounded transport retries
+are authorized. The 200-response pilot remains blocked.** See the
+[authorization](provenance/smoke_authorization_v3.json) and
+[smoke protocol](docs/SMOKE_V3.md).
+
+Current live status: blocked locally by `api_key_unavailable` before dispatch.
+There have been **0 API attempts, 0 tokens, $0 spending and $0 reservations**.
+Protocol validity and all three answer grades remain untested.
 
 Candidate **276 is resolved** with a compiled version of the proved exact cubic
 DP and immutable gold outputs. The unchanged deterministic order supplies
@@ -13,16 +20,20 @@ DP and immutable gold outputs. The unchanged deterministic order supplies
 No reference-feasibility exclusion amendment is applied. All statements,
 corrections, earlier attempts and published inputs are preserved.
 
-The current [v2 manifest](manifests/pilot-v2.json) freezes all 24 pairs, separate
-smoke case, eight controls, and the 200-response schedule. Its
-[integrated qualification](provenance/integrated_qualification.json) binds passing
-offline, Docker, and reference checks to this exact implementation and source audit.
-The historical [v1 manifest](manifests/pilot-v1.json) is unchanged. Paid execution
-remains blocked. See [validation](docs/VALIDATION.md) and
+The [v3 manifest](manifests/pilot-v3.json) preserves the exact v2 selection,
+separate smoke case, eight controls, 200-response schedule, graders, analysis
+and model settings. The [v2 manifest](manifests/pilot-v2.json),
+[v2 integrated qualification](provenance/integrated_qualification.json), and
+[v1 manifest](manifests/pilot-v1.json) remain unchanged. V3 reuses passing
+reference checks only after verifying all dependency hashes and task assets,
+and binds freshly run unit and Docker checks before execution. See [validation](docs/VALIDATION.md) and
 [offline reference construction](docs/REFERENCE_CONSTRUCTION.md).
 
-The recorded run passes **146 unit tests**, **24 Docker software checks**,
-and all eight reference checks for each of the **25 qualified pairs**.
+The v2 reference run passed all eight checks for each of the **25 qualified
+pairs**. Current unit, Docker and manifest-bound verification results are in
+[the v3 qualification record](docs/SMOKE_V3_QUALIFICATION.json).
+[The smoke result](docs/SMOKE_V3_RESULT.json) records live status, usage, charges,
+reservations and answer grades separately from research analysis.
 
 ## References and grading
 
@@ -65,7 +76,7 @@ native-pilot prepare-upstream
 calls. Source/test downloads use ignored `work/source-cache`. To reuse another
 cache, pass `--cache PATH` to preparation/review and `--asset-cache PATH` before
 `qualify-reviewed`. Reference qualification establishes grader readiness before experimental execution;
-the explicit paid hold remains active after it passes.
+passing it does not authorize the pilot.
 
 `review` rebuilds the current audit from pinned sources, reference assets, exact
 math grading checks, and independent review records. `qualify-reviewed --selected-only` runs the offline suite, Docker isolation
@@ -75,14 +86,12 @@ The committed validation record states what was actually run.
 
 ## Freezing and execution gates
 
-The committed v2 snapshot is already source-qualified. Inspect it, or repeat
-qualification without changing its bound evidence:
+The committed v3 snapshot is source-qualified. Inspect it without dispatching:
 
 ```sh
-native-pilot --manifest manifests/pilot-v2.json dry-run
-native-pilot --manifest manifests/pilot-v2.json report
-native-pilot --manifest manifests/pilot-v2.json archive
-native-pilot --manifest manifests/pilot-v2.json qualify --docker --workers 4
+native-pilot --manifest manifests/pilot-v3.json dry-run
+native-pilot --manifest manifests/pilot-v3.json report
+native-pilot --manifest manifests/pilot-v3.json archive
 ```
 
 Four workers run independent offline task checks; each retains the same complete
@@ -95,19 +104,28 @@ version. Rebuilding the audit changes a bound file and requires the new freeze:
 ```sh
 native-pilot review
 native-pilot qualify-reviewed --selected-only --docker --workers 4
-native-pilot freeze --version pilot-v3 --out manifests/pilot-v3.json --audit provenance/qualification_audit.json --qualification runs/reviewed-candidate-qualification.json
+native-pilot freeze --version UNUSED_VERSION --out manifests/UNUSED_VERSION.json --audit provenance/qualification_audit.json --qualification runs/reviewed-candidate-qualification.json
 ```
 
 A blocked audit cannot produce a 24-case schedule. Existing manifests cannot be
 overwritten; changing frozen implementation or evidence requires a new version.
-The historical v1 implementation-file hashes are expected to reject the updated
-checkout; it is an archival snapshot, not the current runnable campaign.
+Historical v1/v2 implementation-file hashes are expected to reject the updated
+checkout; both are archival snapshots, preserved byte-for-byte.
 
-The separately labeled three-call `smoke --allow-paid` and subsequent
-`run --allow-paid` commands remain implemented, but **the explicit user hold
-rejects both before a real provider client is constructed**, even if all source
-checks pass. Removing that hold requires new user authorization and a new freeze.
-No command or successful reference check automatically removes it.
+The scoped `smoke --allow-paid` command requires the v3 manifest-bound
+qualification file, the canonical shared ledger and a locally configured
+`OPENAI_API_KEY`. It permits only initial, updated retained and updated dropped
+on `livecodebench:337`, with one transport retry per assignment. Re-running it
+skips completed calls and never creates a second smoke campaign. The provider
+rechecks scope before every dispatch. `run --allow-paid` remains blocked.
+
+```sh
+native-pilot --manifest manifests/pilot-v3.json --asset-cache PATH smoke --allow-paid
+```
+
+The private ledger stays at `runs/budget.sqlite` across all versions. Never
+reset or replace it. Do not commit credentials, raw responses or native reasoning.
+The user has authorized no pilot calls and no design changes based on smoke grades.
 
 ## Design and limits
 

@@ -46,7 +46,9 @@ network requests. Account access and actual service behavior remain unverified
 until the separately authorized three-call paid smoke test. A failed smoke
 cannot become a pilot outcome or silently change the frozen manifest.
 
-The adapter requires `allow_paid=True`, uses the standard OpenAI endpoint, and
+The adapter requires `allow_paid=True` and the exact v3 smoke authorization,
+manifest-bound qualification, and canonical shared-ledger assignment. Pilot
+execution remains blocked. It uses the standard OpenAI endpoint and
 sets SDK `max_retries=0`. Only the scheduler may authorize one transport retry
 with a separate attempt reservation. Timeouts/connections have uncertain
 charges. Refusals, wrong answers, and truncations are never retried for a better

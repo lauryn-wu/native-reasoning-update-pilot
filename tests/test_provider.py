@@ -1,13 +1,17 @@
 import copy
 import importlib.util
 import json
+import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 from native_pilot.provider import (
     DEFAULT_SETTINGS, OpenAIProvider, ProtocolError, ProviderFailure,
     UNCHANGED_REQUEST, build_request, extract_visible_answer, validate_response,
+    SMOKE_AUTHORIZATION,
 )
+from native_pilot.budget import Ledger, reservation
 
 
 TASK = {"id": "unit-only", "original_prompt": "Original published task placeholder.",
@@ -41,6 +45,138 @@ def response(context="current_turn", **overrides):
 
 def checkpoint():
     return {"request": build_request(TASK, "initial"), "response": response()}
+
+
+def scoped_smoke_fixture():
+    """Synthetic gate test only; private readers are patched, never source data."""
+    task = dict(copy.deepcopy(TASK), task_id="livecodebench:337", domain="math",
+                original={"answer": "42"}, updated={"answer": "43"})
+    return {"manifest_sha256": "a" * 64, "version": "pilot-v3", "status": "frozen",
+            "blockers": [], "hard_budget_usd": 40, "paid_execution_allowed": False,
+            "protocol_smoke_authorization": copy.deepcopy(SMOKE_AUTHORIZATION),
+            "settings": copy.deepcopy(DEFAULT_SETTINGS), "smoke_task": task,
+            "tasks": [], "schedule": []}
+
+
+class ScopedProviderTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.ledger = Ledger(Path(self.temp.name) / "budget.sqlite")
+        self.addCleanup(self.ledger.close)
+        from native_pilot.runner import campaign_lock
+        self.lock = campaign_lock(Path(self.temp.name) / "campaign.lock")
+        self.guard = self.lock.__enter__()
+        self.addCleanup(self.lock.__exit__, None, None, None)
+        self.manifest = scoped_smoke_fixture()
+        self.policy = {"paid_execution_allowed": False,
+                       "protocol_smoke": copy.deepcopy(SMOKE_AUTHORIZATION)}
+        for target, value in (("SHARED_LEDGER_PATH", self.ledger.path),
+                              ("_read_frozen_smoke_manifest", self.manifest),
+                              ("_read_execution_policy", self.policy)):
+            patcher = (patch("native_pilot.provider." + target, value) if target.endswith("PATH")
+                       else patch("native_pilot.provider." + target, return_value=value))
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        self.client = Mock()
+        self.client.responses.create.return_value = response()
+
+    def provider(self, **changes):
+        options = dict(allow_paid=True, client=self.client, execution_scope="protocol_smoke",
+                       manifest=self.manifest, ledger=self.ledger, campaign_guard=self.guard)
+        options.update(changes)
+        return OpenAIProvider(**options)
+
+    def reserve_initial(self):
+        from native_pilot.runner import smoke_schedule
+        call = smoke_schedule(self.manifest["smoke_task"])[0]
+        request = build_request(self.manifest["smoke_task"], "initial")
+        context = dict(call, manifest_sha256=self.manifest["manifest_sha256"],
+                       call_id=self.manifest["manifest_sha256"] + "/" + call["call_id"], attempt=1)
+        self.ledger.reserve(context["call_id"], self.manifest["manifest_sha256"], request,
+                            reservation(request)["micro_usd"], "smoke")
+        self.ledger.dispatched(context["call_id"], 1)
+        return request, context
+
+    def test_scope_manifest_and_shared_ledger_are_required_for_injected_clients(self):
+        for scope in (None, "pilot", "smoke"):
+            with self.subTest(scope=scope), self.assertRaises(ProviderFailure):
+                self.provider(execution_scope=scope)
+        for field, value in (("version", "pilot-v4"), ("manifest_sha256", "b" * 64),
+                             ("paid_execution_allowed", True)):
+            altered = dict(self.manifest, **{field: value})
+            with self.subTest(field=field), self.assertRaises(ProviderFailure):
+                self.provider(manifest=altered)
+        with self.assertRaises(ProviderFailure):
+            self.provider(ledger=None)
+        self.client.responses.create.assert_not_called()
+
+    def test_inactive_missing_or_foreign_lock_cannot_authorize_dispatch(self):
+        from native_pilot.runner import campaign_lock
+        with self.assertRaisesRegex(ProviderFailure, "active_campaign_lock_required"):
+            self.provider(campaign_guard=None)
+        with campaign_lock(Path(self.temp.name) / "other.lock") as foreign:
+            with self.assertRaisesRegex(ProviderFailure, "active_campaign_lock_required"):
+                self.provider(campaign_guard=foreign)
+        provider = self.provider()
+        request, context = self.reserve_initial()
+        self.lock.__exit__(None, None, None)
+        with self.assertRaisesRegex(ProviderFailure, "active_campaign_lock_required"):
+            provider.create(request, execution_context=context)
+        self.client.responses.create.assert_not_called()
+
+    def test_authorized_dispatch_requires_reservation_context_and_frozen_request(self):
+        provider = self.provider()
+        request, context = self.reserve_initial()
+        for change in ({"task_id": "livecodebench:338"}, {"sample": 2}, {"attempt": 3},
+                       {"call_id": context["call_id"].replace("initial/0", "fresh/1")},
+                       {"manifest_sha256": "b" * 64}):
+            with self.subTest(change=change), self.assertRaises(ProviderFailure):
+                provider.create(request, execution_context=dict(context, **change))
+        with self.assertRaises(ProviderFailure):
+            provider.create(request)
+        changed = copy.deepcopy(request)
+        changed["input"][-1]["content"] += " unauthorized change"
+        with self.assertRaises(ProviderFailure):
+            provider.create(changed, execution_context=context)
+        self.client.responses.create.assert_not_called()
+        self.assertEqual(provider.create(request, execution_context=context), response())
+        with self.assertRaisesRegex(ProviderFailure, "already_dispatched"):
+            provider.create(request, execution_context=context)
+        self.client.responses.create.assert_called_once()
+
+    def test_unreserved_request_and_different_physical_ledger_are_rejected(self):
+        from native_pilot.runner import smoke_schedule
+        provider = self.provider()
+        call = smoke_schedule(self.manifest["smoke_task"])[0]
+        context = dict(call, call_id=self.manifest["manifest_sha256"] + "/" + call["call_id"],
+                       manifest_sha256=self.manifest["manifest_sha256"], attempt=1)
+        with self.assertRaisesRegex(ProviderFailure, "reservation_required"):
+            provider.create(build_request(self.manifest["smoke_task"], "initial"), execution_context=context)
+        other = Ledger(Path(self.temp.name) / "other.sqlite")
+        try:
+            other.path = self.ledger.path
+            with self.assertRaisesRegex(ProviderFailure, "shared_budget_ledger_required"):
+                self.provider(ledger=other)
+        finally:
+            other.close()
+        self.client.responses.create.assert_not_called()
+
+    def test_one_authorization_cannot_bind_to_another_manifest_hash(self):
+        self.provider()
+        other = dict(self.manifest, manifest_sha256="b" * 64)
+        with patch("native_pilot.provider._read_frozen_smoke_manifest", return_value=other):
+            with self.assertRaisesRegex(ProviderFailure, "already_bound"):
+                self.provider(manifest=other)
+        self.client.responses.create.assert_not_called()
+
+    def test_reinstated_policy_stops_before_sdk_dispatch(self):
+        provider = self.provider()
+        request, context = self.reserve_initial()
+        with patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": False}):
+            with self.assertRaisesRegex(ProviderFailure, "policy_hold"):
+                provider.create(request, execution_context=context)
+        self.client.responses.create.assert_not_called()
 
 
 class ProviderTests(unittest.TestCase):
@@ -144,8 +280,8 @@ class ProviderTests(unittest.TestCase):
 
     def test_reinstated_hold_blocks_an_existing_injected_client(self):
         client = Mock()
-        with patch("native_pilot.provider._read_execution_policy", side_effect=[
-                {"paid_execution_allowed": True}, {"paid_execution_allowed": False}]):
+        with patch("native_pilot.provider._require_paid_execution_policy", side_effect=[
+                None, ProviderFailure("paid_execution_policy_hold", uncertain_charge=False)]):
             provider = OpenAIProvider(allow_paid=True, client=client)
             with self.assertRaises(ProviderFailure) as caught:
                 provider.create(build_request(TASK, "initial"))
@@ -153,7 +289,7 @@ class ProviderTests(unittest.TestCase):
         self.assertFalse(caught.exception.uncertain_charge)
         client.responses.create.assert_not_called()
 
-    @patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": True})
+    @patch("native_pilot.provider._require_paid_execution_policy")
     def test_mock_provider_serializes_without_losing_output_metadata(self, _policy):
         client = Mock()
         client.responses.create.return_value = response()
@@ -161,7 +297,7 @@ class ProviderTests(unittest.TestCase):
         self.assertEqual(provider.create(build_request(TASK, "initial")), response())
         client.responses.create.assert_called_once()
 
-    @patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": True})
+    @patch("native_pilot.provider._require_paid_execution_policy")
     def test_forbidden_parameters_block_before_dispatch(self, _policy):
         client = Mock()
         provider = OpenAIProvider(allow_paid=True, client=client)
@@ -171,7 +307,7 @@ class ProviderTests(unittest.TestCase):
             provider.create(request)
         client.responses.create.assert_not_called()
 
-    @patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": True})
+    @patch("native_pilot.provider._require_paid_execution_policy")
     def test_safe_transport_failure_and_no_sdk_retry(self, _policy):
         client = Mock()
         client.responses.create.side_effect = ConnectionError("SECRET api key body")
@@ -183,7 +319,7 @@ class ProviderTests(unittest.TestCase):
         self.assertNotIn("SECRET", str(caught.exception))
         client.responses.create.assert_called_once()
 
-    @patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": True})
+    @patch("native_pilot.provider._require_paid_execution_policy")
     def test_invalid_request_status_is_protocol_failure_without_retry(self, _policy):
         class APIError(Exception):
             status_code = 400
@@ -196,7 +332,7 @@ class ProviderTests(unittest.TestCase):
         self.assertNotIn("Sensitive", str(caught.exception))
 
     @unittest.skipUnless(importlib.util.find_spec("openai"), "optional pinned SDK not installed")
-    @patch("native_pilot.provider._read_execution_policy", return_value={"paid_execution_allowed": True})
+    @patch("native_pilot.provider._require_paid_execution_policy")
     def test_actual_pinned_sdk_serialization_with_offline_http_transport(self, _policy):
         import openai
         import httpx2

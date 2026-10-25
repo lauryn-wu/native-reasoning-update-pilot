@@ -29,6 +29,18 @@ BRANCHES = {
     "initial", "fresh", "updated_retained", "updated_dropped",
     "unchanged_retained", "unchanged_dropped",
 }
+ROOT = Path(__file__).resolve().parents[2]
+SMOKE_MANIFEST_PATH = ROOT / "manifests/pilot-v3.json"
+SHARED_LEDGER_PATH = ROOT / "runs/budget.sqlite"
+SMOKE_AUTHORIZATION = {
+    "allowed": True,
+    "task_id": "livecodebench:337",
+    "authorization_id": "user-2026-10-24-three-call-smoke-v3",
+    "max_logical_calls": 3,
+    "max_transport_retries_per_call": 1,
+    "shared_budget_usd": 40,
+    "manifest_version": "pilot-v3",
+}
 
 
 class ProtocolError(ValueError):
@@ -263,19 +275,122 @@ def _read_execution_policy() -> dict:
     return policy
 
 
-def _require_paid_execution_policy() -> None:
-    if _read_execution_policy().get("paid_execution_allowed") is not True:
+def _read_frozen_smoke_manifest() -> dict:
+    """Verify current files and qualification, even for direct library clients."""
+    from .manifest import load_manifest, paid_preflight
+    try:
+        manifest = load_manifest(SMOKE_MANIFEST_PATH)
+        qualification = json.loads((ROOT / "runs" /
+            ("qualification-" + manifest["manifest_sha256"] + ".json")).read_text())
+        paid_preflight(manifest, qualification, smoke=True)
+        return manifest
+    except (OSError, ValueError, KeyError, TypeError):
+        raise ProviderFailure("frozen_smoke_qualification_unverified", uncertain_charge=False) from None
+
+
+def _require_paid_execution_policy(*, execution_scope=None, manifest=None,
+                                   ledger=None, campaign_guard=None,
+                                   request=None, execution_context=None) -> None:
+    """Authorize only the explicitly approved three-call smoke, never a pilot.
+
+    A stable authorization is durably bound to one verified manifest and the
+    repository-wide ledger. Each dispatched attempt gets a unique claim before
+    contacting the SDK, including when a client was injected by a caller.
+    """
+    policy = _read_execution_policy()
+    if (execution_scope != "protocol_smoke" or
+            policy.get("paid_execution_allowed") is not False or
+            policy.get("protocol_smoke") != SMOKE_AUTHORIZATION):
         raise ProviderFailure("paid_execution_policy_hold", uncertain_charge=False)
+    frozen = _read_frozen_smoke_manifest()
+    if (not isinstance(manifest, Mapping) or manifest != frozen or
+            frozen.get("version") != SMOKE_AUTHORIZATION["manifest_version"] or
+            frozen.get("protocol_smoke_authorization") != SMOKE_AUTHORIZATION or
+            frozen.get("paid_execution_allowed") is not False or
+            frozen.get("status") != "frozen" or frozen.get("blockers") or
+            frozen.get("hard_budget_usd") != 40 or
+            frozen.get("smoke_task", {}).get("task_id") != SMOKE_AUTHORIZATION["task_id"]):
+        raise ProviderFailure("smoke_manifest_not_authorized", uncertain_charge=False)
+    from .budget import CAP_MICRO_USD, Ledger, reservation
+    from .runner import require_campaign_lock, smoke_schedule
+    from .util import canonical
+    if not isinstance(ledger, Ledger) or ledger.path.resolve() != SHARED_LEDGER_PATH.resolve():
+        raise ProviderFailure("shared_budget_ledger_required", uncertain_charge=False)
+    try:
+        require_campaign_lock(campaign_guard, ledger)
+    except RuntimeError:
+        raise ProviderFailure("active_campaign_lock_required", uncertain_charge=False) from None
+    databases = ledger.db.execute("PRAGMA database_list").fetchall()
+    if not any(row[1] == "main" and Path(row[2]).resolve() == SHARED_LEDGER_PATH.resolve()
+               for row in databases):
+        raise ProviderFailure("shared_budget_ledger_required", uncertain_charge=False)
+    manifest_hash = frozen["manifest_sha256"]
+    binding = "execution_authorization/" + SMOKE_AUTHORIZATION["authorization_id"]
+    with ledger.transaction():
+        ledger.db.execute("INSERT OR IGNORE INTO meta VALUES (?,?)", (binding, manifest_hash))
+        if ledger.db.execute("SELECT value FROM meta WHERE key=?", (binding,)).fetchone()[0] != manifest_hash:
+            raise ProviderFailure("smoke_authorization_already_bound", uncertain_charge=False)
+    if request is None:
+        return
+    required = {"manifest_sha256", "task_id", "call_id", "condition", "sample", "attempt"}
+    if not isinstance(execution_context, Mapping) or set(execution_context) != required:
+        raise ProviderFailure("scoped_dispatch_metadata_required", uncertain_charge=False)
+    context = execution_context
+    schedule = smoke_schedule(frozen["smoke_task"])
+    allowed = {manifest_hash + "/" + call["call_id"]: call for call in schedule}
+    call = allowed.get(context["call_id"])
+    if (call is None or context["manifest_sha256"] != manifest_hash or
+            any(context[key] != call[key] for key in ("task_id", "condition", "sample")) or
+            type(context["attempt"]) is not int or context["attempt"] not in (1, 2)):
+        raise ProviderFailure("smoke_call_not_authorized", uncertain_charge=False)
+    checkpoint = None
+    if call["condition"] != "initial":
+        initial = ledger.latest(manifest_hash + "/" + schedule[0]["call_id"])
+        if not initial or initial["state"] != "completed" or not initial["response"]:
+            raise ProviderFailure("smoke_initial_checkpoint_required", uncertain_charge=False)
+        checkpoint = {"request": json.loads(initial["request"]),
+                      "response": json.loads(initial["response"])}
+    expected = build_request(frozen["smoke_task"], call["condition"], checkpoint, frozen["settings"])
+    if request != expected:
+        raise ProviderFailure("smoke_request_not_frozen", uncertain_charge=False)
+    row = ledger.latest(context["call_id"])
+    if (not row or row["state"] != "dispatched" or row["attempt"] != context["attempt"] or
+            row["manifest_hash"] != manifest_hash or row["kind"] != "smoke" or
+            row["request"] != canonical(request).decode() or
+            row["reserved"] < reservation(request, checkpoint)["micro_usd"] or
+            ledger.total() > CAP_MICRO_USD):
+        raise ProviderFailure("smoke_dispatch_reservation_required", uncertain_charge=False)
+    prior_rows = ledger.rows(manifest_hash)
+    if any(prior["call_id"] not in allowed for prior in prior_rows):
+        raise ProviderFailure("smoke_ledger_contains_unauthorized_calls", uncertain_charge=False)
+    if context["attempt"] == 2 and not any(
+            prior["call_id"] == context["call_id"] and prior["attempt"] == 1 and
+            prior["state"] == "transport_uncertain" for prior in prior_rows):
+        raise ProviderFailure("smoke_transport_retry_not_authorized", uncertain_charge=False)
+    for prior in prior_rows:
+        if prior["outcome"] and json.loads(prior["outcome"]).get("status") == "protocol_failure":
+            raise ProviderFailure("smoke_stopped_after_protocol_failure", uncertain_charge=False)
+    claim = "provider_dispatch/" + context["call_id"] + "/" + str(context["attempt"])
+    with ledger.transaction():
+        if ledger.db.execute("SELECT value FROM meta WHERE key=?", (claim,)).fetchone():
+            raise ProviderFailure("smoke_attempt_already_dispatched", uncertain_charge=False)
+        ledger.db.execute("INSERT INTO meta VALUES (?,?)", (claim, manifest_hash))
 
 
 class OpenAIProvider:
     """Optional SDK backend with an explicit paid gate and no implicit retries."""
 
-    def __init__(self, *, allow_paid: bool = False, client: Any = None):
+    def __init__(self, *, allow_paid: bool = False, client: Any = None,
+                 execution_scope=None, manifest=None, ledger=None, campaign_guard=None):
         if allow_paid is not True:
             raise ProviderFailure("paid_execution_not_authorized", uncertain_charge=False)
         # A user hold applies to every client, including injected SDK clients.
-        _require_paid_execution_policy()
+        self.execution_scope = execution_scope
+        self.manifest = copy.deepcopy(manifest)
+        self.ledger = ledger
+        self.campaign_guard = campaign_guard
+        _require_paid_execution_policy(execution_scope=execution_scope,
+            manifest=self.manifest, ledger=ledger, campaign_guard=campaign_guard)
         if client is not None:
             self.client = client
             return
@@ -303,11 +418,26 @@ class OpenAIProvider:
             timeout=600.0, http_client=DefaultHttpxClient(trust_env=False),
         )
 
-    def create(self, request: Mapping) -> dict:
+    def authorize_schedule(self, manifest, ledger, schedule, tasks, *, execution_scope,
+                           campaign_guard=None):
+        """Reject a pilot or modified smoke before the runner reserves a call."""
+        from .runner import smoke_schedule
+        if (execution_scope != "protocol_smoke" or execution_scope != self.execution_scope or
+                manifest != self.manifest or ledger is not self.ledger or
+                campaign_guard is not self.campaign_guard or
+                schedule != smoke_schedule(manifest["smoke_task"]) or
+                [task.get("task_id") for task in tasks] != [SMOKE_AUTHORIZATION["task_id"]]):
+            raise ProviderFailure("smoke_schedule_not_authorized", uncertain_charge=False)
+        _require_paid_execution_policy(execution_scope=self.execution_scope,
+            manifest=self.manifest, ledger=self.ledger, campaign_guard=self.campaign_guard)
+
+    def create(self, request: Mapping, *, execution_context=None) -> dict:
         # Re-read before each dispatch so retaining an instance cannot bypass a
         # hold that was reinstated after construction.
-        _require_paid_execution_policy()
         _validate_dispatch_request(request)
+        _require_paid_execution_policy(execution_scope=self.execution_scope,
+            manifest=self.manifest, ledger=self.ledger, campaign_guard=self.campaign_guard, request=request,
+            execution_context=execution_context)
         try:
             response = self.client.responses.create(**copy.deepcopy(dict(request)))
             data = response if isinstance(response, dict) else response.model_dump(mode="json")

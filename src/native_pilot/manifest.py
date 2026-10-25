@@ -129,14 +129,20 @@ def freeze(destination, version, root=ROOT, *, audit_path=None, qualification_pa
     provenance = {str(p.relative_to(root)): file_digest(p)
                   for p in sorted((root/'provenance').glob('*.json'))}
     policy_path = root/'provenance/execution_policy.json'
-    paid_allowed = policy_path.is_file() and json.loads(policy_path.read_text()).get('paid_execution_allowed') is True
+    policy = json.loads(policy_path.read_text()) if policy_path.is_file() else {}
+    from .provider import SMOKE_AUTHORIZATION
+    smoke_authorization = (policy.get('protocol_smoke')
+        if policy.get('paid_execution_allowed') is False
+        and policy.get('protocol_smoke') == SMOKE_AUTHORIZATION
+        and version == SMOKE_AUTHORIZATION['manifest_version'] and not blockers else None)
     manifest = {
         'schema_version': 2, 'version': version, 'created_at': utcnow(),
         'source_audit_sha256': audit_sha256,
         'integrated_qualification': integrated_qualification,
         'source_qualified': not bool(blockers),
-        'paid_execution_allowed': bool(paid_allowed and not blockers),
-        'execution_blockers': [] if paid_allowed else ['Explicit user hold: paid execution remains blocked, including smoke and retries'],
+        'paid_execution_allowed': False,
+        'protocol_smoke_authorization': smoke_authorization,
+        'execution_blockers': ['Explicit user hold: the 200-response pilot remains blocked'] if smoke_authorization else ['Explicit user hold: paid execution remains blocked, including smoke and retries'],
         'status': 'blocked' if blockers else 'frozen', 'blockers': sorted(set(blockers)),
         'research_question': 'Does retained native reasoning impair adaptation beyond prior visible answer?',
         'adaptation': 'New user-turn correction after completed response; not mid-reasoning interruption replication',
@@ -191,11 +197,19 @@ def load_manifest(path, *, verify_files=True, root=ROOT):
 
 
 def paid_preflight(manifest, qualification, *, smoke=False):
+    # A command flag cannot widen the explicit authorization. This version of the
+    # executable exposes only the three-call smoke; future pilot work needs a new
+    # authorization and immutable manifest.
+    from .provider import SMOKE_AUTHORIZATION
     policy_path = ROOT/'provenance/execution_policy.json'
-    if not policy_path.is_file() or json.loads(policy_path.read_text()).get('paid_execution_allowed') is not True:
-        raise ValueError('Paid execution blocked by explicit user policy; --allow-paid cannot override it')
-    if manifest.get('paid_execution_allowed') is not True:
-        raise ValueError('Frozen manifest does not authorize paid execution')
+    policy = json.loads(policy_path.read_text()) if policy_path.is_file() else {}
+    if (not smoke or policy.get('paid_execution_allowed') is not False
+            or policy.get('protocol_smoke') != SMOKE_AUTHORIZATION):
+        raise ValueError('Paid execution blocked by explicit user policy; only the authorized v3 smoke may run')
+    if (manifest.get('protocol_smoke_authorization') != SMOKE_AUTHORIZATION
+            or manifest.get('version') != SMOKE_AUTHORIZATION['manifest_version']
+            or manifest.get('paid_execution_allowed') is not False):
+        raise ValueError('Frozen manifest does not authorize this scoped smoke')
     if manifest['status'] != 'frozen' or manifest['blockers']:
         raise ValueError('Paid execution blocked: ' + '; '.join(manifest['blockers']))
     validate_design(manifest['tasks'], manifest['schedule'])
@@ -204,8 +218,20 @@ def paid_preflight(manifest, qualification, *, smoke=False):
     for check in ('offline_passed','docker_passed','source_reference_passed'):
         if qualification.get(check) is not True:
             raise ValueError(f'Paid execution blocked: {check} required')
-    if not manifest.get('smoke_task'):
-        raise ValueError('Separate qualified smoke task required')
+    if qualification.get('implementation_hashes') != manifest['implementation_hashes']:
+        raise ValueError('Manifest-bound qualification implementation mismatch')
+    integrated = manifest.get('integrated_qualification') or {}
+    if qualification.get('integrated_qualification_sha256') != integrated.get('sha256'):
+        raise ValueError('Manifest-bound qualification lacks frozen evidence binding')
+    evidence_path = ROOT/integrated.get('path', '')
+    if not evidence_path.is_file() or file_digest(evidence_path) != integrated.get('sha256'):
+        raise ValueError('Frozen integrated qualification is missing or changed')
+    evidence = json.loads(evidence_path.read_text())
+    for field in ('source_references', 'covered_task_ids'):
+        if qualification.get(field) != evidence.get(field):
+            raise ValueError('Manifest-bound qualification changed '+field)
+    if not manifest.get('smoke_task') or manifest['smoke_task']['task_id'] != SMOKE_AUTHORIZATION['task_id']:
+        raise ValueError('Separate authorized smoke task required')
     smoke_original = original_identity(manifest['smoke_task'])
     if smoke_original in {original_identity(t) for t in manifest['tasks']}:
         raise ValueError('Smoke problem overlaps pilot')

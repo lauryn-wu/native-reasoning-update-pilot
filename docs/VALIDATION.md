@@ -1,7 +1,10 @@
 # Validation record — compiled reference qualification
 
-No paid model call was made. The explicit user hold covers the protocol smoke,
-pilot, and retries, independently of source or software qualification.
+This records the completed v2 qualification: no paid model call was made during
+that work, and its policy held smoke, pilot and retries. V3 later receives only
+the explicit smoke authorization documented in `SMOKE_V3.md`; the pilot remains
+blocked. `SMOKE_V3_QUALIFICATION.json` records current checks and evidence reuse,
+and `SMOKE_V3_RESULT.json`, when present, records actual smoke status.
 
 The source review covers 22 math candidates and 64 coding candidates. Fourteen
 math and 22 coding pairs have verified references; eight math and 42 coding
@@ -40,7 +43,7 @@ Detailed evidence is in `references/coding/276/compiled/`, especially
 
 ## Integrated grading and freeze
 
-`provenance/integrated_qualification.json` is the authoritative current integrated
+`provenance/integrated_qualification.json` is the immutable v2 integrated
 run record. It records the actual offline test count and log, Docker isolation
 checks, and complete correct/equivalent/wrong/stale checks for the 24 selected
 pairs and separate smoke case. Candidate 276's initial reference is freshly

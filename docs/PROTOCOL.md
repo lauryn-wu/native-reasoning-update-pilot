@@ -27,7 +27,9 @@ See `REFERENCE_CONSTRUCTION.md` for the policy and qualification distinction.
 A new source-qualified manifest requires current, completed integrated checks
 for all 24 selected pairs and the smoke case. Audit, implementation, test,
 reference, and qualification hashes are bound before freeze. Paid execution is
-separately held by `provenance/execution_policy.json`, even with `--allow-paid`.
+separately controlled by `provenance/execution_policy.json`. The user authorized
+only the three-call v3 smoke and its existing bounded transport retries; the
+200-response pilot remains held even with `--allow-paid`. See `SMOKE_V3.md`.
 
 ## Selection fixed before outputs
 

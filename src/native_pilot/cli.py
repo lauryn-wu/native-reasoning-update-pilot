@@ -194,7 +194,7 @@ def main(argv=None):
             from .budget import Ledger
             from .runner import campaign_lock, execute, smoke_schedule, outcomes_from_ledger
             from .provider import OpenAIProvider
-            with campaign_lock(run_dir/'campaign.lock'):
+            with campaign_lock(run_dir/'campaign.lock') as campaign_guard:
                 ledger=Ledger(ledger_path)
                 try:
                     smoke_calls=smoke_schedule(manifest['smoke_task'])
@@ -202,12 +202,14 @@ def main(argv=None):
                         smoke_outcomes=outcomes_from_ledger(ledger,manifest,smoke_calls)
                         if any(o.get('protocol_valid') is not True for o in smoke_outcomes):
                             raise ValueError('Run/resume the separately labeled three-call protocol smoke first')
-                    provider=OpenAIProvider(allow_paid=True)
+                    execution_scope='protocol_smoke' if args.command=='smoke' else 'pilot'
+                    provider=OpenAIProvider(allow_paid=True,execution_scope=execution_scope,
+                                            manifest=manifest,ledger=ledger,campaign_guard=campaign_guard)
                     from .assets import hydrate_tasks
                     grading_tasks=hydrate_tasks([manifest['smoke_task']] if args.command=='smoke' else manifest['tasks'],args.asset_cache)
                     result=execute(manifest,ledger,provider,
                         schedule=smoke_calls if args.command=='smoke' else None,
-                        tasks=grading_tasks)
+                        tasks=grading_tasks,execution_scope=execution_scope,campaign_guard=campaign_guard)
                     atomic_json(run_dir/f"{args.command}-{manifest['manifest_sha256']}.json",result)
                     show({'kind':args.command,'stop_reason':result['stop_reason'],
                           'attempts':result['attempts'],'accounted_usd':result['accounted_usd']})

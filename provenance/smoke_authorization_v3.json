@@ -1,0 +1,27 @@
+{
+  "authorization": {
+    "allowed": true,
+    "authorization_id": "user-2026-10-24-three-call-smoke-v3",
+    "manifest_version": "pilot-v3",
+    "max_logical_calls": 3,
+    "max_transport_retries_per_call": 1,
+    "shared_budget_usd": 40,
+    "task_id": "livecodebench:337"
+  },
+  "design_changes_authorized": false,
+  "pilot_authorized": false,
+  "previous_manifest": {
+    "file_sha256": "ceb17380a97d6c14a505f24a1f5e23b8b0a62e8b37c5ea490de6dd8ece9e4fe7",
+    "manifest_sha256": "2e9ecea4e6c363e7797372fc855246318fab14ab4e4223044d1ef13adab85f26",
+    "path": "manifests/pilot-v2.json"
+  },
+  "previous_policy": {
+    "path": "provenance/execution_policy_v2.json",
+    "sha256": "33c98fc564477d40683aac0132a6824b65b99e0ecec848e0f7864134db0746a5"
+  },
+  "recorded_at": "2026-10-25T00:48:31.134422+00:00",
+  "schema_version": 1,
+  "source": "Explicit user message in this task",
+  "stop_after_smoke": true,
+  "user_instruction": "I authorize the three-call live protocol smoke test only, including the existing bounded transport-retry rule, charged against the shared $40 campaign budget. Record this authorization and freeze v3, preserving v2. Keep the selected tasks, controls, schedule, grading, analysis, and model settings unchanged. Reuse valid qualification evidence and complete the required manifest-bound checks. Run smoke on the already selected livecodebench:337: one initial response, then retained and dropped continuations from that same checkpoint. Verify matching visible histories, preserved native reasoning items, and the returned effective settings. Stop after smoke. Report protocol validity, errors, token usage, actual spending, outstanding reservations, and answer grades. Do not launch the 200-response pilot or alter the design based on smoke correctness."
+}
