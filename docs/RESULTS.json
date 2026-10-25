@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "study": "native_reasoning_update_pilot",
+  "status": "completed_stopped_after_ceiling_results",
+  "model": "gpt-6.1-sol",
+  "max_output_tokens": 32768,
+  "distinct_tasks": 4,
+  "initial_responses_generated": 4,
+  "initial_effort": "high",
+  "initial_correct": 3,
+  "samples_per_condition": 2,
+  "conditions": [
+    "updated_retained",
+    "updated_dropped",
+    "fresh"
+  ],
+  "runs": [
+    {
+      "label": "high",
+      "execution_commit": "8b74a544c1d75e2a55006d4cab44fa25d654b133",
+      "manifest_sha256": "021676718d1d29683b2e1e69e3e5c5eefa8a41f9ed9c3a3d952404c8f14ffb7f",
+      "followup_effort": "high",
+      "new_initials": 4,
+      "new_followups": 24,
+      "completed_responses": 28,
+      "stop_reason": null,
+      "transport_retries": 0,
+      "known_charges_usd": 0.741338,
+      "outstanding_reservations_usd": 0,
+      "elapsed_seconds": 1806.3130028247833,
+      "evidence": "EXPLORATORY_V6_RESULT.json"
+    },
+    {
+      "label": "low",
+      "execution_commit": "a1f7432f72111ed84d50f2523bc885e27820aab7",
+      "manifest_sha256": "ca6babf1d357c80c255edbcb95c3a2304096126d3f35c1d580ab332ed736853b",
+      "followup_effort": "low",
+      "new_initials": 0,
+      "new_followups": 24,
+      "completed_responses": 24,
+      "stop_reason": null,
+      "transport_retries": 0,
+      "known_charges_usd": 0.331888,
+      "outstanding_reservations_usd": 0,
+      "elapsed_seconds": 538.3528800010681,
+      "evidence": "Locally emitted run summary and per-task correctness counts supplied by the experimenter; aggregate transcription, not a raw API export."
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "aime2025:1042",
+      "domain": "math",
+      "initial_grade": "correct",
+      "high": {
+        "updated_retained": {
+          "correct": 2,
+          "graded": 2
+        },
+        "updated_dropped": {
+          "correct": 2,
+          "graded": 2
+        },
+        "fresh": {
+          "correct": 2,
+          "graded": 2
+        }
+      },
+      "low": {
+        "updated_retained": {
+          "correct": 2,
+          "graded": 2
+        },
+        "updated_dropped": {
+          "correct": 2,
+          "graded": 2
+        },
+        "fresh": {
+          "correct": 2,
+          "graded": 2
+        }
+      }
+    },
+    {
+      "task_id": "aime2025:1057",
+      "domain": "math",
+      "initial_grade": "correct",
+      "high": {
+        "updated_retained": {
+          "correct": 2,
+          "graded": 2
+        },
+        "updated_dropped": {
+          "correct": 2,
+          "graded": 2
+        },
+        "fresh": {
+          "correct": 2,
+          "graded": 2
+        }
+      },
+      "low": {
+        "updated_retained": {
+          "correct": 2,
+          "graded": 2
+        },
+        "updated_dropped": {
+          "correct": 2,
+          "graded": 2
+        },
+        "fresh": {
+          "correct": 2,
+          "graded": 2
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:299",
+      "domain": "coding",
+      "initial_grade": "correct",
+      "high": {
+        "updated_retained": {
+          "correct": 2,
+          "graded": 2
+        },
+        "updated_dropped": {
+          "correct": 2,
+          "graded": 2
+        },
+        "fresh": {
+          "correct": 2,
+          "graded": 2
+        }
+      },
+      "low": {
+        "updated_retained": {
+          "correct": 2,
+          "graded": 2
+        },
+        "updated_dropped": {
+          "correct": 2,
+          "graded": 2
+        },
+        "fresh": {
+          "correct": 2,
+          "graded": 2
+        }
+      }
+    },
+    {
+      "task_id": "livecodebench:276",
+      "domain": "coding",
+      "initial_grade": "incorrect",
+      "high": {
+        "updated_retained": {
+          "correct": 2,
+          "graded": 2
+        },
+        "updated_dropped": {
+          "correct": 2,
+          "graded": 2
+        },
+        "fresh": {
+          "correct": 2,
+          "graded": 2
+        }
+      },
+      "low": {
+        "updated_retained": {
+          "correct": 2,
+          "graded": 2
+        },
+        "updated_dropped": {
+          "correct": 2,
+          "graded": 2
+        },
+        "fresh": {
+          "correct": 2,
+          "graded": 2
+        }
+      }
+    }
+  ],
+  "totals": {
+    "experimental_responses": 52,
+    "updated_correct": 48,
+    "updated_graded": 48,
+    "known_experimental_charges_usd": 1.073226
+  },
+  "initial_correct_subset": {
+    "task_ids": [
+      "aime2025:1042",
+      "aime2025:1057",
+      "livecodebench:299"
+    ],
+    "correct_per_condition_per_effort": 6,
+    "graded_per_condition_per_effort": 6
+  },
+  "provenance": {
+    "high": "Imported local report preserved in EXPLORATORY_V6_RESULT.json.",
+    "low": "Experimenter-supplied Terminal output: completed 24/24 responses and 2/2 correct for each branch on each of four tasks.",
+    "raw_responses_included": false,
+    "raw_ledger_independently_reaudited_for_publication": false,
+    "local_v7_manifest_included": false,
+    "new_model_calls_during_publication": 0
+  },
+  "interpretation": "No observed accuracy difference on these four selected problems. This small ceiling result does not establish equivalence or a general absence of retention effects. Low-effort follow-ups reused high-effort initial checkpoints."
+}

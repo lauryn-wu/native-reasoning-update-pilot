@@ -1,5 +1,8 @@
 # Low-effort follow-up implementation validation
 
+> This records software checks before the live run. The completed experiment is
+> reported in [RESULTS.md](RESULTS.md).
+
 The current offline suite passed **328 tests, no skips**, including 69 tests for
 low-effort request construction, checkpoint binding, authorization, qualification,
 budgeting and execution. Tests used synthetic responses and temporary ledgers.

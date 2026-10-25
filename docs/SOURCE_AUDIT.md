@@ -1,9 +1,9 @@
 # Source audit — 2026-10-24
 
-> Historical baseline inspection. The later authorized reference-construction
-> review is recorded in `provenance/qualification_audit.json`, `MATH_REFERENCES.md`,
-> and `CODING_REFERENCES.md`. Its current ordered sample is blocked at coding276;
-> the baseline zero-reference findings below are not the current reference count.
+> Historical baseline inspection, written before reference construction. The
+> later review resolved the grading gaps, including coding276. Both four-case
+> screens are complete; see [RESULTS.md](RESULTS.md). The blocked-status and
+> zero-reference findings below describe the initial inspection only.
 
 The pinned release does **not** support a qualified 12 AIME + 12 coding pilot under this protocol. Paid execution remains blocked. The release supplies 60 AIME pairs and 341 coding pairs, but none has the complete initial-grading evidence required here. No substitute problems, invented updates, inferred answers, or provisional assignments have been inserted into the frozen campaign.
 
@@ -78,6 +78,8 @@ The source coding grader accepts Python fences, aligns test data by row ID, deco
 
 ## Licensing and remaining work
 
-The update repository and its dataset card declare Apache-2.0; the unmodified code license is included as `provenance/UPSTREAM_APACHE_LICENSE.txt`. Underlying competition problems retain their own provenance. The upstream LiveCodeBench card says only `cc` while its loader says `MIT License`; this discrepancy was recorded, not silently resolved. No underlying question corpus or test payload is redistributed here. Tracked inventory contains only identifiers, hashes and audit metadata.
+The update repository and its dataset card declare Apache-2.0; the unmodified code license is included as `provenance/UPSTREAM_APACHE_LICENSE.txt`. Underlying competition problems retain their own provenance. The upstream LiveCodeBench card says only `cc` while its loader says `MIT License`; this discrepancy was recorded, not silently resolved.
+
+At the initial audit stage, tracked inventory contained identifiers, hashes and audit metadata. Later reference construction added selected source statements and corrections to source-pair records and frozen manifests, along with references and derived expected outputs. Full downloaded source datasets and coding-test inputs remain outside Git. See [current source attribution](../THIRD_PARTY.md).
 
 Unblocking requires a new independently reviewed, versioned set of reference answers/tests for the **existing released revisions**, full coding prompt reconstruction and test matching, verified consequential changes, and a newly frozen manifest. Do not solve these gaps by generating replacement updates, treating benchmark-original answers as initial references, weakening graders, or picking tasks after seeing treatment outcomes. Source qualification and Docker qualification are separate gates.

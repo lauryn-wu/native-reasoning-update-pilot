@@ -1,5 +1,8 @@
 # One bounded low-effort follow-up
 
+> Completed. All 24 follow-up answers were graded correct. These are the original
+> execution instructions; see [RESULTS.md](RESULTS.md) for the final write-up.
+
 This exploratory follow-up holds the four saved **high-effort initial solutions** fixed and uses **low effort** for new revisions and fresh solves. It does not evaluate an entirely low-effort conversation. V6's high-effort results remain intact.
 
 Task order is `aime2025:1042`, `aime2025:1057`, `livecodebench:299`, `livecodebench:276`. Each task receives retained, dropped and fresh calls, in that order, for samples 1 and 2: **24 new logical responses**. Both revision branches replay the identical original input and native output; `reasoning.context` is the only difference between them. The new request sets `reasoning.effort=low` directly. Model, output cap, prompts, graders, native state normalization and uncached requests remain unchanged.

@@ -50,7 +50,7 @@ This command always asks for the key again, with hidden input. It uses a child
 process environment only, preserves the existing ledger, and runs no pilot.
 
 ```sh
-cd "/Users/laurynwu/Documents/Codex/2026-10-24/files-pasted-by-the-user-implement/outputs/native-reasoning-update-pilot" &&
+cd "/path/to/native-reasoning-update-pilot" &&
 ../../work/provider/venv/bin/python -c '
 import getpass, os, sys
 from native_pilot.cli import main

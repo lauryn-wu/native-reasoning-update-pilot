@@ -85,7 +85,7 @@ This prompts for the key using hidden input and keeps it in the child process
 only. It uses the existing ledger and resumes the same bounded authorization.
 
 ```sh
-cd "/Users/laurynwu/Documents/Codex/2026-10-24/files-pasted-by-the-user-implement/outputs/native-reasoning-update-pilot" &&
+cd "/path/to/native-reasoning-update-pilot" &&
 ../../work/provider/venv/bin/python -c '
 import getpass, os, sys
 from native_pilot.cli import main
@@ -102,6 +102,6 @@ raise SystemExit(main(["--manifest", "manifests/pilot-v6.json", "--asset-cache",
 After a run, regenerate the descriptive report without a key or model request:
 
 ```sh
-cd "/Users/laurynwu/Documents/Codex/2026-10-24/files-pasted-by-the-user-implement/outputs/native-reasoning-update-pilot" &&
+cd "/path/to/native-reasoning-update-pilot" &&
 ../../work/provider/venv/bin/python -m native_pilot.cli --manifest manifests/pilot-v6.json report
 ```

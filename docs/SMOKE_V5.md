@@ -52,7 +52,7 @@ This prompts for the key again using hidden input, keeps it only in the child
 process environment, and uses the existing ledger and v4 checkpoint.
 
 ```sh
-cd "/Users/laurynwu/Documents/Codex/2026-10-24/files-pasted-by-the-user-implement/outputs/native-reasoning-update-pilot" &&
+cd "/path/to/native-reasoning-update-pilot" &&
 ../../work/provider/venv/bin/python -c '
 import getpass, os, sys
 from native_pilot.cli import main
