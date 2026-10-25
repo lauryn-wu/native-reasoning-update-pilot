@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "authorization": {
+    "allowed": true,
+    "authorization_id": "user-2026-10-24-low-effort-followup-v7",
+    "manifest_version": "pilot-v7",
+    "task_ids": [
+      "aime2025:1042",
+      "aime2025:1057",
+      "livecodebench:299",
+      "livecodebench:276"
+    ],
+    "initial_generation_allowed": false,
+    "max_logical_calls": 24,
+    "max_transport_retries_per_call": 1,
+    "additional_budget_usd": 2,
+    "shared_budget_usd": 40,
+    "soft_dispatch_deadline_seconds": 1800
+  },
+  "prior_manifest_sha256": "021676718d1d29683b2e1e69e3e5c5eefa8a41f9ed9c3a3d952404c8f14ffb7f",
+  "question": "Does retaining high-effort initial reasoning impair revisions when the follow-up uses low effort?",
+  "initials": "Bind all four existing native initial checkpoints locally; never regenerate them.",
+  "selection": "The same four tasks, prompts, corrections, graders and ordering as v6; no outcome-based replacements.",
+  "analysis": {
+    "primary_subset": "Tasks with correct inherited initial answers; all four also reported.",
+    "samples": 2,
+    "conditions": [
+      "updated_retained",
+      "updated_dropped",
+      "fresh"
+    ],
+    "conclusions": "Descriptive feasibility only, conditional on high-effort initial checkpoints. Equal input content in retained/dropped; only reasoning context differs.",
+    "stop": "If accuracy remains at ceiling, stop this screen. Generic low-effort degradation across conditions does not establish retention-specific harm."
+  },
+  "preparation": "Verify historical ledger/checkpoints, immutable reference assets, current unit suite and Docker software checks locally before freezing v7. No new reference execution or model calls during preparation.",
+  "budget": "Same shared $40 ledger, including historical reservations; no reset. $2 new scope starts clock at first reservation and survives resume downtime.",
+  "privacy": "Raw checkpoints remain local; manifest stores lineage hashes and original grading metadata."
+}

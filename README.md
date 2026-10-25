@@ -5,7 +5,18 @@ correction, beyond its previous visible answer? This is an exploratory screen,
 not evidence for a mechanism or a claim of novelty. The source interrupts ongoing
 reasoning; this pilot instead corrects a completed response in a new user turn.
 
-**V6 authorizes only a bounded exploratory screen of four existing cases:**
+**Current follow-up: low effort, with the original high-effort checkpoints held fixed.**
+The [low-effort instructions](docs/LOW_EFFORT_FOLLOWUP.md) prepare a local v7
+manifest and run at most 24 new responses under a persistent additional **$2 cap**
+and **30-minute dispatch window**, using the same shared ledger. Preparation
+makes no model calls. The full study remains blocked. V7 has not been run here;
+the existing private checkpoints and Docker checks must be verified on the Mac.
+
+The [completed v6 report](docs/EXPLORATORY_V6_RESULT.md) records 28 valid responses
+and correct updated answers in all three conditions. The low-effort follow-up
+is a descriptive screen, not an all-low-effort deployment evaluation.
+
+**Historical v6 exploratory screen of four existing cases:**
 `aime2025:1042`, `aime2025:1057`, `livecodebench:299`, and `livecodebench:276`.
 The [prospective protocol](provenance/exploratory_authorization_v6.json) fixes that
 order and complete seven-call task blocks: one initial plus two samples each of

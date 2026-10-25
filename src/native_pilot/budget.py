@@ -7,6 +7,7 @@ import time
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
+from types import MappingProxyType
 from .util import canonical, utcnow
 
 CAP_MICRO_USD = 40_000_000
@@ -17,7 +18,21 @@ MAX_INPUT_TOKENS = 272000
 EXPLORATORY_SCOPE_ID = 'user-2026-10-24-exploratory-four-case-v6'
 EXPLORATORY_CAP_MICRO_USD = 5_000_000
 EXPLORATORY_DURATION_SECONDS = 1800
-_SCOPE_KEY = 'budget_scope/' + EXPLORATORY_SCOPE_ID
+LOW_EFFORT_SCOPE_ID = 'user-2026-10-24-low-effort-followup-v7'
+LOW_EFFORT_CAP_MICRO_USD = 2_000_000
+LOW_EFFORT_DURATION_SECONDS = 1800
+# Only these separate, fixed authorizations exist. A new manifest, process, or
+# arbitrary scope label cannot replenish an existing authorization.
+_SCOPES = MappingProxyType({
+    EXPLORATORY_SCOPE_ID: (EXPLORATORY_CAP_MICRO_USD, EXPLORATORY_DURATION_SECONDS),
+    LOW_EFFORT_SCOPE_ID: (LOW_EFFORT_CAP_MICRO_USD, LOW_EFFORT_DURATION_SECONDS),
+})
+
+
+def _scope_key(scope_id):
+    if scope_id not in _SCOPES:
+        raise BudgetRefused('Unknown exploratory budget scope; a new label cannot reset limits')
+    return 'budget_scope/' + scope_id
 
 
 def _wall_time():
@@ -123,9 +138,9 @@ class Ledger:
         return dict(row) if row else None
 
     def _scope(self, scope_id, manifest_hash=None):
-        if scope_id != EXPLORATORY_SCOPE_ID:
-            raise BudgetRefused('Unknown exploratory budget scope; a new label cannot reset limits')
-        row = self.db.execute('SELECT value FROM meta WHERE key=?', (_SCOPE_KEY,)).fetchone()
+        key = _scope_key(scope_id)
+        cap, duration = _SCOPES[scope_id]
+        row = self.db.execute('SELECT value FROM meta WHERE key=?', (key,)).fetchone()
         if row is None:
             raise BudgetRefused('Exploratory budget scope must be bound before reservation')
         try:
@@ -133,9 +148,9 @@ class Ledger:
             required = {'schema_version', 'scope_id', 'manifest_hash', 'cap_micro_usd',
                         'duration_seconds', 'started_at', 'deadline_at', 'last_observed_at', 'halted_reason'}
             if (not isinstance(scope, dict) or set(scope) != required or scope['schema_version'] != 1
-                    or scope['scope_id'] != EXPLORATORY_SCOPE_ID
-                    or type(scope['cap_micro_usd']) is not int or scope['cap_micro_usd'] != EXPLORATORY_CAP_MICRO_USD
-                    or type(scope['duration_seconds']) is not int or scope['duration_seconds'] != EXPLORATORY_DURATION_SECONDS
+                    or scope['scope_id'] != scope_id
+                    or type(scope['cap_micro_usd']) is not int or scope['cap_micro_usd'] != cap
+                    or type(scope['duration_seconds']) is not int or scope['duration_seconds'] != duration
                     or not isinstance(scope['manifest_hash'], str) or not scope['manifest_hash']
                     or scope['halted_reason'] not in (None, 'deadline_elapsed', 'clock_moved_backwards', 'invalid_clock')):
                 raise ValueError('Invalid scope record')
@@ -152,29 +167,40 @@ class Ledger:
         return scope
 
     def _save_scope(self, scope):
-        self.db.execute('UPDATE meta SET value=? WHERE key=?', (canonical(scope).decode(), _SCOPE_KEY))
+        self.db.execute('UPDATE meta SET value=? WHERE key=?',
+                        (canonical(scope).decode(), _scope_key(scope['scope_id'])))
 
     def bind_scope(self, scope_id, manifest_hash, *, cap_micro_usd=EXPLORATORY_CAP_MICRO_USD,
                    duration_seconds=EXPLORATORY_DURATION_SECONDS):
-        """Bind the one authorization persistently; do not start its clock."""
-        if (scope_id != EXPLORATORY_SCOPE_ID or type(cap_micro_usd) is not int
-                or cap_micro_usd != EXPLORATORY_CAP_MICRO_USD or type(duration_seconds) is not int
-                or duration_seconds != EXPLORATORY_DURATION_SECONDS):
-            raise BudgetRefused('Exploratory authorization fixes one scope, an additional $5, and 1800 seconds')
+        """Bind a fixed authorization persistently; do not start its clock.
+
+        The defaults retain the v6 API. The v7 follow-up must explicitly supply
+        its smaller cap; neither scope can be rebound or extended on resume.
+        """
+        key = _scope_key(scope_id)
+        cap, duration = _SCOPES[scope_id]
+        if (type(cap_micro_usd) is not int or cap_micro_usd != cap
+                or type(duration_seconds) is not int or duration_seconds != duration):
+            raise BudgetRefused('Exploratory authorization fixes its scope cap and duration')
         if not isinstance(manifest_hash, str) or not manifest_hash:
             raise ValueError('A manifest hash is required')
         with self.transaction():
-            exists = self.db.execute('SELECT value FROM meta WHERE key=?', (_SCOPE_KEY,)).fetchone()
+            exists = self.db.execute('SELECT value FROM meta WHERE key=?', (key,)).fetchone()
             if exists:
                 self._scope(scope_id, manifest_hash)
             else:
+                for other_id in _SCOPES:
+                    if (other_id != scope_id and self.db.execute(
+                            'SELECT 1 FROM meta WHERE key=?', (_scope_key(other_id),)).fetchone()
+                            and self._scope(other_id)['manifest_hash'] == manifest_hash):
+                        raise BudgetRefused('Manifest is already bound to another exploratory scope')
                 if self.db.execute('SELECT 1 FROM attempts WHERE manifest_hash=? LIMIT 1', (manifest_hash,)).fetchone():
                     raise BudgetRefused('Cannot bind an exploratory scope after unscoped attempts exist')
                 scope = {'schema_version': 1, 'scope_id': scope_id, 'manifest_hash': manifest_hash,
                          'cap_micro_usd': cap_micro_usd, 'duration_seconds': duration_seconds,
                          'started_at': None, 'deadline_at': None, 'last_observed_at': None,
                          'halted_reason': None}
-                self.db.execute('INSERT INTO meta VALUES (?,?)', (_SCOPE_KEY, canonical(scope).decode()))
+                self.db.execute('INSERT INTO meta VALUES (?,?)', (key, canonical(scope).decode()))
 
     def _scope_accounting(self, scope):
         row = self.db.execute('''SELECT COUNT(*) AS attempts,
@@ -207,9 +233,8 @@ class Ledger:
 
     def scope_status(self, scope_id):
         """Read-only accounting and timing; never bind, start, or extend a scope."""
-        if scope_id != EXPLORATORY_SCOPE_ID:
-            raise BudgetRefused('Unknown exploratory budget scope')
-        if not self.db.execute('SELECT 1 FROM meta WHERE key=?', (_SCOPE_KEY,)).fetchone():
+        key = _scope_key(scope_id)
+        if not self.db.execute('SELECT 1 FROM meta WHERE key=?', (key,)).fetchone():
             return None
         scope = self._scope(scope_id)
         now = _wall_time()
@@ -268,9 +293,10 @@ class Ledger:
         with self.transaction():
             scope = self._scope(scope_id, manifest_hash) if scope_id is not None else None
             if scope is None:
-                bound = self.db.execute('SELECT value FROM meta WHERE key=?', (_SCOPE_KEY,)).fetchone()
-                if bound and self._scope(EXPLORATORY_SCOPE_ID)['manifest_hash'] == manifest_hash:
-                    raise BudgetRefused('Bound exploratory manifest requires its scope on every reservation')
+                for bound_id in _SCOPES:
+                    bound = self.db.execute('SELECT 1 FROM meta WHERE key=?', (_scope_key(bound_id),)).fetchone()
+                    if bound and self._scope(bound_id)['manifest_hash'] == manifest_hash:
+                        raise BudgetRefused('Bound exploratory manifest requires its scope on every reservation')
             if self.db.execute("SELECT value FROM meta WHERE key='halted'").fetchone():
                 raise BudgetRefused('Ledger halted after accounting invariant failure')
             previous = self.latest(call_id)
@@ -288,7 +314,7 @@ class Ledger:
             elif self.total() + amount > CAP_MICRO_USD:
                 refusal = 'Insufficient unreserved budget under hard $40 cap'
             elif scope is not None and sum(self._scope_accounting(scope)[1:]) + amount > scope['cap_micro_usd']:
-                refusal = 'Insufficient unreserved budget under additional $5 scope cap'
+                refusal = f"Insufficient unreserved budget under additional ${scope['cap_micro_usd']/1e6:g} scope cap"
             if scope is not None:
                 if refusal is None and scope['started_at'] is None:
                     scope.update(started_at=now, deadline_at=now + scope['duration_seconds'], last_observed_at=now)
@@ -340,8 +366,16 @@ class Ledger:
             self.db.execute("UPDATE attempts SET state='provider_failure',error_kind=?,outcome=?,finished=? WHERE call_id=? AND attempt=? AND state='dispatched'",
                             (kind,canonical(outcome).decode() if outcome else None,utcnow(),call_id,attempt))
 
-    def recover_interrupted(self):
+    def recover_interrupted(self, manifest_hash=None):
         # Call only under the campaign file lock. A crash may have occurred after
         # dispatch; reserve worst-case charges and permit only one transport retry.
         with self.transaction():
-            self.db.execute("UPDATE attempts SET state='transport_uncertain', error_kind='interrupted_unknown_charge',finished=? WHERE state IN ('reserved','dispatched')", (utcnow(),))
+            query = "UPDATE attempts SET state='transport_uncertain', error_kind='interrupted_unknown_charge',finished=? WHERE state IN ('reserved','dispatched')"
+            args = (utcnow(),)
+            if manifest_hash is not None:
+                if not isinstance(manifest_hash, str) or not manifest_hash:
+                    raise ValueError('A nonempty manifest hash is required for targeted recovery')
+                query += ' AND manifest_hash=?'
+                args += (manifest_hash,)
+            self.db.execute(query, args)
+

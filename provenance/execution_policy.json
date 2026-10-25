@@ -17,6 +17,23 @@
   },
   "paid_execution_allowed": false,
   "protocol_smoke": null,
-  "reason": "Only the prospectively frozen four-case feasibility screen is authorized under an additional persistent $5 charged-plus-reserved cap and 30-minute soft dispatch deadline. The full 200-response pilot remains blocked.",
-  "schema_version": 5
+  "reason": "One low-effort follow-up is authorized using the existing four high-effort initial checkpoints, with 24 new logical calls, $2 persistent additional charged-plus-reserved cap, and 30-minute dispatch window. Historical authorization remains recorded. Full study remains blocked.",
+  "schema_version": 6,
+  "low_effort_followup": {
+    "allowed": true,
+    "authorization_id": "user-2026-10-24-low-effort-followup-v7",
+    "manifest_version": "pilot-v7",
+    "task_ids": [
+      "aime2025:1042",
+      "aime2025:1057",
+      "livecodebench:299",
+      "livecodebench:276"
+    ],
+    "initial_generation_allowed": false,
+    "max_logical_calls": 24,
+    "max_transport_retries_per_call": 1,
+    "additional_budget_usd": 2,
+    "shared_budget_usd": 40,
+    "soft_dispatch_deadline_seconds": 1800
+  }
 }

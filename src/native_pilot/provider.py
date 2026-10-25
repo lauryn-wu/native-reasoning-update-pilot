@@ -237,6 +237,25 @@ def build_request(task: Mapping, branch: str, checkpoint: Mapping | None = None,
     }
 
 
+def build_low_request(task: Mapping, branch: str,
+                      checkpoint: Mapping | None = None) -> dict:
+    """Fork a verified high-effort initial at low effort, or solve fresh at low.
+
+    The checkpoint is checked by the unchanged high-effort builder. Only the
+    new request's effort changes: prior output items and assistant phases remain
+    identical to the normal replay projection. No configuration update is added,
+    so the returned request-level effort can be checked directly against low.
+    """
+    if branch not in {"updated_retained", "updated_dropped", "fresh"}:
+        raise ProtocolError("Low-effort follow-up cannot generate an initial or unchanged response")
+    request = build_request(task, branch, checkpoint)
+    if any(item.get("type") == "configuration_update"
+           for item in request["input"] if isinstance(item, Mapping)):
+        raise ProtocolError("Low-effort follow-up forbids configuration-update items")
+    request["reasoning"]["effort"] = "low"
+    return request
+
+
 def extract_visible_answer(response: Mapping) -> str:
     """Read final assistant text only; commentary is kept for replay, not grading."""
     if not isinstance(response, Mapping):
@@ -256,7 +275,8 @@ def extract_visible_answer(response: Mapping) -> str:
 
 
 def validate_response(response: Any, expected_context: str,
-                      require_checkpoint: bool = False) -> dict:
+                      require_checkpoint: bool = False, *,
+                      expected_effort: str = "high") -> dict:
     """Verify observed protocol, independently of semantic answer correctness.
 
     Returned incomplete answers can be protocol-valid and score as unsuccessful.
@@ -268,13 +288,15 @@ def validate_response(response: Any, expected_context: str,
         return {"valid": False, "errors": ["Response is not an object"]}
     if expected_context not in {"current_turn", "all_turns"}:
         errors.append("Invalid expected context")
+    if expected_effort not in {"high", "low"}:
+        errors.append("Invalid expected reasoning effort")
     reasoning = response.get("reasoning")
     if not isinstance(reasoning, Mapping):
         errors.append("Missing returned reasoning settings")
     else:
         if reasoning.get("context") != expected_context:
             errors.append("Effective reasoning context missing or mismatched")
-        if reasoning.get("effort") != "high":
+        if reasoning.get("effort") != expected_effort:
             errors.append("Effective reasoning effort missing or mismatched")
         if reasoning.get("mode") != "standard":
             errors.append("Effective reasoning mode missing or mismatched")
@@ -336,7 +358,14 @@ def validate_response(response: Any, expected_context: str,
     return {"valid": not errors, "errors": errors}
 
 
-def _validate_dispatch_request(request: Mapping) -> None:
+def validate_low_response(response: Any, expected_context: str) -> dict:
+    """Check a low-effort follow-up without accepting a high-effort echo."""
+    return validate_response(response, expected_context, expected_effort="low")
+
+
+def _validate_dispatch_request(request: Mapping, *, expected_effort: str = "high") -> None:
+    if expected_effort not in {"high", "low"}:
+        raise ProtocolError("Invalid dispatch reasoning effort")
     required = {"model", "store", "input", "reasoning", "max_output_tokens",
                 "service_tier", "truncation", "prompt_cache_options", "include"}
     if set(request) != required:
@@ -348,7 +377,7 @@ def _validate_dispatch_request(request: Mapping) -> None:
     reasoning = copy.deepcopy(request["reasoning"])
     if not isinstance(reasoning, dict) or reasoning.pop("context", None) not in {"all_turns", "current_turn"}:
         raise ProtocolError("Invalid explicit reasoning context")
-    if reasoning != {"effort": "high", "mode": "standard"}:
+    if reasoning != {"effort": expected_effort, "mode": "standard"}:
         raise ProtocolError("Invalid reasoning settings")
     if not isinstance(request["input"], list) or not request["input"]:
         raise ProtocolError("Manual input history must be nonempty")
@@ -358,6 +387,10 @@ def _validate_dispatch_request(request: Mapping) -> None:
         return isinstance(value, list) and any(has_breakpoint(v) for v in value)
     if has_breakpoint(request["input"]):
         raise ProtocolError("Frozen protocol disables cache breakpoints")
+    if expected_effort == "low" and any(
+            isinstance(item, Mapping) and item.get("type") == "configuration_update"
+            for item in request["input"]):
+        raise ProtocolError("Low-effort follow-up forbids configuration-update items")
 
 
 def _read_execution_policy() -> dict:
@@ -694,6 +727,10 @@ def _require_paid_execution_policy(*, execution_scope=None, manifest=None,
     contacting the SDK, including when a client was injected by a caller.
     """
     policy = _read_execution_policy()
+    if execution_scope == "low_effort_followup":
+        from .low_effort import require_execution
+        return require_execution(policy=policy, manifest=manifest, ledger=ledger,
+            campaign_guard=campaign_guard, request=request, execution_context=execution_context)
     if execution_scope == "exploratory_pilot":
         return _require_exploratory_execution(policy=policy, manifest=manifest, ledger=ledger,
             campaign_guard=campaign_guard, request=request, execution_context=execution_context)
@@ -823,6 +860,27 @@ class OpenAIProvider:
                            campaign_guard=None):
         """Authorize only the exact schedule of the current scoped manifest."""
         from .runner import continuation_schedule
+        if execution_scope == "low_effort_followup":
+            from .low_effort import make_schedule
+            if (self.execution_scope != execution_scope or manifest != self.manifest or
+                    ledger is not self.ledger or campaign_guard is not self.campaign_guard or
+                    schedule != make_schedule(manifest["tasks"]) or
+                    [task.get("task_id") for task in tasks] !=
+                    [task.get("task_id") for task in manifest["tasks"]]):
+                raise ProviderFailure("low_followup_schedule_not_authorized", uncertain_charge=False)
+            for task, frozen_task in zip(tasks, manifest["tasks"]):
+                identity = copy.deepcopy(task)
+                for variant in ("original", "updated"):
+                    spec, frozen_spec = identity.get(variant, {}), frozen_task.get(variant, {})
+                    for asset_key, loaded_key in (("test_asset", "tests"),
+                                                  ("reference_asset", "reference_solution")):
+                        if asset_key in frozen_spec and loaded_key not in frozen_spec:
+                            spec.pop(loaded_key, None)
+                if identity != frozen_task:
+                    raise ProviderFailure("low_followup_task_not_frozen", uncertain_charge=False)
+            _require_paid_execution_policy(execution_scope=self.execution_scope,
+                manifest=self.manifest, ledger=self.ledger, campaign_guard=self.campaign_guard)
+            return
         if execution_scope == "exploratory_pilot":
             from .exploratory import make_schedule, TASK_IDS
             if (self.execution_scope != execution_scope or manifest != self.manifest or
@@ -857,7 +915,8 @@ class OpenAIProvider:
     def create(self, request: Mapping, *, execution_context=None) -> dict:
         # Re-read before each dispatch so retaining an instance cannot bypass a
         # hold that was reinstated after construction.
-        _validate_dispatch_request(request)
+        _validate_dispatch_request(request, expected_effort=(
+            "low" if self.execution_scope == "low_effort_followup" else "high"))
         _require_paid_execution_policy(execution_scope=self.execution_scope,
             manifest=self.manifest, ledger=self.ledger, campaign_guard=self.campaign_guard, request=request,
             execution_context=execution_context)
@@ -880,3 +939,4 @@ class OpenAIProvider:
             raise ProviderFailure("provider_failure", status_code=status,
                                   uncertain_charge=status is None or status >= 500,
                                   api_error=sanitize_api_error(exc, status)) from None
+
