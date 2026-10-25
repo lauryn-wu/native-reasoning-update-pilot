@@ -9,9 +9,11 @@ from unittest.mock import Mock, patch
 from native_pilot.provider import (
     DEFAULT_SETTINGS, OpenAIProvider, ProtocolError, ProviderFailure,
     UNCHANGED_REQUEST, build_request, extract_visible_answer, validate_response,
-    SMOKE_AUTHORIZATION,
+    AUTHENTICATION_RECOVERY, AUTHENTICATION_RECOVERY_PATH, SMOKE_AUTHORIZATION,
+    _read_authentication_recovery_record as read_authentication_recovery_record,
 )
 from native_pilot.budget import Ledger, reservation
+from native_pilot.util import digest, file_digest
 
 
 TASK = {"id": "unit-only", "original_prompt": "Original published task placeholder.",
@@ -51,11 +53,38 @@ def scoped_smoke_fixture():
     """Synthetic gate test only; private readers are patched, never source data."""
     task = dict(copy.deepcopy(TASK), task_id="livecodebench:337", domain="math",
                 original={"answer": "42"}, updated={"answer": "43"})
-    return {"manifest_sha256": "a" * 64, "version": "pilot-v3", "status": "frozen",
+    return {"manifest_sha256": "a" * 64, "version": SMOKE_AUTHORIZATION['manifest_version'], "status": "frozen",
             "blockers": [], "hard_budget_usd": 40, "paid_execution_allowed": False,
             "protocol_smoke_authorization": copy.deepcopy(SMOKE_AUTHORIZATION),
             "settings": copy.deepcopy(DEFAULT_SETTINGS), "smoke_task": task,
             "tasks": [], "schedule": []}
+
+
+def seed_authentication_recovery(ledger, manifest):
+    """Seed only a caller's temporary test ledger, never the campaign database."""
+    from native_pilot.provider import SHARED_LEDGER_PATH
+    if ledger.path.resolve() == SHARED_LEDGER_PATH.resolve():
+        raise ValueError('Synthetic predecessor cannot be written to the campaign ledger')
+    recovery = copy.deepcopy(AUTHENTICATION_RECOVERY)
+    request = build_request(manifest['smoke_task'], 'initial', settings=manifest['settings'])
+    attempt = ledger.reserve(recovery['failed_call_id'], recovery['failed_manifest_sha256'], request,
+                             reservation(request)['micro_usd'], 'smoke')
+    ledger.dispatched(recovery['failed_call_id'], attempt)
+    ledger.provider_failure(recovery['failed_call_id'], attempt, 'provider_failure', {
+        'call_id':'smoke/livecodebench:337/initial/0', 'task_id':'livecodebench:337',
+        'condition':'initial', 'sample':0, 'status':'provider_failure', 'protocol_valid':False,
+        'error_kind':'provider_failure', 'provider_error':{
+            'kind':'provider_failure','retryable':False,'uncertain_charge':False,'status_code':401}})
+    failed = ledger.latest(recovery['failed_call_id'])
+    recovery['failed_attempt_sha256'] = digest(failed)
+    recovery['retained_reservation_micro_usd'] = failed['reserved']
+    with ledger.transaction():
+        for key in ('execution_authorization/' + recovery['failed_authorization_id'],
+                    'provider_dispatch/' + recovery['failed_call_id'] + '/' + str(attempt)):
+            ledger.db.execute('INSERT INTO meta VALUES (?,?)', (key, recovery['failed_manifest_sha256']))
+    manifest['authentication_recovery'] = {'path':AUTHENTICATION_RECOVERY_PATH,'sha256':'c'*64}
+    manifest['provenance_hashes'] = {AUTHENTICATION_RECOVERY_PATH:'c'*64}
+    return recovery
 
 
 class ScopedProviderTests(unittest.TestCase):
@@ -69,12 +98,15 @@ class ScopedProviderTests(unittest.TestCase):
         self.guard = self.lock.__enter__()
         self.addCleanup(self.lock.__exit__, None, None, None)
         self.manifest = scoped_smoke_fixture()
+        self.recovery = seed_authentication_recovery(self.ledger, self.manifest)
         self.policy = {"paid_execution_allowed": False,
                        "protocol_smoke": copy.deepcopy(SMOKE_AUTHORIZATION)}
         for target, value in (("SHARED_LEDGER_PATH", self.ledger.path),
                               ("_read_frozen_smoke_manifest", self.manifest),
-                              ("_read_execution_policy", self.policy)):
-            patcher = (patch("native_pilot.provider." + target, value) if target.endswith("PATH")
+                              ("_read_execution_policy", self.policy),
+                              ("AUTHENTICATION_RECOVERY", self.recovery),
+                              ("_read_authentication_recovery_record", self.recovery)):
+            patcher = (patch("native_pilot.provider." + target, value) if target.isupper()
                        else patch("native_pilot.provider." + target, return_value=value))
             patcher.start()
             self.addCleanup(patcher.stop)
@@ -102,7 +134,7 @@ class ScopedProviderTests(unittest.TestCase):
         for scope in (None, "pilot", "smoke"):
             with self.subTest(scope=scope), self.assertRaises(ProviderFailure):
                 self.provider(execution_scope=scope)
-        for field, value in (("version", "pilot-v4"), ("manifest_sha256", "b" * 64),
+        for field, value in (("version", "pilot-v5"), ("manifest_sha256", "b" * 64),
                              ("paid_execution_allowed", True)):
             altered = dict(self.manifest, **{field: value})
             with self.subTest(field=field), self.assertRaises(ProviderFailure):
@@ -177,6 +209,117 @@ class ScopedProviderTests(unittest.TestCase):
             with self.assertRaisesRegex(ProviderFailure, "policy_hold"):
                 provider.create(request, execution_context=context)
         self.client.responses.create.assert_not_called()
+
+    def test_explicit_recovery_preserves_failed_auth_attempt_and_reservation(self):
+        before = copy.deepcopy(self.ledger.rows(self.recovery['failed_manifest_sha256']))
+        provider = self.provider()
+        request, context = self.reserve_initial()
+        provider.create(request, execution_context=context)
+        self.assertEqual(self.ledger.rows(self.recovery['failed_manifest_sha256']), before)
+        self.assertEqual(before[0]['state'], 'provider_failure')
+        self.assertIsNone(before[0]['charged'])
+        self.assertEqual(self.ledger.total(), before[0]['reserved'] + reservation(request)['micro_usd'])
+        self.assertEqual(context['attempt'], 1)
+        self.assertNotEqual(context['call_id'], self.recovery['failed_call_id'])
+
+    def test_new_provider_failure_stops_direct_dispatch_of_later_continuation(self):
+        from native_pilot.runner import smoke_schedule
+        class APIError(Exception):
+            status_code = 401
+        self.client.responses.create.side_effect = [response(), APIError('private authentication body')]
+        provider = self.provider()
+        request, context = self.reserve_initial()
+        initial_response = provider.create(request, execution_context=context)
+        self.ledger.finish(context['call_id'], 1, initial_response,
+                           {'status':'correct','protocol_valid':True})
+        state = {'request':request, 'response':initial_response}
+        for call in smoke_schedule(self.manifest['smoke_task'])[1:]:
+            continuation = build_request(self.manifest['smoke_task'], call['condition'], state)
+            scoped = dict(call, call_id=self.manifest['manifest_sha256']+'/'+call['call_id'],
+                          manifest_sha256=self.manifest['manifest_sha256'], attempt=1)
+            self.ledger.reserve(scoped['call_id'], self.manifest['manifest_sha256'], continuation,
+                                reservation(continuation,state)['micro_usd'], 'smoke')
+            self.ledger.dispatched(scoped['call_id'], 1)
+            if call['condition'] == 'updated_retained':
+                with self.assertRaises(ProviderFailure) as caught:
+                    provider.create(continuation, execution_context=scoped)
+                self.assertEqual(caught.exception.status_code, 401)
+                self.ledger.provider_failure(scoped['call_id'], 1, 'provider_failure', {
+                    'status':'provider_failure','protocol_valid':False,
+                    'provider_error':caught.exception.as_dict()})
+            else:
+                with self.assertRaisesRegex(ProviderFailure, 'smoke_stopped_after_provider_failure'):
+                    provider.create(continuation, execution_context=scoped)
+        self.assertEqual(self.client.responses.create.call_count, 2)
+
+    def test_missing_changed_or_extended_predecessor_cannot_recover(self):
+        row = self.ledger.latest(self.recovery['failed_call_id'])
+        for field, value in (('state','transport_uncertain'), ('reserved',row['reserved']+1),
+                             ('charged',0), ('response','{}'), ('outcome','{}')):
+            with self.ledger.transaction():
+                self.ledger.db.execute('UPDATE attempts SET '+field+'=? WHERE call_id=?',
+                                       (value,row['call_id']))
+            with self.subTest(field=field), self.assertRaisesRegex(ProviderFailure, 'predecessor_changed'):
+                self.provider()
+            with self.ledger.transaction():
+                self.ledger.db.execute('UPDATE attempts SET '+field+'=? WHERE call_id=?',
+                                       (row[field],row['call_id']))
+        request = build_request(self.manifest['smoke_task'], 'initial')
+        self.ledger.reserve(row['call_id']+'/extra', row['manifest_hash'], request,
+                            reservation(request)['micro_usd'], 'smoke')
+        with self.assertRaisesRegex(ProviderFailure, 'predecessor_changed'):
+            self.provider()
+        self.client.responses.create.assert_not_called()
+
+    def test_preserved_v3_authorization_and_dispatch_claims_are_required(self):
+        for key in ('execution_authorization/'+self.recovery['failed_authorization_id'],
+                    'provider_dispatch/'+self.recovery['failed_call_id']+'/1'):
+            with self.ledger.transaction():
+                self.ledger.db.execute('DELETE FROM meta WHERE key=?', (key,))
+            with self.subTest(key=key), self.assertRaisesRegex(ProviderFailure, 'prior_authorization_changed'):
+                self.provider()
+            with self.ledger.transaction():
+                self.ledger.db.execute('INSERT INTO meta VALUES (?,?)',
+                                       (key,self.recovery['failed_manifest_sha256']))
+        self.client.responses.create.assert_not_called()
+
+    def test_new_authorization_label_cannot_reset_global_recovery_assignment(self):
+        self.provider()
+        authorization = dict(SMOKE_AUTHORIZATION, authorization_id='unauthorized-additional-recovery')
+        other = dict(self.manifest, manifest_sha256='b'*64, protocol_smoke_authorization=authorization)
+        policy = dict(self.policy, protocol_smoke=authorization)
+        with patch('native_pilot.provider.SMOKE_AUTHORIZATION', authorization), \
+             patch('native_pilot.provider._read_execution_policy', return_value=policy), \
+             patch('native_pilot.provider._read_frozen_smoke_manifest', return_value=other):
+            with self.assertRaisesRegex(ProviderFailure, 'already_bound'):
+                self.provider(manifest=other)
+        self.assertIsNone(self.ledger.db.execute('SELECT value FROM meta WHERE key=?',
+            ('execution_authorization/'+authorization['authorization_id'],)).fetchone())
+        self.client.responses.create.assert_not_called()
+
+    def test_recovery_record_requires_exact_core_and_both_frozen_hash_bindings(self):
+        root = Path(self.temp.name)
+        path = root/AUTHENTICATION_RECOVERY_PATH
+        path.parent.mkdir()
+        record = {'recovery':self.recovery, 'note':'Synthetic offline record'}
+        path.write_text(json.dumps(record))
+        manifest = copy.deepcopy(self.manifest)
+        sha = file_digest(path)
+        manifest['authentication_recovery']['sha256'] = sha
+        manifest['provenance_hashes'][AUTHENTICATION_RECOVERY_PATH] = sha
+        with patch('native_pilot.provider.ROOT', root):
+            self.assertEqual(read_authentication_recovery_record(manifest), self.recovery)
+            for field in ('authentication_recovery', 'provenance_hashes'):
+                altered = copy.deepcopy(manifest); altered[field] = {}
+                with self.subTest(field=field), self.assertRaisesRegex(ProviderFailure, 'record_unverified'):
+                    read_authentication_recovery_record(altered)
+            record['recovery'] = dict(self.recovery, max_recoveries=2)
+            path.write_text(json.dumps(record))
+            sha = file_digest(path)
+            manifest['authentication_recovery']['sha256'] = sha
+            manifest['provenance_hashes'][AUTHENTICATION_RECOVERY_PATH] = sha
+            with self.assertRaisesRegex(ProviderFailure, 'record_unverified'):
+                read_authentication_recovery_record(manifest)
 
 
 class ProviderTests(unittest.TestCase):

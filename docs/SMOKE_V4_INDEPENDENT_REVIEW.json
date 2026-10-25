@@ -1,0 +1,46 @@
+{
+  "actual_ledger_writes": 0,
+  "checks": [
+    "Exact previous attempt, request and original auth/dispatch claims verified",
+    "Global recovery claim derives from failed call+attempt, preventing a new authorization label or manifest from resetting it",
+    "Current v4 provider failures stop later direct dispatch and runner resume",
+    "CLI incomplete smoke returns nonzero independently of answer correctness",
+    "Whole design identity verified and reference criteria unchanged",
+    "Key command uses hidden prompt and only child-process environment"
+  ],
+  "conservation": {
+    "ledger_file_sha256_unchanged": "f4f0ec6fe1618207ff8b38bfe8470e79daa66894d78bba07e05be16e3c5176bb",
+    "nine_historical_v3_files_unchanged": true,
+    "original_charged": null,
+    "original_http_status": 401,
+    "original_reservation_micro_usd": 354210,
+    "original_response_present": false,
+    "original_row_state": "provider_failure"
+  },
+  "fresh_validation": {
+    "docker_checks": 24,
+    "documented_launcher_offline_checks": 3,
+    "reused_reference_checks": 200,
+    "unit_tests": 194,
+    "verified_source_and_grading_assets": 108
+  },
+  "paid_calls_made": 0,
+  "passed": true,
+  "recorded_at": "2026-10-25T01:16:55.899850+00:00",
+  "reviewed_files": {
+    "docs/SMOKE_V4.md": "57b55f43c629d12928bd03bffa225870f7378127be3bc757a88fa3c473f6afdd",
+    "provenance/authentication_recovery_v4.json": "45744c08fb141f1c325a0a1731e39df1e3358e669dd83be616eafd8d45bfbaab",
+    "provenance/execution_policy.json": "82968b7f37eff36b21f2344ee9b2657a0415e5d6ad86cf6596adfb0821c42fb0",
+    "src/native_pilot/budget.py": "55e6be4e4ab2d9d35505f8f2a0574c95f5f7463d543baf1cc6cd1bd842604151",
+    "src/native_pilot/cli.py": "6fcc78751a9996d4452aa09f4fb67376c8816cdf3d523b77fede35ccf3bbc5a1",
+    "src/native_pilot/manifest.py": "e14dd48f3e09d66314b64e76a27d977d903f5180450d6d13d83dc37e6e27e71f",
+    "src/native_pilot/provider.py": "f1cba205ae89964782b28c0d8cc03d1445e3ef07dd4e31e6317ff805a2019611",
+    "src/native_pilot/qualification_reuse.py": "636bd6f2b4c7d9035bd8831c5100aa00e666286b8a3a0082130d867b7a300a5b",
+    "src/native_pilot/runner.py": "d5773cc978ae4399c79613bf3d5bc32a50069e9faa08ba676ad7c393c18d41d8",
+    "tests/test_cli_smoke_exit.py": "a378e00511e71ef8b4c4e467f3b6bc59321133b36c153eff77143c88a5ca8082",
+    "tests/test_provider.py": "8daa30377de6060e128490a0287d388414dcd6fee99d0b7f6af182112072472e",
+    "tests/test_runner.py": "aadb6b226f04553e55f09da7159d06e5c6b3aa523997c1ec12891ca26bb42bcf",
+    "tests/test_smoke_manifest.py": "9ad594300954c8c927325262e404c21cbfc9cd9593356c2ed90e102b48fb12b3"
+  },
+  "reviewer": "Independent source_audit agent; read-only review"
+}

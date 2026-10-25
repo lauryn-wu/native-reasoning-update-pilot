@@ -64,6 +64,18 @@ def outcomes_from_ledger(ledger, manifest, schedule=None):
     return output
 
 
+def _provider_stop_reason(outcome, error_kind=None):
+    """A safe, persistent failure reason; never include a provider error body."""
+    if outcome.get('status') == 'protocol_failure':
+        return 'protocol_failure'
+    error = outcome.get('provider_error') or {}
+    kind = outcome.get('error_kind') or error_kind or 'provider_failure'
+    status_code = error.get('status_code') if isinstance(error, dict) else None
+    if type(status_code) is int:
+        return f'{kind}_http_{status_code}'
+    return kind
+
+
 def smoke_protocol_report(ledger, manifest):
     """Public diagnostics only: no answers, prompts, or opaque reasoning values."""
     from .budget import CAP_MICRO_USD
@@ -94,6 +106,33 @@ def smoke_protocol_report(ledger, manifest):
         contexts = [retained['reasoning'].pop('context'), dropped['reasoning'].pop('context')]
         context_only = contexts == ['all_turns', 'current_turn'] and retained == dropped
     all_rows = ledger.rows()
+    prior_failure = None
+    if manifest.get('authentication_recovery'):
+        from .provider import _read_authentication_recovery_record, ProviderFailure
+        try:
+            recovery = _read_authentication_recovery_record(manifest)
+            prior = [row for row in all_rows
+                     if row['call_id'] == recovery['failed_call_id']
+                     and row['attempt'] == recovery['failed_attempt']
+                     and row['manifest_hash'] == recovery['failed_manifest_sha256']]
+            if len(prior) != 1:
+                raise ValueError('Missing preserved authentication attempt')
+            failed = prior[0]
+            error = (json.loads(failed['outcome']) or {}).get('provider_error', {})
+            prior_failure = {
+                'call_id': failed['call_id'], 'attempt': failed['attempt'],
+                'manifest_sha256': failed['manifest_hash'], 'state': failed['state'],
+                'attempt_sha256': digest(failed), 'authorized_attempt_sha256': recovery['failed_attempt_sha256'],
+                'http_status': error.get('status_code'), 'reserved_micro_usd': failed['reserved'],
+                'reserved_usd': failed['reserved']/1_000_000, 'charged_micro_usd': failed['charged'],
+                'known_charge_usd': failed['charged']/1_000_000 if failed['charged'] is not None else None,
+                'preservation_verified': (digest(failed) == recovery['failed_attempt_sha256']
+                    and failed['state'] == 'provider_failure' and error.get('status_code') == 401
+                    and failed['charged'] is None
+                    and failed['reserved'] == recovery['retained_reservation_micro_usd'])}
+        except (ProviderFailure, ValueError, TypeError, KeyError, AttributeError):
+            prior_failure = {'preservation_verified': False,
+                             'error_kind': 'authentication_recovery_predecessor_unverified'}
     smoke_rows = [row for row in all_rows if row['call_id'] in {prefix+c['call_id'] for c in schedule}]
     known = sum(row['charged'] for row in all_rows if row['charged'] is not None)
     outstanding = sum(row['reserved'] for row in all_rows if row['charged'] is None)
@@ -145,13 +184,15 @@ def smoke_protocol_report(ledger, manifest):
             'requested_settings':manifest['settings'], 'logical_calls':len(schedule),
             'attempts':len(smoke_rows), 'completed_three_responses':complete,
             'protocol_passed':bool(complete and initial_valid and all(full_replay) and context_only and
-                                   all(outcome.get('protocol_valid') is True for outcome in outcomes)),
+                                   all(outcome.get('protocol_valid') is True for outcome in outcomes)
+                                   and (prior_failure is None or prior_failure['preservation_verified'])),
             'initial_checkpoint_sha256':digest(checkpoint) if checkpoint else None,
             'initial_checkpoint_usable':initial_valid,
             'full_initial_output_replayed':dict(zip(('updated_retained','updated_dropped'),full_replay)),
             'paired_requests_differ_only_in_reasoning_context':context_only,
             'same_initial_checkpoint_for_both_branches':all(full_replay), 'calls':calls,
             'attempt_records':attempts,
+            'authentication_recovery_prior_failure':prior_failure,
             'known_usage_records':usage_records, 'known_smoke_token_totals':token_totals,
             'accounting':{'shared_cap_usd':CAP_MICRO_USD/1_000_000,
                           'known_charges_usd_all_versions':known/1_000_000,
@@ -205,18 +246,23 @@ def _execute(manifest, ledger, provider, *, schedule=None, tasks=None, grader=No
         call_id = prefix+call['call_id']
         previous = ledger.latest(call_id)
         if previous and previous['state'] in ('completed','provider_failure'):
-            if previous['outcome'] and json.loads(previous['outcome']).get('status') == 'protocol_failure':
-                stop_reason = 'protocol_failure'
+            previous_outcome = json.loads(previous['outcome']) if previous['outcome'] else {}
+            if (previous['state'] == 'provider_failure'
+                    or previous_outcome.get('status') in ('protocol_failure', 'provider_failure')):
+                stop_reason = _provider_stop_reason(previous_outcome, previous['error_kind'])
                 break
             continue
         if previous and previous['attempt'] >= 2:
-            continue
+            stop_reason = 'transport_retry_exhausted'
+            break
         branch = call['condition']
         checkpoint = None
         if branch not in ('initial','fresh'):
-            initial = ledger.latest(initial_ids[call['task_id']])
+            initial_id = initial_ids.get(call['task_id'])
+            initial = ledger.latest(initial_id) if initial_id else None
             if not initial or not initial.get('response'):
-                continue
+                stop_reason = 'initial_checkpoint_missing'
+                break
             checkpoint = {'request':json.loads(initial['request']), 'response':json.loads(initial['response'])}
             validity = validate_response(checkpoint['response'],
                          checkpoint['request']['reasoning']['context'],require_checkpoint=True)
@@ -247,16 +293,12 @@ def _execute(manifest, ledger, provider, *, schedule=None, tasks=None, grader=No
                     ledger.uncertain(call_id,attempt,exc.kind)
                     if attempt < 2:
                         continue
+                    stop_reason = 'transport_retry_exhausted'
                 else:
                     failure = dict(call, status='protocol_failure' if exc.kind=='protocol_failure' else 'provider_failure',
                                    protocol_valid=False,error_kind=exc.kind,provider_error=exc.as_dict())
                     ledger.provider_failure(call_id,attempt,exc.kind,failure)
-                    if exc.kind=='protocol_failure':
-                        stop_reason='protocol_failure'
-                    elif not exc.uncertain_charge and exc.status_code is None:
-                        # Local scope/policy failures must stop before later
-                        # assignments can reserve or attempt another call.
-                        stop_reason=exc.kind
+                    stop_reason = _provider_stop_reason(failure)
                 break
             except Exception:
                 # Never stringify arbitrary exceptions (SDK errors can contain
@@ -287,7 +329,9 @@ def _execute(manifest, ledger, provider, *, schedule=None, tasks=None, grader=No
                     outcome.update(status='protocol_failure', protocol_valid=False,
                                    protocol_errors=['Grading infrastructure failed; outcome unavailable'])
             ledger.finish(call_id,attempt,response,outcome)
-            if not outcome['protocol_valid']:
+            if outcome['status'] == 'provider_failure':
+                stop_reason = _provider_stop_reason(outcome)
+            elif not outcome['protocol_valid']:
                 stop_reason = outcome['status']
             break
         if stop_reason:
@@ -301,4 +345,6 @@ def _execute(manifest, ledger, provider, *, schedule=None, tasks=None, grader=No
               'accounted_usd':ledger.total()/1_000_000,'attempts':len(ledger.rows(manifest['manifest_sha256']))}
     if execution_scope == 'protocol_smoke':
         result['protocol_report'] = smoke_protocol_report(ledger, manifest)
+        if not result['protocol_report']['protocol_passed'] and not result['stop_reason']:
+            result['stop_reason'] = 'protocol_smoke_incomplete'
     return result

@@ -68,6 +68,37 @@ def _integrated_qualification(path, *, audit_sha256, tasks, implementation, root
     return descriptor, []
 
 
+def authentication_recovery_descriptor(root=ROOT):
+    """Validate the explicit, immutable lineage without writing the live ledger."""
+    from .provider import AUTHENTICATION_RECOVERY, SMOKE_AUTHORIZATION
+    root = Path(root)
+    path = root/'provenance/authentication_recovery_v4.json'
+    record = json.loads(path.read_text())
+    if record.get('recovery') != AUTHENTICATION_RECOVERY or record.get('authorization') != SMOKE_AUTHORIZATION:
+        raise ValueError('Authentication recovery record does not match explicit authorization')
+    previous_descriptor = record.get('prior_manifest', {})
+    if previous_descriptor.get('path') != 'manifests/pilot-v3.json':
+        raise ValueError('Authentication recovery requires the immutable v3 manifest')
+    previous_path = root/previous_descriptor['path']
+    if file_digest(previous_path) != previous_descriptor.get('sha256'):
+        raise ValueError('Historical v3 manifest changed')
+    previous = load_manifest(previous_path, verify_files=False, root=root)
+    if (previous['manifest_sha256'] != AUTHENTICATION_RECOVERY['failed_manifest_sha256']
+            or previous_descriptor.get('manifest_sha256') != previous['manifest_sha256']
+            or previous['protocol_smoke_authorization']['authorization_id'] != AUTHENTICATION_RECOVERY['failed_authorization_id']):
+        raise ValueError('Authentication recovery previous authorization mismatch')
+    for field, frozen_name in (
+            ('prior_policy', 'provenance/execution_policy.json'),
+            ('prior_authorization_record', 'provenance/smoke_authorization_v3.json')):
+        item = record.get(field, {})
+        target = (root/item.get('path', '')).resolve()
+        if (not target.is_relative_to(root.resolve()) or not target.is_file()
+                or file_digest(target) != item.get('sha256')
+                or item.get('sha256') != previous['provenance_hashes'][frozen_name]):
+            raise ValueError('Historical authentication evidence changed: '+field)
+    return {'path':str(path.relative_to(root)), 'sha256':file_digest(path)}
+
+
 def freeze(destination, version, root=ROOT, *, audit_path=None, qualification_path=None):
     root = Path(root)
     audit_path = Path(audit_path or root/'provenance/audit.json')
@@ -135,6 +166,7 @@ def freeze(destination, version, root=ROOT, *, audit_path=None, qualification_pa
         if policy.get('paid_execution_allowed') is False
         and policy.get('protocol_smoke') == SMOKE_AUTHORIZATION
         and version == SMOKE_AUTHORIZATION['manifest_version'] and not blockers else None)
+    recovery = authentication_recovery_descriptor(root) if smoke_authorization else None
     manifest = {
         'schema_version': 2, 'version': version, 'created_at': utcnow(),
         'source_audit_sha256': audit_sha256,
@@ -142,6 +174,7 @@ def freeze(destination, version, root=ROOT, *, audit_path=None, qualification_pa
         'source_qualified': not bool(blockers),
         'paid_execution_allowed': False,
         'protocol_smoke_authorization': smoke_authorization,
+        'authentication_recovery': recovery,
         'execution_blockers': ['Explicit user hold: the 200-response pilot remains blocked'] if smoke_authorization else ['Explicit user hold: paid execution remains blocked, including smoke and retries'],
         'status': 'blocked' if blockers else 'frozen', 'blockers': sorted(set(blockers)),
         'research_question': 'Does retained native reasoning impair adaptation beyond prior visible answer?',
@@ -165,6 +198,10 @@ def freeze(destination, version, root=ROOT, *, audit_path=None, qualification_pa
     from .budget import RATES
     if manifest['pricing']['rates_per_million'] != RATES:
         raise ValueError('Frozen pricing differs from budget implementation')
+    if recovery:
+        from .qualification_reuse import design_identity_report
+        previous = load_manifest(root/'manifests/pilot-v3.json', verify_files=False, root=root)
+        design_identity_report(previous, manifest)
     manifest['manifest_sha256'] = digest(manifest)
     atomic_json(destination, manifest, exclusive=True)
     return manifest
@@ -205,11 +242,15 @@ def paid_preflight(manifest, qualification, *, smoke=False):
     policy = json.loads(policy_path.read_text()) if policy_path.is_file() else {}
     if (not smoke or policy.get('paid_execution_allowed') is not False
             or policy.get('protocol_smoke') != SMOKE_AUTHORIZATION):
-        raise ValueError('Paid execution blocked by explicit user policy; only the authorized v3 smoke may run')
+        raise ValueError('Paid execution blocked by explicit user policy; only the authorized v4 recovery smoke may run')
     if (manifest.get('protocol_smoke_authorization') != SMOKE_AUTHORIZATION
             or manifest.get('version') != SMOKE_AUTHORIZATION['manifest_version']
             or manifest.get('paid_execution_allowed') is not False):
         raise ValueError('Frozen manifest does not authorize this scoped smoke')
+    recovery = authentication_recovery_descriptor(ROOT)
+    if (manifest.get('authentication_recovery') != recovery
+            or manifest.get('provenance_hashes', {}).get(recovery['path']) != recovery['sha256']):
+        raise ValueError('Frozen manifest lacks the exact authentication recovery binding')
     if manifest['status'] != 'frozen' or manifest['blockers']:
         raise ValueError('Paid execution blocked: ' + '; '.join(manifest['blockers']))
     validate_design(manifest['tasks'], manifest['schedule'])

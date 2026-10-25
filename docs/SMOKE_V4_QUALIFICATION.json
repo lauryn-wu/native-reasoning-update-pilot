@@ -1,0 +1,39 @@
+{
+  "assets_verified": 108,
+  "authentication_lineage_readonly_check": true,
+  "design_identity": {
+    "design_sha256": "942229b4bfc6b59f47db384b2220cc28c872d2119031568df85fcc8ff1bbc9b6",
+    "fields": [
+      "research_question",
+      "adaptation",
+      "seed",
+      "selection_rule",
+      "tasks",
+      "schedule",
+      "smoke_task",
+      "planned_counts",
+      "settings",
+      "pricing",
+      "hard_budget_usd",
+      "analysis",
+      "tasks_sha256",
+      "schedule_sha256"
+    ],
+    "passed": true
+  },
+  "docker_checks": 24,
+  "known_charges_usd_all_versions": 0,
+  "manifest_bound_qualification_sha256": "05060798f596326aeb3a0a7c794962ed58cb1eea1cd1dc84f7da9face4db27fe",
+  "manifest_file_sha256": "758684792134780173902aa7f26cc0c4b881ab381a67deec55ee3b1ba76f48ae",
+  "manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+  "offline_passed": true,
+  "outstanding_reservations_usd_all_versions": 0.35421,
+  "paid_calls_this_work": 0,
+  "pilot_blocked": true,
+  "prefreeze_qualification_sha256": "3b1fe0ff7feee788859db80d89038541b47e0ea52361a026e5a9b9b6555b54c6",
+  "prior_ledger_file_sha256_preserved": "f4f0ec6fe1618207ff8b38bfe8470e79daa66894d78bba07e05be16e3c5176bb",
+  "recovery_not_consumed": true,
+  "reference_checks_reused": 200,
+  "remaining_unreserved_usd": 39.64579,
+  "v3_preserved": true
+}

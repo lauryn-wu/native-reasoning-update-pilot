@@ -211,11 +211,23 @@ def main(argv=None):
                         schedule=smoke_calls if args.command=='smoke' else None,
                         tasks=grading_tasks,execution_scope=execution_scope,campaign_guard=campaign_guard)
                     atomic_json(run_dir/f"{args.command}-{manifest['manifest_sha256']}.json",result)
-                    show({'kind':args.command,'stop_reason':result['stop_reason'],
-                          'attempts':result['attempts'],'accounted_usd':result['accounted_usd']})
+                    summary={'kind':args.command,'stop_reason':result['stop_reason'],
+                             'attempts':result['attempts'],'accounted_usd':result['accounted_usd']}
+                    if args.command=='smoke':
+                        protocol=result.get('protocol_report',{})
+                        summary.update(protocol_passed=protocol.get('protocol_passed') is True,
+                            provider_errors=[{'call_id':call['call_id'],**call['provider_error']}
+                                for call in protocol.get('calls',[]) if isinstance(call.get('provider_error'),dict)],
+                            outstanding_reservations_usd_all_versions=protocol.get('accounting',{}).get(
+                                'outstanding_reservations_usd_all_versions'),
+                            authentication_recovery_prior_failure=protocol.get('authentication_recovery_prior_failure'))
+                    show(summary)
                 finally:
                     ledger.close()
-            return 0 if not result['stop_reason'] else 1
+            success=not result['stop_reason']
+            if args.command=='smoke':
+                success=success and result.get('protocol_report',{}).get('protocol_passed') is True
+            return 0 if success else 1
         result=report(manifest,ledger_path)
         target=run_dir/f"report-{manifest['manifest_sha256']}.json"
         atomic_json(target,result)

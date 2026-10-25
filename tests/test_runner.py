@@ -12,7 +12,7 @@ from native_pilot.design import make_schedule
 from native_pilot.provider import (DEFAULT_SETTINGS, OpenAIProvider, ProviderFailure,
                                    SMOKE_AUTHORIZATION, UNCHANGED_REQUEST, build_request)
 from native_pilot.runner import campaign_lock, execute, smoke_schedule
-from test_provider import TASK, response, scoped_smoke_fixture
+from test_provider import TASK, response, scoped_smoke_fixture, seed_authentication_recovery
 
 
 def fixture_manifest(*, controls=True):
@@ -52,11 +52,16 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         self.guard = self.lock.__enter__()
         self.addCleanup(self.lock.__exit__, None, None, None)
         self.manifest = scoped_smoke_fixture()
+        self.recovery = seed_authentication_recovery(self.ledger, self.manifest)
+        self.prior_rows = copy.deepcopy(self.ledger.rows())
+        self.prior_reserved = self.ledger.total()
         self.schedule = smoke_schedule(self.manifest["smoke_task"])
         patches = [patch("native_pilot.provider.SHARED_LEDGER_PATH", self.ledger.path),
                    patch("native_pilot.provider._read_frozen_smoke_manifest", return_value=self.manifest),
                    patch("native_pilot.provider._read_execution_policy", return_value={
-                       "paid_execution_allowed": False, "protocol_smoke": copy.deepcopy(SMOKE_AUTHORIZATION)})]
+                       "paid_execution_allowed": False, "protocol_smoke": copy.deepcopy(SMOKE_AUTHORIZATION)}),
+                   patch('native_pilot.provider.AUTHENTICATION_RECOVERY', self.recovery),
+                   patch('native_pilot.provider._read_authentication_recovery_record', return_value=self.recovery)]
         for patcher in patches:
             patcher.start()
             self.addCleanup(patcher.stop)
@@ -79,7 +84,8 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         first = self.run_smoke()
         self.assertIsNone(first["stop_reason"])
         self.assertEqual(len(self.fixture_provider.requests), 3)
-        self.assertEqual([row["kind"] for row in self.ledger.rows()], ["smoke"] * 3)
+        self.assertEqual([row["kind"] for row in self.ledger.rows(self.manifest['manifest_sha256'])], ["smoke"] * 3)
+        self.assertEqual(self.ledger.rows(self.recovery['failed_manifest_sha256']), self.prior_rows)
         self.assertTrue(all(result["protocol_valid"] for result in first["outcomes"]))
         self.assertEqual([o["returned_reasoning"]["context"] for o in first["outcomes"]],
                          ["current_turn", "all_turns", "current_turn"])
@@ -103,7 +109,14 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         self.assertEqual(len(report["initial_checkpoint_sha256"]), 64)
         self.assertEqual(report["known_smoke_token_totals"]["input_tokens"], 60)
         self.assertEqual(report["known_smoke_token_totals"]["output_tokens"], 90)
-        self.assertEqual(report["accounting"]["outstanding_reservations_usd_all_versions"], 0)
+        self.assertEqual(report["accounting"]["outstanding_reservations_usd_all_versions"], self.prior_reserved/1_000_000)
+        prior = report['authentication_recovery_prior_failure']
+        self.assertTrue(prior['preservation_verified'])
+        self.assertEqual(prior['http_status'], 401)
+        self.assertEqual(prior['call_id'], self.recovery['failed_call_id'])
+        self.assertEqual(prior['attempt_sha256'], self.recovery['failed_attempt_sha256'])
+        self.assertIsNone(prior['charged_micro_usd'])
+        self.assertEqual(prior['reserved_micro_usd'], self.prior_reserved)
         self.assertEqual([call['grade'] for call in report['calls']],
                          [{'status':'correct','correct':True}] * 3)
         public = json.dumps(report)
@@ -119,7 +132,7 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         for options in variants:
             with self.subTest(options=options), self.assertRaises(ProviderFailure):
                 self.run_smoke(**options)
-        self.assertEqual(self.ledger.rows(), [])
+        self.assertEqual(self.ledger.rows(), self.prior_rows)
         self.client.responses.create.assert_not_called()
 
     def test_real_runner_requires_active_lock_before_interrupted_recovery(self):
@@ -141,10 +154,10 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
             if index == 1:
                 with self.assertRaisesRegex(RuntimeError, 'Another execution'):
                     self.run_smoke()
-                self.assertEqual(self.ledger.rows()[0]['state'], 'dispatched')
+                self.assertEqual(self.ledger.rows(self.manifest['manifest_sha256'])[0]['state'], 'dispatched')
         self.fixture_provider.behavior = reentrant
         self.assertIsNone(self.run_smoke()['stop_reason'])
-        self.assertEqual(len(self.ledger.rows()), 3)
+        self.assertEqual(len(self.ledger.rows(self.manifest['manifest_sha256'])), 3)
 
     def test_malformed_initial_output_still_produces_safe_failure_report(self):
         self.fixture_provider.behavior = lambda request, index: response(output=None)
@@ -161,14 +174,14 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         self.fixture_provider.behavior = transient
         result = self.run_smoke()
         self.assertIsNone(result["stop_reason"])
-        rows = self.ledger.rows()
+        rows = self.ledger.rows(self.manifest['manifest_sha256'])
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0]["call_id"], rows[1]["call_id"])
         self.assertEqual([rows[0]["attempt"], rows[1]["attempt"]], [1, 2])
         self.assertEqual(rows[0]["state"], "transport_uncertain")
-        self.assertEqual(self.ledger.total(), rows[0]["reserved"] + sum(r["charged"] for r in rows[1:]))
+        self.assertEqual(self.ledger.total(), self.prior_reserved + rows[0]["reserved"] + sum(r["charged"] for r in rows[1:]))
         self.assertEqual(result['protocol_report']['accounting']['outstanding_reservations_usd_all_versions'],
-                         rows[0]['reserved']/1_000_000)
+                         (self.prior_reserved+rows[0]['reserved'])/1_000_000)
         record = result['protocol_report']['attempt_records'][0]
         self.assertEqual(record['error_kind'], 'transport_failure')
         self.assertIsNone(record['known_charge_usd'])
@@ -196,6 +209,23 @@ class ScopedSmokeRunnerTests(unittest.TestCase):
         second = self.run_smoke()
         self.assertEqual(second["stop_reason"], "protocol_failure")
         self.assertEqual(self.client.responses.create.call_count, 1)
+
+    def test_second_authentication_rejection_cannot_be_retried_by_resuming_v4(self):
+        class APIError(Exception):
+            status_code = 401
+        self.client.responses.create.side_effect = APIError('private authentication body')
+        first = self.run_smoke()
+        self.assertEqual(first['stop_reason'], 'provider_failure_http_401')
+        self.assertEqual(first['protocol_report']['calls'][0]['provider_error']['status_code'], 401)
+        rows = copy.deepcopy(self.ledger.rows())
+        self.assertEqual(len(rows), 2)  # One preserved v3 failure, one v4 failure.
+        self.assertEqual(self.ledger.rows(self.recovery['failed_manifest_sha256']), self.prior_rows)
+        self.assertEqual(self.ledger.total(), sum(row['reserved'] for row in rows))
+        self.assertNotIn('private authentication body', json.dumps(first['protocol_report']))
+        second = self.run_smoke()
+        self.assertEqual(second['stop_reason'], 'provider_failure_http_401')
+        self.assertEqual(self.client.responses.create.call_count, 1)
+        self.assertEqual(self.ledger.rows(), rows)
 
 
 class RunnerTests(unittest.TestCase):
@@ -273,13 +303,84 @@ class RunnerTests(unittest.TestCase):
             raise ProviderFailure("transport_failure", retryable=True, uncertain_charge=True)
         provider = FixtureProvider(always_fails)
         result = execute(manifest, self.ledger, provider)
+        self.assertEqual(result['stop_reason'], 'transport_retry_exhausted')
         self.assertEqual(len(provider.requests), 2)
         self.assertEqual(result["outcomes"][0]["status"], "provider_failure")
         spent = self.ledger.total()
         resume = FixtureProvider()
-        execute(manifest, self.ledger, resume)
+        resumed = execute(manifest, self.ledger, resume)
+        self.assertEqual(resumed['stop_reason'], 'transport_retry_exhausted')
         self.assertEqual(resume.requests, [])
         self.assertEqual(self.ledger.total(), spent)
+
+    def test_http401_stops_smoke_and_resume_preserves_failure_and_reservation(self):
+        manifest = fixture_manifest()
+        manifest['smoke_task'] = manifest['tasks'][0]
+        schedule = smoke_schedule(manifest['smoke_task'])
+        def unauthorized(request, index):
+            raise ProviderFailure('provider_failure', status_code=401, uncertain_charge=False)
+        provider = FixtureProvider(unauthorized)
+        result = execute(manifest, self.ledger, provider, schedule=schedule,
+                         execution_scope='protocol_smoke')
+        self.assertEqual(result['stop_reason'], 'provider_failure_http_401')
+        self.assertEqual(len(provider.requests), 1)
+        rows = copy.deepcopy(self.ledger.rows())
+        self.assertEqual(len(rows), 1)
+        self.assertIsNone(rows[0]['charged'])
+        report = result['protocol_report']
+        self.assertFalse(report['protocol_passed'])
+        self.assertEqual(report['calls'][0]['provider_error']['status_code'], 401)
+        self.assertEqual(report['accounting']['outstanding_reservations_usd_all_versions'],
+                         rows[0]['reserved']/1_000_000)
+        resumed_provider = FixtureProvider()
+        resumed = execute(manifest, self.ledger, resumed_provider, schedule=schedule,
+                          execution_scope='protocol_smoke')
+        self.assertEqual(resumed['stop_reason'], 'provider_failure_http_401')
+        self.assertEqual(resumed_provider.requests, [])
+        self.assertEqual(self.ledger.rows(), rows)
+        self.assertEqual(self.ledger.total(), rows[0]['reserved'])
+
+    def test_missing_checkpoint_stops_before_any_continuation_reservation(self):
+        manifest = fixture_manifest()
+        manifest['schedule'] = [call for call in manifest['schedule'] if call['condition'] == 'updated_retained']
+        provider = FixtureProvider()
+        result = execute(manifest, self.ledger, provider)
+        self.assertEqual(result['stop_reason'], 'initial_checkpoint_missing')
+        self.assertEqual(provider.requests, [])
+        self.assertEqual(self.ledger.rows(), [])
+
+    def test_incomplete_smoke_is_failure_without_correctness_or_truncation_retry(self):
+        manifest = fixture_manifest()
+        manifest['smoke_task'] = manifest['tasks'][0]
+        def incomplete(request, index):
+            if index == 2:
+                return response('all_turns', status='incomplete',
+                                incomplete_details={'reason': 'max_output_tokens'})
+        provider = FixtureProvider(incomplete)
+        result = execute(manifest, self.ledger, provider,
+            schedule=smoke_schedule(manifest['smoke_task']), execution_scope='protocol_smoke')
+        self.assertEqual(len(provider.requests), 3)
+        self.assertTrue(all(row['attempt'] == 1 for row in self.ledger.rows()))
+        self.assertEqual(result['stop_reason'], 'protocol_smoke_incomplete')
+        self.assertFalse(result['protocol_report']['protocol_passed'])
+        self.assertEqual(result['outcomes'][1]['status'], 'truncated_no_answer')
+
+    def test_wrong_initial_smoke_answer_does_not_invalidate_protocol_or_retry(self):
+        manifest = fixture_manifest()
+        manifest['smoke_task'] = manifest['tasks'][0]
+        def wrong(request, index):
+            if index == 1:
+                value = response('current_turn')
+                value['output'][-1]['content'][0]['text'] = '99'
+                return value
+        provider = FixtureProvider(wrong)
+        result = execute(manifest, self.ledger, provider,
+            schedule=smoke_schedule(manifest['smoke_task']), execution_scope='protocol_smoke')
+        self.assertIsNone(result['stop_reason'])
+        self.assertTrue(result['protocol_report']['protocol_passed'])
+        self.assertEqual(result['outcomes'][0]['status'], 'incorrect')
+        self.assertEqual(len(provider.requests), 3)
+        self.assertTrue(all(row['attempt'] == 1 for row in self.ledger.rows()))
 
     def test_refusal_and_truncation_are_not_retried(self):
         manifest = fixture_manifest()
@@ -351,6 +452,7 @@ class RunnerTests(unittest.TestCase):
                     provider = FixtureProvider(lambda request, index: value)
                     result = execute(manifest, ledger, provider, grader=grader)
                     self.assertEqual(result["outcomes"][0]["status"], "provider_failure")
+                    self.assertEqual(result['stop_reason'], 'terminal_'+status)
                     grader.assert_not_called()
                     self.assertEqual(len(provider.requests), 1)
                 finally:

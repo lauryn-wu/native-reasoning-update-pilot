@@ -2,14 +2,15 @@
   "paid_execution_allowed": false,
   "protocol_smoke": {
     "allowed": true,
-    "authorization_id": "user-2026-10-24-three-call-smoke-v3",
-    "manifest_version": "pilot-v3",
+    "authorization_id": "user-2026-10-24-auth-recovery-smoke-v4",
+    "manifest_version": "pilot-v4",
+    "max_authentication_recoveries": 1,
     "max_logical_calls": 3,
     "max_transport_retries_per_call": 1,
     "shared_budget_usd": 40,
     "task_id": "livecodebench:337"
   },
-  "reason": "Explicit user authorization permits only the three-call protocol smoke on the already selected task plus the existing bounded transport-retry rule. The 200-response pilot remains blocked.",
+  "reason": "One explicitly authorized authentication recovery from the pinned v3 HTTP401 initial attempt. Only v4 three-call smoke and existing bounded transport retries may execute. Preserve old attempt and reservation; full pilot remains blocked.",
   "recorded_date": "2026-10-24",
-  "schema_version": 2
+  "schema_version": 3
 }

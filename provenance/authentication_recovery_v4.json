@@ -1,0 +1,58 @@
+{
+  "authorization": {
+    "allowed": true,
+    "authorization_id": "user-2026-10-24-auth-recovery-smoke-v4",
+    "manifest_version": "pilot-v4",
+    "max_authentication_recoveries": 1,
+    "max_logical_calls": 3,
+    "max_transport_retries_per_call": 1,
+    "shared_budget_usd": 40,
+    "task_id": "livecodebench:337"
+  },
+  "design_changes_authorized": false,
+  "execution_this_turn": "prepare_and_test_only; user resumes in Terminal with a new hidden key prompt",
+  "model_lookup_200": {
+    "credential_saved": false,
+    "independently_repeated": false,
+    "source": "user_report"
+  },
+  "pilot_authorized": false,
+  "preservation": {
+    "attempt_rows_sha256": "35f5d25e20a5a9c7149ed209d9253f27d807df1418df8e1768a451e757ae3d53",
+    "known_charges_micro_usd": 0,
+    "ledger_file_sha256_before": "f4f0ec6fe1618207ff8b38bfe8470e79daa66894d78bba07e05be16e3c5176bb",
+    "meta_rows_sha256": "db894fc12e34640869beaedb16895bde96afe44a1a14493cea6ff2e8851469f8",
+    "no_response_or_checkpoint": true,
+    "outstanding_reservations_micro_usd": 354210,
+    "prior_row_state": "provider_failure",
+    "request_sha256": "63f3f23927525841a00418843ace7c504e892328906c689a01f1a75dcaf31453"
+  },
+  "prior_authorization_record": {
+    "path": "provenance/smoke_authorization_v3.json",
+    "sha256": "2120f8b0e647d5881c89c4f7aee75e8e63c0d937ced810515df9755163e6b5ea"
+  },
+  "prior_manifest": {
+    "manifest_sha256": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28",
+    "path": "manifests/pilot-v3.json",
+    "sha256": "21b90e4766ee7763595d1592c5d668d5ae466054c88b4db9a3e60207d0d1471b"
+  },
+  "prior_policy": {
+    "path": "provenance/execution_policy_v3.json",
+    "sha256": "0214e78b737b5f0c25059ea71209b7ad4688e641864bb177e2be4894453af244"
+  },
+  "recorded_at": "2026-10-25T01:13:21.159020+00:00",
+  "recovery": {
+    "failed_attempt": 1,
+    "failed_attempt_sha256": "837396fed306676e968c1da846b2059c1dd1ad97d2904db4cfafcbb1f5665c0a",
+    "failed_authorization_id": "user-2026-10-24-three-call-smoke-v3",
+    "failed_call_id": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28/smoke/livecodebench:337/initial/0",
+    "failed_manifest_sha256": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28",
+    "max_recoveries": 1,
+    "recovery_condition": "initial",
+    "required_http_status": 401,
+    "retained_reservation_micro_usd": 354210
+  },
+  "schema_version": 1,
+  "source": "Explicit user instruction in this task",
+  "user_instruction": "Fix authentication recovery for the v3 smoke. Its initial attempt received HTTP 401 with no response or checkpoint. A separately entered key now returns HTTP 200 for model lookup. Add one explicit recovery for this authentication failure. Preserve the original attempt, reservation, authorization record, and shared $40 ledger. Do not relabel it as a transport failure or reset the ledger. Freeze v4 with the same task, prompts, model settings, and experimental design. Record its link to the failed v3 attempt. Reuse unchanged reference qualification evidence and test the recovery behavior. Also fix the misleading summary: provider failures must produce a clear stop reason, and incomplete smoke must not exit as successful. Push the fix and give me the exact Terminal command to resume the three-call smoke. Keep the full pilot blocked. The key-check command did not save the key, so the resume command should prompt for it again."
+}

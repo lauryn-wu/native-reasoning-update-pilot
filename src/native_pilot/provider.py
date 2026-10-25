@@ -30,16 +30,29 @@ BRANCHES = {
     "unchanged_retained", "unchanged_dropped",
 }
 ROOT = Path(__file__).resolve().parents[2]
-SMOKE_MANIFEST_PATH = ROOT / "manifests/pilot-v3.json"
+SMOKE_MANIFEST_PATH = ROOT / "manifests/pilot-v4.json"
 SHARED_LEDGER_PATH = ROOT / "runs/budget.sqlite"
 SMOKE_AUTHORIZATION = {
     "allowed": True,
     "task_id": "livecodebench:337",
-    "authorization_id": "user-2026-10-24-three-call-smoke-v3",
+    "authorization_id": "user-2026-10-24-auth-recovery-smoke-v4",
     "max_logical_calls": 3,
     "max_transport_retries_per_call": 1,
     "shared_budget_usd": 40,
-    "manifest_version": "pilot-v3",
+    "manifest_version": "pilot-v4",
+    "max_authentication_recoveries": 1,
+}
+AUTHENTICATION_RECOVERY_PATH = "provenance/authentication_recovery_v4.json"
+AUTHENTICATION_RECOVERY = {
+    "failed_manifest_sha256": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28",
+    "failed_call_id": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28/smoke/livecodebench:337/initial/0",
+    "failed_attempt": 1,
+    "failed_attempt_sha256": "837396fed306676e968c1da846b2059c1dd1ad97d2904db4cfafcbb1f5665c0a",
+    "failed_authorization_id": "user-2026-10-24-three-call-smoke-v3",
+    "retained_reservation_micro_usd": 354210,
+    "required_http_status": 401,
+    "max_recoveries": 1,
+    "recovery_condition": "initial",
 }
 
 
@@ -288,6 +301,64 @@ def _read_frozen_smoke_manifest() -> dict:
         raise ProviderFailure("frozen_smoke_qualification_unverified", uncertain_charge=False) from None
 
 
+def _read_authentication_recovery_record(manifest) -> dict:
+    """Read immutable public lineage; its hash is frozen twice in the manifest."""
+    from .util import file_digest
+    descriptor = manifest.get("authentication_recovery")
+    path = ROOT / AUTHENTICATION_RECOVERY_PATH
+    try:
+        if (not isinstance(descriptor, Mapping) or set(descriptor) != {"path", "sha256"} or
+                descriptor["path"] != AUTHENTICATION_RECOVERY_PATH or
+                descriptor["sha256"] != file_digest(path) or
+                manifest.get("provenance_hashes", {}).get(AUTHENTICATION_RECOVERY_PATH) != descriptor["sha256"]):
+            raise ValueError("Recovery descriptor mismatch")
+        record = json.loads(path.read_text())
+        if not isinstance(record, dict) or record.get("recovery") != AUTHENTICATION_RECOVERY:
+            raise ValueError("Recovery authorization mismatch")
+        return record["recovery"]
+    except (OSError, ValueError, TypeError, KeyError):
+        raise ProviderFailure("authentication_recovery_record_unverified", uncertain_charge=False) from None
+
+
+def _verify_authentication_recovery(manifest, ledger) -> str:
+    """Verify the preserved 401 without rewriting it or treating it as transport."""
+    from .util import canonical, digest
+    recovery = _read_authentication_recovery_record(manifest)
+    if recovery != AUTHENTICATION_RECOVERY:
+        raise ProviderFailure("authentication_recovery_record_unverified", uncertain_charge=False)
+    prior = ledger.rows(recovery["failed_manifest_sha256"])
+    if len(prior) != 1:
+        raise ProviderFailure("authentication_recovery_predecessor_changed", uncertain_charge=False)
+    failed = prior[0]
+    if (failed["call_id"] != recovery["failed_call_id"] or
+            failed["attempt"] != recovery["failed_attempt"] or
+            digest(failed) != recovery["failed_attempt_sha256"] or
+            failed["state"] != "provider_failure" or failed["kind"] != "smoke" or
+            failed["error_kind"] != "provider_failure" or failed["response"] is not None or
+            failed["charged"] is not None or failed["reserved"] != recovery["retained_reservation_micro_usd"]):
+        raise ProviderFailure("authentication_recovery_predecessor_changed", uncertain_charge=False)
+    try:
+        outcome = json.loads(failed["outcome"])
+        if (outcome.get("status") != "provider_failure" or outcome.get("condition") != "initial" or
+                outcome.get("provider_error") != {"kind":"provider_failure", "retryable":False,
+                    "uncertain_charge":False, "status_code":recovery["required_http_status"]}):
+            raise ValueError("Not the authorized authentication failure")
+    except (TypeError, ValueError, AttributeError):
+        raise ProviderFailure("authentication_recovery_predecessor_changed", uncertain_charge=False) from None
+    expected = build_request(manifest["smoke_task"], "initial", settings=manifest["settings"])
+    if failed["request"] != canonical(expected).decode():
+        raise ProviderFailure("authentication_recovery_request_changed", uncertain_charge=False)
+    required_claims = ("execution_authorization/" + recovery["failed_authorization_id"],
+                       "provider_dispatch/" + recovery["failed_call_id"] + "/" + str(recovery["failed_attempt"]))
+    for key in required_claims:
+        claim = ledger.db.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
+        if not claim or claim[0] != recovery["failed_manifest_sha256"]:
+            raise ProviderFailure("authentication_recovery_prior_authorization_changed", uncertain_charge=False)
+    # Key by the failed assignment, not the new authorization ID: a new label or
+    # manifest cannot reset the one permitted authentication recovery.
+    return "authentication_recovery/" + recovery["failed_call_id"] + "/" + str(recovery["failed_attempt"])
+
+
 def _require_paid_execution_policy(*, execution_scope=None, manifest=None,
                                    ledger=None, campaign_guard=None,
                                    request=None, execution_context=None) -> None:
@@ -326,10 +397,12 @@ def _require_paid_execution_policy(*, execution_scope=None, manifest=None,
         raise ProviderFailure("shared_budget_ledger_required", uncertain_charge=False)
     manifest_hash = frozen["manifest_sha256"]
     binding = "execution_authorization/" + SMOKE_AUTHORIZATION["authorization_id"]
+    recovery_binding = _verify_authentication_recovery(frozen, ledger)
     with ledger.transaction():
-        ledger.db.execute("INSERT OR IGNORE INTO meta VALUES (?,?)", (binding, manifest_hash))
-        if ledger.db.execute("SELECT value FROM meta WHERE key=?", (binding,)).fetchone()[0] != manifest_hash:
-            raise ProviderFailure("smoke_authorization_already_bound", uncertain_charge=False)
+        for key in (binding, recovery_binding):
+            ledger.db.execute("INSERT OR IGNORE INTO meta VALUES (?,?)", (key, manifest_hash))
+            if ledger.db.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()[0] != manifest_hash:
+                raise ProviderFailure("smoke_authorization_already_bound", uncertain_charge=False)
     if request is None:
         return
     required = {"manifest_sha256", "task_id", "call_id", "condition", "sample", "attempt"}
@@ -368,8 +441,11 @@ def _require_paid_execution_policy(*, execution_scope=None, manifest=None,
             prior["state"] == "transport_uncertain" for prior in prior_rows):
         raise ProviderFailure("smoke_transport_retry_not_authorized", uncertain_charge=False)
     for prior in prior_rows:
-        if prior["outcome"] and json.loads(prior["outcome"]).get("status") == "protocol_failure":
+        status = json.loads(prior["outcome"]).get("status") if prior["outcome"] else None
+        if status == "protocol_failure":
             raise ProviderFailure("smoke_stopped_after_protocol_failure", uncertain_charge=False)
+        if prior["state"] == "provider_failure" or status == "provider_failure":
+            raise ProviderFailure("smoke_stopped_after_provider_failure", uncertain_charge=False)
     claim = "provider_dispatch/" + context["call_id"] + "/" + str(context["attempt"])
     with ledger.transaction():
         if ledger.db.execute("SELECT value FROM meta WHERE key=?", (claim,)).fetchone():
