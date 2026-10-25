@@ -1,6 +1,6 @@
 # Low-effort follow-up implementation validation
 
-The current offline suite passed **326 tests, no skips**, including 67 tests for
+The current offline suite passed **328 tests, no skips**, including 69 tests for
 low-effort request construction, checkpoint binding, authorization, qualification,
 budgeting and execution. Tests used synthetic responses and temporary ledgers.
 The pinned SymPy 1.14.0 and OpenAI SDK 3.37.0 were installed for this check.
@@ -9,6 +9,15 @@ An independent offline integration review also exercised preparation, frozen
 manifest loading, real authorization, 24 injected SDK responses, and completed
 resume. Historical ledger rows stayed identical and resume made no extra calls.
 These were synthetic responses, not live model results.
+
+After the first Mac preparation attempt stopped, a path comparison defect was
+reproduced by running the complete suite with a symlinked temporary directory:
+five qualification tests compared resolved paths with unresolved aliases. Both
+paths can identify the same directory on macOS (`/var` and `/private/var`). The
+test assertions now compare canonical paths. All 328 tests pass both with normal
+temporary paths and with the symlinked setup. This does not change the experiment
+or relax any qualification requirement. Preparation now saves its detailed unit
+and Docker output to `runs/low-preparation-checks.json`, including on failure.
 
 Historical v6 qualification was read and validated against its frozen manifest.
 Its evidence covers 25 task pairs, including the separate smoke task. Existing

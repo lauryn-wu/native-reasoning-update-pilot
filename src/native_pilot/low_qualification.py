@@ -12,7 +12,7 @@ from pathlib import Path
 from .assets import checked_path
 from .manifest import ROOT, _integrated_qualification, implementation_hashes
 from .qualification_reuse import _asset_bindings, _fresh_checks, run_current_checks
-from .util import digest, utcnow
+from .util import atomic_json, digest, utcnow
 
 
 _CHANGED_SOURCE = frozenset({
@@ -110,7 +110,18 @@ def qualify(previous, cache, root=ROOT):
     tasks = previous['tasks'] + [previous['smoke_task']]
     assets = _asset_bindings(tasks, cache, root)
     fresh = run_current_checks(root=root)
-    _fresh_checks(fresh, current, old['docker'])
+    # Retain the actual diagnostics before applying the qualification gate.
+    # This local record is not qualification evidence or an authorization.
+    diagnostic_path = 'runs/low-preparation-checks.json'
+    atomic_json(root / diagnostic_path, fresh)
+    try:
+        _fresh_checks(fresh, current, old['docker'])
+    except ValueError as exc:
+        raise ValueError(
+            f'{exc}; unit exit={fresh.get("test_returncode")}, '
+            f'Docker={fresh.get("docker", {}).get("status", "unknown")}, '
+            f'files changed={fresh.get("implementation_changed_during_qualification")}. '
+            f'Details: {diagnostic_path}') from exc
     if (fresh.get('source_references_executed') is not False
             or fresh.get('paid_calls') != 0):
         raise ValueError('Fresh qualification must not execute references or paid calls')

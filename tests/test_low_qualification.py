@@ -1,7 +1,9 @@
 """Synthetic historical evidence exercises reuse without Docker or references."""
 import copy
 import json
+import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 import test_qualification_reuse as fixtures
@@ -43,7 +45,7 @@ class LowQualificationTests(unittest.TestCase):
         self.previous['manifest_sha256'] = digest(self.previous)
 
     def fresh(self, *, root):
-        self.assertEqual(root, self.root)
+        self.assertEqual(root.resolve(), self.root.resolve())
         current = implementation_hashes(self.root)
         return {'offline_passed': True, 'docker_passed': True, 'test_returncode': 0,
                 'implementation_hashes': current, 'implementation_hashes_after': current,
@@ -68,9 +70,35 @@ class LowQualificationTests(unittest.TestCase):
         self.assertFalse(result['source_references_executed'])
         self.assertEqual(self.fixture.qpath.read_bytes(), historical)
         self.assertEqual(self.previous, previous)
-        self.run_checks.assert_called_once_with(root=self.root)
+        self.run_checks.assert_called_once_with(root=self.root.resolve())
         result['source_references']['checks'].clear()
         self.assertTrue(self.old_q['source_references']['checks'])
+
+    def test_symlinked_temporary_root_qualifies_the_same_directory(self):
+        original = self.root
+        with tempfile.TemporaryDirectory() as parent:
+            alias = Path(parent) / 'alias'
+            alias.symlink_to(original.resolve(), target_is_directory=True)
+            self.root = alias
+            try:
+                self.assertTrue(self.qualify()['passed'])
+                self.run_checks.assert_called_once_with(root=original.resolve())
+            finally:
+                self.root = original
+
+    def test_failed_fresh_checks_are_saved_for_local_diagnosis(self):
+        fresh = self.fresh(root=self.root)
+        fresh.update(offline_passed=False, docker_passed=False, test_returncode=1,
+                     test_output='synthetic qualification test failure',
+                     docker={'passed': False, 'status': 'not_run'})
+        self.run_checks.side_effect = None
+        self.run_checks.return_value = fresh
+        with self.assertRaisesRegex(ValueError, 'runs/low-preparation-checks.json'):
+            self.qualify()
+        saved = json.loads((self.root / 'runs/low-preparation-checks.json').read_text())
+        self.assertEqual(saved, fresh)
+        self.assertFalse(saved['source_references_executed'])
+        self.assertEqual(saved['paid_calls'], 0)
 
     def test_allows_only_named_source_edits_additions_and_fresh_tests_docs(self):
         for name in ('provider.py', 'budget.py', 'low_effort.py', 'low_runner.py',
