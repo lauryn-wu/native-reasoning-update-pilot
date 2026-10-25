@@ -1,0 +1,179 @@
+{
+  "authorization": {
+    "additional_budget_usd": 5,
+    "allowed": true,
+    "authorization_id": "user-2026-10-24-exploratory-four-case-v6",
+    "manifest_version": "pilot-v6",
+    "max_logical_calls": 28,
+    "max_transport_retries_per_call": 1,
+    "shared_budget_usd": 40,
+    "soft_dispatch_deadline_seconds": 1800,
+    "task_ids": [
+      "aime2025:1042",
+      "aime2025:1057",
+      "livecodebench:299",
+      "livecodebench:276"
+    ]
+  },
+  "execution_this_work": "prepare, test, freeze, and provide Terminal command; no live model calls",
+  "full_pilot_authorized": false,
+  "interpretation": {
+    "full_study_significance_gate_applied": false,
+    "initial_correct_population": "Reported descriptively alongside all observed tasks; correctness does not change scheduling.",
+    "null_rules_out_hypothesis": false,
+    "purpose": "bounded exploratory feasibility screen"
+  },
+  "limits": {
+    "additional_budget_definition": "Sum of charged usage where known, otherwise full reservation, across every attempt under this one persistent authorization. Prior campaign costs remain in the shared $40 ledger but do not consume the new $5 allocation. No reset on resume or new manifest.",
+    "deadline_definition": "Persist first successful reservation time and stop new dispatches after 1800 wall-clock seconds, including downtime across resumes. In-flight work may finish after the deadline.",
+    "retries": "Existing maximum of one transport retry per logical call; each attempt separately reserved within both caps.",
+    "task_blocks": "Complete the scheduled block before starting another task. A budget/deadline/protocol stop may leave a partial block, which is reported explicitly; no limit is extended to complete it."
+  },
+  "preservation": {
+    "attempt_rows_sha256": "fa954c09d1dd05c6387cf2bc9fccad1145172d70976dd952df61189414256317",
+    "historical_attempts": [
+      {
+        "attempt": 1,
+        "call_id": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28/smoke/livecodebench:337/initial/0",
+        "charged_micro_usd": null,
+        "manifest_sha256": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28",
+        "reserved_micro_usd": 354210,
+        "row_sha256": "837396fed306676e968c1da846b2059c1dd1ad97d2904db4cfafcbb1f5665c0a",
+        "state": "provider_failure"
+      },
+      {
+        "attempt": 1,
+        "call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/initial/0",
+        "charged_micro_usd": 21978,
+        "manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+        "reserved_micro_usd": 354210,
+        "row_sha256": "76efa8d8d8708a4f518524bf26ace0ed9480aacf80156a01cdc1a849e5dbe016",
+        "state": "completed"
+      },
+      {
+        "attempt": 1,
+        "call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/updated_retained/1",
+        "charged_micro_usd": null,
+        "manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+        "reserved_micro_usd": 526420,
+        "row_sha256": "21990bfcc5c4cbcd5fe6b8332b2f6fde85a2a0635f0ac3bf62660d3953146224",
+        "state": "provider_failure"
+      },
+      {
+        "attempt": 1,
+        "call_id": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a/smoke/livecodebench:337/updated_retained/1",
+        "charged_micro_usd": 9618,
+        "manifest_sha256": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a",
+        "reserved_micro_usd": 526140,
+        "row_sha256": "607bde429b229c4609415a8230c93b9011da14dc89b9773714b23b5db84e46c2",
+        "state": "completed"
+      },
+      {
+        "attempt": 1,
+        "call_id": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a/smoke/livecodebench:337/updated_dropped/1",
+        "charged_micro_usd": 9688,
+        "manifest_sha256": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a",
+        "reserved_micro_usd": 526155,
+        "row_sha256": "f822626958a21bf06707a46d8134af41d8f9a441eefbf69bcf59b4b1f4c4d439",
+        "state": "completed"
+      }
+    ],
+    "historical_meta": [
+      {
+        "key": "authentication_recovery/2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28/smoke/livecodebench:337/initial/0/1",
+        "value": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f"
+      },
+      {
+        "key": "cap_micro_usd",
+        "value": "40000000"
+      },
+      {
+        "key": "continuation_recovery/4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/updated_retained/1/1",
+        "value": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a"
+      },
+      {
+        "key": "execution_authorization/user-2026-10-24-auth-recovery-smoke-v4",
+        "value": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f"
+      },
+      {
+        "key": "execution_authorization/user-2026-10-24-continuation-recovery-smoke-v5",
+        "value": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a"
+      },
+      {
+        "key": "execution_authorization/user-2026-10-24-three-call-smoke-v3",
+        "value": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28"
+      },
+      {
+        "key": "provider_dispatch/2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28/smoke/livecodebench:337/initial/0/1",
+        "value": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28"
+      },
+      {
+        "key": "provider_dispatch/4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/initial/0/1",
+        "value": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f"
+      },
+      {
+        "key": "provider_dispatch/4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/updated_retained/1/1",
+        "value": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f"
+      },
+      {
+        "key": "provider_dispatch/f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a/smoke/livecodebench:337/updated_dropped/1/1",
+        "value": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a"
+      },
+      {
+        "key": "provider_dispatch/f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a/smoke/livecodebench:337/updated_retained/1/1",
+        "value": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a"
+      }
+    ],
+    "known_charges_usd": 0.041284,
+    "ledger_file_sha256_before": "96efa1937d2aef6154365bc18608246ed568c9baf70f716dd43c2aea22e4ac7d",
+    "meta_rows_sha256": "9e83fad25ccfca7e136c847b9d16162f97cea5b23b2b7b9e57bcde16506e8882",
+    "outstanding_reservations_usd": 0.88063
+  },
+  "prior_manifest": {
+    "manifest_sha256": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a",
+    "path": "manifests/pilot-v5.json",
+    "sha256": "28f27406755e944baa1c57a9e8005e5784c62c0e924277fab73211ee9e1a509f"
+  },
+  "prior_policy": {
+    "path": "provenance/execution_policy_v5.json",
+    "sha256": "b5def36df6c8f41ef3a8e008347e00ad23b4824175cf0e201fe417510ac118aa"
+  },
+  "recorded_at": "2026-10-25T01:53:35.942168+00:00",
+  "schema_version": 1,
+  "selection": {
+    "method": "explicit_user_requested_existing_cases",
+    "model_outcomes_used_for_selection": false,
+    "note": "All four requested task records have unchanged_control false; none is removed from these task blocks.",
+    "prospective": true,
+    "task_ids": [
+      "aime2025:1042",
+      "aime2025:1057",
+      "livecodebench:299",
+      "livecodebench:276"
+    ],
+    "task_order": "user_list_order",
+    "task_records_sha256": {
+      "aime2025:1042": "18d3cf3f91a55d3b7d41ee10b2786070f5e0062f8377f4c2f9639d041eff75bc",
+      "aime2025:1057": "28fba376e51d503652cbd6b1dfde3fa17874019f5f1571dbe262c04e2e8c813d",
+      "livecodebench:276": "2bafc287f26efae208069fc7cbce0a7c39676998d694fd4da903a7a07a014686",
+      "livecodebench:299": "658fe9992a27a9ed94606bf7bf524997f9a91c59c8841ca373928b7bf5ed3ca3"
+    },
+    "unchanged_controls": 0,
+    "within_block_order": [
+      "initial/0",
+      "updated_retained/1",
+      "updated_dropped/1",
+      "fresh/1",
+      "updated_retained/2",
+      "updated_dropped/2",
+      "fresh/2"
+    ]
+  },
+  "user_instruction": "Prepare a bounded exploratory pilot using existing cases 1042, 1057, 299, and 276. Preserve their prompts, graders, model settings, and two samples per branch. Record this subset prospectively and execute complete task blocks so we obtain usable comparisons early. Enforce a persistent $5 additional charged-plus-reserved budget within the existing shared $40 cap, and a 30-minute soft dispatch deadline. Preserve completed calls and checkpoints across resumes. Reuse unchanged reference evidence. Report initial correctness, retained/dropped/fresh accuracy, completed pairs, elapsed time, and spending. This is a feasibility screen; do not apply the full study’s significance gate or claim a null rules out the hypothesis. Provide the Terminal command.",
+  "verified_smoke": {
+    "path": "docs/SMOKE_V5_LIVE_VERIFICATION.json",
+    "protocol_passed": true,
+    "selection_not_based_on_smoke_correctness": true,
+    "sha256": "562afcc93308232b033ba4c4e8f8daf8b8ca7c8576b9af15da3e8a695a67a1d0"
+  }
+}

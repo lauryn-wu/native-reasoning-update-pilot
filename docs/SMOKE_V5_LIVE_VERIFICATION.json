@@ -1,0 +1,261 @@
+{
+  "accounting": {
+    "accounted_usd_all_versions": 0.921914,
+    "known_charges_usd_all_versions": 0.041284,
+    "outstanding_reservations_usd_all_versions": 0.88063,
+    "remaining_unreserved_usd": 39.078086,
+    "shared_cap_usd": 40.0
+  },
+  "attempt_records": [
+    {
+      "attempt": 1,
+      "call_id": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a/smoke/livecodebench:337/updated_retained/1",
+      "error_kind": null,
+      "finished": "2026-10-25T01:47:07.612611+00:00",
+      "known_charge_usd": 0.009618,
+      "outstanding_reservation_usd": 0,
+      "reserved_usd": 0.52614,
+      "started": "2026-10-25T01:46:56.615003+00:00",
+      "state": "completed"
+    },
+    {
+      "attempt": 1,
+      "call_id": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a/smoke/livecodebench:337/updated_dropped/1",
+      "error_kind": null,
+      "finished": "2026-10-25T01:47:26.162402+00:00",
+      "known_charge_usd": 0.009688,
+      "outstanding_reservation_usd": 0,
+      "reserved_usd": 0.526155,
+      "started": "2026-10-25T01:47:07.616028+00:00",
+      "state": "completed"
+    }
+  ],
+  "attempts": 2,
+  "authentication_recovery_prior_failure": {
+    "attempt": 1,
+    "attempt_sha256": "837396fed306676e968c1da846b2059c1dd1ad97d2904db4cfafcbb1f5665c0a",
+    "authorized_attempt_sha256": "837396fed306676e968c1da846b2059c1dd1ad97d2904db4cfafcbb1f5665c0a",
+    "call_id": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28/smoke/livecodebench:337/initial/0",
+    "charged_micro_usd": null,
+    "http_status": 401,
+    "known_charge_usd": null,
+    "manifest_sha256": "2b93bc0d231cc435c2e2ebc792f36f75f7f7280f1828d4250fc05bd8c4a46e28",
+    "preservation_verified": true,
+    "reserved_micro_usd": 354210,
+    "reserved_usd": 0.35421,
+    "state": "provider_failure"
+  },
+  "calls": [
+    {
+      "attempt": 1,
+      "call_id": "smoke/livecodebench:337/initial/0",
+      "condition": "initial",
+      "error_kind": null,
+      "grade": {
+        "correct": true,
+        "status": "correct",
+        "tests": {
+          "cases": 137,
+          "passed": true,
+          "passed_cases": 137
+        }
+      },
+      "inherited": true,
+      "protocol_errors": null,
+      "protocol_valid": true,
+      "provider_error": null,
+      "response_status": "completed",
+      "returned_model": "gpt-6.1-sol",
+      "returned_reasoning": {
+        "context": "current_turn",
+        "effort": "high",
+        "mode": "standard"
+      },
+      "returned_service_tier": "default",
+      "sample": 0,
+      "source_call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/initial/0",
+      "source_manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+      "status": "correct",
+      "task_id": "livecodebench:337",
+      "usage": {
+        "input_tokens": 169,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 2164,
+        "output_tokens_details": {
+          "reasoning_tokens": 1783
+        },
+        "total_tokens": 2333
+      }
+    },
+    {
+      "attempt": 1,
+      "call_id": "smoke/livecodebench:337/updated_retained/1",
+      "condition": "updated_retained",
+      "error_kind": null,
+      "grade": {
+        "correct": true,
+        "status": "correct",
+        "tests": {
+          "cases": 137,
+          "passed": true,
+          "passed_cases": 137
+        }
+      },
+      "protocol_errors": null,
+      "protocol_valid": true,
+      "provider_error": null,
+      "response_status": "completed",
+      "returned_model": "gpt-6.1-sol",
+      "returned_reasoning": {
+        "context": "all_turns",
+        "effort": "high",
+        "mode": "standard"
+      },
+      "returned_service_tier": "default",
+      "sample": 1,
+      "status": "correct",
+      "task_id": "livecodebench:337",
+      "usage": {
+        "input_tokens": 2739,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 414,
+        "output_tokens_details": {
+          "reasoning_tokens": 41
+        },
+        "total_tokens": 3153
+      }
+    },
+    {
+      "attempt": 1,
+      "call_id": "smoke/livecodebench:337/updated_dropped/1",
+      "condition": "updated_dropped",
+      "error_kind": null,
+      "grade": {
+        "correct": true,
+        "status": "correct",
+        "tests": {
+          "cases": 137,
+          "passed": true,
+          "passed_cases": 137
+        }
+      },
+      "protocol_errors": null,
+      "protocol_valid": true,
+      "provider_error": null,
+      "response_status": "completed",
+      "returned_model": "gpt-6.1-sol",
+      "returned_reasoning": {
+        "context": "current_turn",
+        "effort": "high",
+        "mode": "standard"
+      },
+      "returned_service_tier": "default",
+      "sample": 1,
+      "status": "correct",
+      "task_id": "livecodebench:337",
+      "usage": {
+        "input_tokens": 954,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 0
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 778,
+        "output_tokens_details": {
+          "reasoning_tokens": 411
+        },
+        "total_tokens": 1732
+      }
+    }
+  ],
+  "completed_three_responses": true,
+  "continuation_recovery_prior_failure": {
+    "attempt": 1,
+    "attempt_sha256": "21990bfcc5c4cbcd5fe6b8332b2f6fde85a2a0635f0ac3bf62660d3953146224",
+    "authorized_attempt_sha256": "21990bfcc5c4cbcd5fe6b8332b2f6fde85a2a0635f0ac3bf62660d3953146224",
+    "call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/updated_retained/1",
+    "charged_micro_usd": null,
+    "http_status": 400,
+    "known_charge_usd": null,
+    "manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+    "preservation_verified": true,
+    "reserved_micro_usd": 526420,
+    "reserved_usd": 0.52642,
+    "state": "provider_failure"
+  },
+  "execution_scope": "protocol_smoke",
+  "full_initial_output_replayed": {
+    "updated_dropped": true,
+    "updated_retained": true
+  },
+  "inherited_completed_responses": 1,
+  "inherited_initial_checkpoint": {
+    "authorized_checkpoint_sha256": "39c6528a75d1016a7196f22165fec99476a871aeafd91a99ed8f38ea9171f961",
+    "checkpoint_sha256": "39c6528a75d1016a7196f22165fec99476a871aeafd91a99ed8f38ea9171f961",
+    "ledger_row_copied": false,
+    "new_initial_dispatched": false,
+    "prior_failed_attempt_sha256": "21990bfcc5c4cbcd5fe6b8332b2f6fde85a2a0635f0ac3bf62660d3953146224",
+    "prior_failed_call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/updated_retained/1",
+    "source_attempt": 1,
+    "source_attempt_sha256": "76efa8d8d8708a4f518524bf26ace0ed9480aacf80156a01cdc1a849e5dbe016",
+    "source_call_id": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f/smoke/livecodebench:337/initial/0",
+    "source_manifest_sha256": "4577e945a7df5ac5823b4dc02532c782daf69771ae1ea8a37bfdd591234a004f",
+    "source_response_sha256": "4ec551c960e1ee21c6bfb0902ae70a52ec74ba43c714da1b27dde1a3f23706e5",
+    "verified": true
+  },
+  "initial_checkpoint_sha256": "39c6528a75d1016a7196f22165fec99476a871aeafd91a99ed8f38ea9171f961",
+  "initial_checkpoint_usable": true,
+  "known_smoke_token_totals": {
+    "cache_write_tokens": 0,
+    "cached_tokens": 0,
+    "input_tokens": 3862,
+    "output_tokens": 3356,
+    "reasoning_tokens": 2235,
+    "total_tokens": 7218
+  },
+  "known_usage_records": 3,
+  "logical_calls": 2,
+  "manifest_sha256": "f58b073fa25721023e0ee82e0f33ba1612bba740394d73d656a8cbfb546e6d1a",
+  "paired_requests_differ_only_in_reasoning_context": true,
+  "protocol_passed": true,
+  "replay_normalization": {
+    "normalized_output_sha256": "05bc22418cb6c5ac76a217751e901de0fae8de53f640f54b89883d80fe5043a6",
+    "output_items": 5,
+    "raw_output_sha256": "f8572224741df0730c6cfa2a4ce11682ad2dbd9ebe2d7ad734104c36a8aed55b",
+    "reasoning_items": 4,
+    "removed_status_item_indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "rule": "omit_status_only_when_reasoning_item_status_is_none",
+    "verified": true
+  },
+  "requested_settings": {
+    "max_output_tokens": 32768,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high"
+  },
+  "responses_in_full_smoke": 3,
+  "same_initial_checkpoint_for_both_branches": true,
+  "schema_version": 1,
+  "task_id": "livecodebench:337"
+}

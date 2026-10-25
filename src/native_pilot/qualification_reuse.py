@@ -25,6 +25,7 @@ RECHECKED_ORCHESTRATION = frozenset({
     'src/native_pilot/cli.py', 'src/native_pilot/manifest.py',
     'src/native_pilot/provider.py', 'src/native_pilot/runner.py',
     'src/native_pilot/budget.py', 'src/native_pilot/qualification_reuse.py',
+    'src/native_pilot/exploratory.py', 'src/native_pilot/feasibility.py',
 })
 DESIGN_KEYS = (
     'research_question', 'adaptation', 'seed', 'selection_rule', 'tasks',

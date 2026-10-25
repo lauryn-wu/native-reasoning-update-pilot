@@ -5,37 +5,34 @@ correction, beyond its previous visible answer? This is an exploratory screen,
 not evidence for a mechanism or a claim of novelty. The source interrupts ongoing
 reasoning; this pilot instead corrects a completed response in a new user turn.
 
-**V5 permits only the two remaining smoke continuations from the successful
-v4 initial checkpoint. A new initial response and the full pilot are blocked.**
-See the [recovery authorization](provenance/continuation_recovery_v5.json) and
-[exact Terminal command](docs/SMOKE_V5.md#resume-the-two-continuations).
+**V6 authorizes only a bounded exploratory screen of four existing cases:**
+`aime2025:1042`, `aime2025:1057`, `livecodebench:299`, and `livecodebench:276`.
+The [prospective protocol](provenance/exploratory_authorization_v6.json) fixes that
+order and complete seven-call task blocks: one initial plus two samples each of
+retained, dropped, and fresh branches. Prompts, graders, reference assets, and
+model settings are unchanged. The full 200-response study remains blocked.
 
-The repair omits only null `status` fields on replayed reasoning items. All four
-items, their encrypted contents/order, the assistant phase, and the raw stored
-checkpoint are preserved. Null-status serialization is a **suspected cause** of
-the previous HTTP 400 until live verification succeeds.
+The persistent additional budget is **$5 charged plus reserved**, within the
+existing shared **$40 cap**. A **30-minute soft dispatch deadline** starts at the
+first reservation and does not reset on resume. Completed calls and checkpoints
+are reused. Limits can stop a partial block, which remains explicitly reported.
+See the [Terminal command and resume rules](docs/EXPLORATORY_V6.md#terminal-command).
 
-All three historical attempts remain unchanged. Known charges are $0.021978;
-$0.880630 remains reserved, leaving $39.097392 unreserved. No v5 call was made
-while preparing this fix. The initial answer graded correct; continuation grades
-and the complete live smoke protocol remain unavailable.
+The v5 smoke passed live protocol verification. All five historical attempts,
+including the original HTTP 401 and HTTP 400 failures, remain unchanged. Before
+v6 execution, known charges are $0.041284 and outstanding reservations are
+$0.880630. No v6 model call was made while preparing this screen.
 
-Candidate **276 is resolved** with a compiled version of the proved exact cubic
-DP and immutable gold outputs. The unchanged deterministic order supplies
-**12 math + 12 coding pairs**, plus separate smoke case `livecodebench:337`.
-No reference-feasibility exclusion amendment is applied. All statements,
-corrections, earlier attempts and published inputs are preserved.
+The [v6 manifest](manifests/pilot-v6.json) is separate from the archived full-study
+and smoke manifests. Its [qualification](docs/EXPLORATORY_V6_QUALIFICATION.json)
+reuses unchanged reference evidence with fresh software checks. Its
+[status report](docs/EXPLORATORY_V6_STATUS.json) reports descriptive accuracy,
+completed comparisons, elapsed time and spending. The full study's significance
+gate is not applied; a null result cannot rule out the hypothesis.
 
-The [v5 manifest](manifests/pilot-v5.json) preserves the exact task selection,
-separate smoke case, controls, pilot schedule, graders, analysis and model settings.
-All historical manifests, authorizations and qualification evidence remain intact.
-V5 reuses passing reference evidence after checking dependencies and all task
-assets, and binds fresh unit and Docker checks before execution.
-
-All eight reference checks for each of the **25 qualified pairs** are retained.
-See [v5 qualification](docs/SMOKE_V5_QUALIFICATION.json) and
-[recovery status](docs/SMOKE_V5_STATUS.json) for exact checks, checkpoint lineage
-and the preserved shared-ledger balance.
+Candidate 276 retains the compiled exact DP and immutable gold outputs. No
+reference-feasibility exclusion amendment was needed. All original statements,
+corrections, prior attempts and published test inputs remain preserved.
 
 ## References and grading
 
@@ -88,12 +85,12 @@ The committed validation record states what was actually run.
 
 ## Freezing and execution gates
 
-The committed v5 snapshot is source-qualified. Inspect it without dispatching:
+The committed v6 subset snapshot is source-qualified. Inspect it without dispatching:
 
 ```sh
-native-pilot --manifest manifests/pilot-v5.json dry-run
-native-pilot --manifest manifests/pilot-v5.json report
-native-pilot --manifest manifests/pilot-v5.json archive
+native-pilot --manifest manifests/pilot-v6.json dry-run
+native-pilot --manifest manifests/pilot-v6.json report
+native-pilot --manifest manifests/pilot-v6.json archive
 ```
 
 Four workers run independent offline task checks; each retains the same complete
@@ -111,23 +108,22 @@ native-pilot freeze --version UNUSED_VERSION --out manifests/UNUSED_VERSION.json
 
 A blocked audit cannot produce a 24-case schedule. Existing manifests cannot be
 overwritten; changing frozen implementation or evidence requires a new version.
-Historical v1/v2/v3/v4 implementation-file hashes are expected to reject the updated
+Historical v1/v2/v3/v4/v5 implementation-file hashes are expected to reject the updated
 checkout; they are archival snapshots, preserved byte-for-byte.
 
-The scoped `smoke --allow-paid` command requires v5 manifest-bound qualification,
-the canonical shared ledger and a locally entered key. It permits only updated
-retained and updated dropped on `livecodebench:337`, both from the same pinned
-v4 initial checkpoint. A new initial request is rejected before reservation.
-Completed continuations are skipped on resume; another recovery is not authorized.
-The provider rechecks the lineage and scope before each dispatch.
+The scoped `explore --allow-paid` command requires v6 manifest-bound qualification,
+the verified historical v5 smoke, the canonical shared ledger and a locally
+entered key. It permits only the 28 prospectively scheduled subset calls.
+Completed calls are skipped on resume; the budget and deadline are persistent.
+The provider rechecks scope, checkpoint, schedule, and limits before dispatch.
 
-Use the [hidden-key Terminal command](docs/SMOKE_V5.md#resume-the-two-continuations).
-Provider errors retain safely sanitized diagnostics. Incomplete smoke exits
-nonzero. `run --allow-paid` remains blocked. The ledger stays at
+Use the [hidden-key Terminal command](docs/EXPLORATORY_V6.md#terminal-command).
+Provider errors retain safely sanitized diagnostics. Incomplete execution is
+reported explicitly. `run --allow-paid` remains blocked. The ledger stays at
 `runs/budget.sqlite`; never reset or replace it. Credentials, raw responses and
 native reasoning remain private and excluded from Git.
 
-## Design and limits
+## Archived full-study design and limits
 
 The planned campaign remains 24 initial responses, 144 updated/fresh responses,
 and 32 unchanged controls, totaling 200, plus separately accounted smoke/retries.

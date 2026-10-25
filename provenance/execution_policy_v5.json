@@ -1,0 +1,17 @@
+{
+  "paid_execution_allowed": false,
+  "protocol_smoke": {
+    "allowed": true,
+    "authorization_id": "user-2026-10-24-continuation-recovery-smoke-v5",
+    "initial_generation_allowed": false,
+    "manifest_version": "pilot-v5",
+    "max_continuation_recoveries": 1,
+    "max_logical_calls": 2,
+    "max_transport_retries_per_call": 1,
+    "shared_budget_usd": 40,
+    "task_id": "livecodebench:337"
+  },
+  "reason": "Only two continuations from the pinned successful v4 initial checkpoint are authorized. No new initial, no full pilot, no ledger reset or release of historical reservations. Existing bounded transport retries remain.",
+  "recorded_date": "2026-10-24",
+  "schema_version": 4
+}

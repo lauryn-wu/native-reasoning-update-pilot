@@ -1,0 +1,889 @@
+{
+  "adaptation": "New user-turn correction after completed response; not mid-reasoning interruption replication",
+  "analysis": {
+    "branch_accuracy": "Report correct/graded counts and missing outcomes, by task and branch, two samples each",
+    "full_study_significance_gate_applied": false,
+    "initial_correctness": "Report every initial result; never select or suppress calls by correctness",
+    "interpretation": "Feasibility screen only; incomplete coverage and a null difference cannot rule out the hypothesis",
+    "mode": "descriptive_feasibility_screen",
+    "null_result_rules_out_hypothesis": false,
+    "paired_comparisons": "Report complete retained/dropped sample pairs and complete seven-call task blocks",
+    "population": "All observed tasks and a separately labeled initial-correct subset; neither is confirmatory",
+    "spending": "Additional charged-plus-reserved scope total and shared campaign total, including uncertain attempts",
+    "timing": "Wall-clock elapsed since the first reservation, including resume downtime; in-flight completion may exceed deadline"
+  },
+  "blockers": [],
+  "continuation_recovery": null,
+  "created_at": "2026-10-25T01:58:20.455153+00:00",
+  "execution_blockers": [
+    "The full 200-response pilot remains blocked; only the bounded four-case feasibility screen may dispatch"
+  ],
+  "execution_scope": "exploratory_pilot",
+  "exploratory_authorization": {
+    "additional_budget_usd": 5,
+    "allowed": true,
+    "authorization_id": "user-2026-10-24-exploratory-four-case-v6",
+    "manifest_version": "pilot-v6",
+    "max_logical_calls": 28,
+    "max_transport_retries_per_call": 1,
+    "shared_budget_usd": 40,
+    "soft_dispatch_deadline_seconds": 1800,
+    "task_ids": [
+      "aime2025:1042",
+      "aime2025:1057",
+      "livecodebench:299",
+      "livecodebench:276"
+    ]
+  },
+  "exploratory_protocol": {
+    "path": "provenance/exploratory_authorization_v6.json",
+    "sha256": "3c27c89ee4a794d94dafa695dc8b667862c110b75f42f72a3c5b9dd6a2d32b87"
+  },
+  "hard_budget_usd": 40,
+  "implementation_hashes": {
+    "docs/CODING_INDEPENDENT_REVIEW.md": "07776f3a0f2aa733c58a860273ab7aa42e9c020c48cfc5d735a5a2b1525f649d",
+    "docs/CODING_REFERENCES.md": "383fb433460e7f5c22ba303b1306392fa7dae96c0250832af149fc71515272f9",
+    "docs/EXPLORATORY_V6.md": "ca49d87167cf13f273cf96dcb5881ebed3e7a6a703daa71a5c7c7574177931d9",
+    "docs/GRADING.md": "cb324cd9bd4ce30ee07e56ad553eeae765dabf1c0a742d2895a07a18da3bbdbd",
+    "docs/HISTORICAL_VALIDATION_PRE_COMPILED.md": "22622d413f72725ccd8cb60f7f9a6e7c48f1f311f9e76e41471f4b0fcf57ec3e",
+    "docs/MATH_REFERENCES.md": "7c20ee8138bd051c839f70e4ad5139326fab022a73f82f418507c5b408e56a19",
+    "docs/PROTOCOL.md": "9af1d0472a813b60e569b2f9d29d70b7d42a54deb992c15596609b6f1fc85a70",
+    "docs/PROVIDER.md": "11229c34dadd8ea9e9059363623a515476fe75643643676320206404bbbd6a96",
+    "docs/REFERENCE_CONSTRUCTION.md": "4f5c8584175c99ae4b3496096b9c42097c0b6ed7cb913693629dff24e3123a94",
+    "docs/SMOKE_V3.md": "fa4b62e6855de074a6fb0d5feab834607dd03d50dd104024b9725c702d1e2bd8",
+    "docs/SMOKE_V4.md": "57b55f43c629d12928bd03bffa225870f7378127be3bc757a88fa3c473f6afdd",
+    "docs/SMOKE_V5.md": "8b82d5660bb45bcad88cc52fbc855a9e54827a2a78ebe03594fb578d47ed8f61",
+    "docs/SOURCE_AUDIT.md": "636c3da1cc86f99891b3199e181f42d06b2e5ae676813e7c0493827bfc964fb5",
+    "docs/VALIDATION.md": "cfa35d4ce34e9626cfaa95440744ecdb3b11710fde21c3314c3df3272e32b760",
+    "pyproject.toml": "088a08f65abe1d7fa4631343452250b7fb3f884ad2d14357a8e18a512d3a130e",
+    "references/coding/117/original.py": "2db413700f84bc1e4611fab17694d3689cfd8e7d859ccc0848d36e3afbec79ca",
+    "references/coding/117/updated.py": "262be99215a61364ab9c65aad18d59e56d2dd1b2989272f26c3a2003a492752c",
+    "references/coding/124/original.py": "78b00b56c1cedc2d9de6b4bac0478fbb5b27f9ad4754db2a4b53fd2d36732d4d",
+    "references/coding/124/updated.py": "9e85eb6046cea1690a4b2c84fa19eaac84e5a9039f2f0458e719a864658e582e",
+    "references/coding/148/original.py": "355a3c50b8ec1a6499914fc6189c5ddcd83196048b34c77312bee31bbee2925a",
+    "references/coding/148/updated.py": "eea371dbb551f4078ead56efe12ebea18319e4271e6917d4f79633f9f03672d6",
+    "references/coding/151/original.py": "037e90910965f722ccb73a7a3f3924853ea7d11cad89fdf163dc1786a7e01160",
+    "references/coding/151/updated.py": "7369be735353041ec630ac141a4f846a87fd577003d322c3485394af0fa5352f",
+    "references/coding/154/original.py": "230f779dd977b5d8aaf072c88e4e6645a387f64bef2ccad13266effdce9d4650",
+    "references/coding/154/updated.py": "1720eb785673074ebe49061b19123b74160edf492a4d7bbe88b6429fd3bc7b3d",
+    "references/coding/158/original.py": "a100b156e99c09a743e054883ae4164768b904dcbce40a341df0c2a6c630a63f",
+    "references/coding/158/updated.py": "e3e676072f7b975ff03d19f46190852abf97c0874f2d72d2c480cde0dfbc147a",
+    "references/coding/162/original.py": "08cec205d3fb2ab3adf28367125d71cb32b74134f8f9aa6ca73381d928176ac2",
+    "references/coding/162/updated.py": "ef467c1b991222f80f8f0f892d009ca9d6e5cf06c372a0f13a030f77b7bd4e12",
+    "references/coding/167/original.py": "5d166a624f958b743146317b1db31deaa8f8f80e556e7a727cca423a5185d706",
+    "references/coding/167/updated.py": "57f74b51d381b49b958d21309ec4a8906889b2b37b8caba2ed1b12af7b5697e1",
+    "references/coding/191/PROOF.md": "c805025c7c32ae3ebbf154821c497652edf04c1e120c9c26dd587fbf5cd3776e",
+    "references/coding/191/original.py": "161559b6106b317672a6d9969a290c723901c310430a32fec3b58be4e28c81c4",
+    "references/coding/191/updated.py": "1ca653d3ce16a315b266d6857bb9e324695f6d62c0562c01a8af20cc768adc24",
+    "references/coding/191_250_independent_cases.json": "434a2a4b6faa032c5e06e809b723f9d410c9a5905e2eda0288400cb43b851027",
+    "references/coding/191_250_validation.json": "88995b849294581c310fa2890289022f7073f3e601f1510aaaf8ac92ca7c242f",
+    "references/coding/218/original.py": "871353260b493ee19f198e7e020b82734636d4cfc0818c8b90427547fbbecb3e",
+    "references/coding/218/updated.py": "42b5cb1a02f8833f5b5adcf2214a64ebcffa25f02d592a7117cca347b6e21a6f",
+    "references/coding/233/original.py": "c0a07fd117927193faf1e3b0f9d013ca05b1157a1c1f2dda80bee7774bc3c6d0",
+    "references/coding/233/updated.py": "027ce8068b3e99852806e3477c5dc802c0bd2524c76b9958c3bb83153e751a1b",
+    "references/coding/250/PROOF.md": "7b7e5af685c02804c94a3deb6e8b06af10bddd8f7bc87e9c7d2d3a13bd170b40",
+    "references/coding/250/original.py": "fcdbd01d46c4c5465683a67b548eb0560f4292f15f56c96a87afe34e2fe3c80a",
+    "references/coding/250/updated.py": "ba4290932191ab40538dca6431fc45475e959a72bd88d52a9d735b01e76ecf0d",
+    "references/coding/258/adjudication.json": "0082620b7a4a8eb50101afeaa2eff3930220c1cdbd7f42b3e45a449017edc790",
+    "references/coding/258/adjudication.py": "ef47ba13e878f7522fdc792c4a8f519e8de42bcdcfcd3d0997a6f7f7b874545e",
+    "references/coding/258/adjudication_execution.json": "f456b057b4eb774dd1c1b2b7927cb81155b58c3bd0c4dd3336dd4931b29e0156",
+    "references/coding/258/original.py": "3258925d56ddcb98a55b810efbef088b6087022fb39c03a63d89987aef343ee1",
+    "references/coding/258/updated.py": "e34c093fb9f125a9d61b686a9d4877becd16c3711a0c4284e322cd834b80c76d",
+    "references/coding/268/original.py": "90b5615c1470c084f9d74de34d165783d23d292424429e7500ee3c9547fe7763",
+    "references/coding/268/updated.py": "a6256853d3dd3ad966bb1e6b1f4baa82d3127b4145079a15e6cf44f78369cf9d",
+    "references/coding/269/original.py": "250cc3a371b49e8bd362dd85d4d27aab7a85256493d17ed57a6290e0180611ac",
+    "references/coding/269/updated.py": "0e574bcc1a846d3cafe125b6826f296057d212154a692abfe9fb87d3099a80ac",
+    "references/coding/276/PROOF.md": "bbabcc5cfa2bcd71b9f3cc652b0ff77c933d8ef788708718191e488a8024bcd7",
+    "references/coding/276/compiled/BENCHMARK.md": "599fafdb7608ccf78654ec565b2da639cd9a8e2112f0bb1e2f9b36becfc8e9f1",
+    "references/coding/276/compiled/INDEPENDENT_REVIEW.md": "de429cf059c4f346dc805a4701c59606bde5fecdebbc49cb33fc609cc4ddb2f1",
+    "references/coding/276/compiled/PROOF.md": "ecb431f05ae90ab3609788339591ea0f4c20799e1322a6dd65dc7e4a4a8b8152",
+    "references/coding/276/compiled/certificate-pre-final-review.json": "221bc2052f2e77f8ff6298966f0afd91c491d5c4a0ef7780a15a92777046f908",
+    "references/coding/276/compiled/certificate.json": "30c34fe85aebf06ec6996229e861214a6225ef54cea642977b208899751b85e1",
+    "references/coding/276/compiled/construction_campaign.json": "efe0d53108e36fa9bbc5daef984e53d642a3c4f2818025a6285fd0a836142d4f",
+    "references/coding/276/compiled/gold_outputs.json": "7c2a8dfaa4d907a9b0b0096af99340e3689487013cd9869f47cc594a9c2f7170",
+    "references/coding/276/compiled/independent_oracle.py": "9f1e73be35b99af742803edbf6ba2ae41ee661aa29418671091a68c178ac3eab",
+    "references/coding/276/compiled/independent_oracle_cases.json": "d710d28a12bb90c04badcda6994fa11a6ccb6356023da803b90ed6a31eade566",
+    "references/coding/276/compiled/independent_oracle_execution.json": "dff5dbd6c6c9ccc7917c5037f18d83eca8eed7aace48f5a7d5a90b12e8916731",
+    "references/coding/276/compiled/independent_oracle_full.py": "6feb067d4f290e35a284e335661eb2971a3d8a4dca58c89832fc24d3c9126773",
+    "references/coding/276/compiled/independent_oracle_full_cases.json": "ef146da024ea6b239cf0f267e961948e5dba4c235504b576506dcda4aa05db85",
+    "references/coding/276/compiled/independent_oracle_full_execution.json": "7541d4edd6ca653d5f6fb4c6943f375c0173f952d944edd57434dfa2e4563e43",
+    "references/coding/276/compiled/independent_reference.cpp": "d9561dbc604b82c0eb3fc6473f18c6b85e713cec2bd39b57427c530cf3876094",
+    "references/coding/276/compiled/independent_review.json": "b4af63729a534c4e61e2cf0862feaad9c0411f75fd750e99730633f5d74fcb2c",
+    "references/coding/276/compiled/reference.cpp": "3628ae7ebbeba3f413128bd78adb41de071d943ce445d59788e5de11faf07324",
+    "references/coding/276/independent_cases.json": "1d7be8146289873fc19ec66195e3a33de7906287fbd1a2f13066186a12d5375e",
+    "references/coding/276/original.py": "359c62d0134cb163e94b389719ecb739325ef30cd967966a9818d60e05c56959",
+    "references/coding/276/updated.py": "a4685759a65552c8ca70ba79f640111325c146a8e7a1ca1cabdc915500ae89ac",
+    "references/coding/276/validation.json": "3a77a16a78618f835365da3fdf5de4e2606d4c400434f1d5e86ba629b2b08b8c",
+    "references/coding/299/original.py": "8cb92f8880fdb05d794f0372bc74257b2b2b9e36b0bec9ce01f37ef40154bc1e",
+    "references/coding/299/updated.py": "8eccfd4a3040e228c183535a7eb5c770f256f3070e10125fde891236e9af3c3d",
+    "references/coding/317/original.py": "af3bcc8316a985a009cf26a564dfa7bde49f6075ef765ea87ba1efc2f3515dcd",
+    "references/coding/317/updated.py": "49b74e14455031597a7c9732bb59711dae545f9c01d2f056d29490572092803d",
+    "references/coding/325/original.py": "5ada27ec21b3b1999852a960c9bd58445f33c2e8452bc99f5191b95b1e859a34",
+    "references/coding/325/updated.py": "ac3ffe002d8c94d3e13fdbc1c533cc2d6efd564ba2328adf8abc6a287781c011",
+    "references/coding/328/original.py": "27b67d9209b50f54e5b3b6d018e3c101f34e610686dd6282556734fa90aebd0b",
+    "references/coding/328/updated.py": "5875bb868f74e52a3ffb5bea3d40314396cd2794c397328e55ce45c5d694f242",
+    "references/coding/331/original.py": "8b91425c16fba8de5f8b74179d8213c20e087fcdfae4d860bec846185ab3a530",
+    "references/coding/331/updated.py": "83628cab9a053c62f762670e52fba2a0f4cb283c6c9853000cb993604570a6ec",
+    "references/coding/337/original.py": "0dd77a0bab286be0a9426c6bdd6719b5698e8c5814482df808686a4bcf31747c",
+    "references/coding/337/updated.py": "1698cefed116bbbbd4adfd91891fcf51bdb05de7f13e573e4c3a471a887dbbe4",
+    "references/coding/ROOT_INDEPENDENT_REVIEW.md": "929323c7ad90eed2fe1500c3a524eacc847378b43bbefc21d8a4c3faa0709e87",
+    "references/coding/algorithms.py.txt": "f0eb9b58b978d416f6e5c5b5a13736974cda24a3ad93a3fa6d764166f1118dac",
+    "references/coding/asset_rebuild_validation.json": "4e7893be7a6f06c2927561c571912d2d7a6006e0418a88cc353d609389277b9c",
+    "references/coding/atcoder_additional_validation.json": "6fab3848d8e8f1d164dc2221595d440073c3a37c3b7280f32634a1ef8cd9a7dd",
+    "references/coding/atcoder_agent_cases.json": "35d97d00939704e13f7f2fce88a8777274b006aa7ffa0e37dab914b2e1051a20",
+    "references/coding/atcoder_agent_validation.json": "97f9fb1207f4c705d4b2105099b00729fd3822b2738f6d02e521fb0f181887b3",
+    "references/coding/atcoder_independent_validation.json": "a047cf0ea6d22104791c7266833bf1a122116bd1f6ae532383e179266f6f0884",
+    "references/coding/atcoder_official_validation.json": "305dcb54e8c175ef5bb5364b6767d8b6219b8b7d7cfdbbc37130f9a9c3d5f4ee",
+    "references/coding/atcoder_oracles.py": "3bb5a437be131b2efa097258bea9deb768732428e7d2db79b5c303014dbb2d1a",
+    "references/coding/atcoder_own_cases.json": "c0676fc1e33783ffb3ed5d529fc7b74ebb7d29f05381309a045d8df64c1dbbdb",
+    "references/coding/function_adapter_validation_recovered.json": "a44b801e55f9d026600db0dca7193daef783d60ba72c8adf96bb1b71c8016f0c",
+    "references/coding/independent_cases.json": "3fb415ce6990cccb50826090cab214e878674d1a91d0e93f57c1035b7483da95",
+    "references/coding/independent_validation.json": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6",
+    "references/coding/official_validation.json": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb",
+    "references/coding/pair_validation.json": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2",
+    "references/coding/root-independent-191-250.json": "d50594bd95b143ddeefac6f43fc22cf25e029a64f74215fd17e10ab6df95c736",
+    "references/coding/root_independent_191_250.py": "54cb2ba26213c2e542c8a1f1afdd7725b63a7614dc134c9d1f3bfc34980a1273",
+    "references/coding/source_pairs.json": "4620f30dc0e449b8ba6e3a2c266d5a18ff3d234bda73da3e3b5ace1b1573597e",
+    "references/coding/stdin_adapter_validation.json": "7596e9d004d1377d0265f1cfef7b0bc4a456d66137bb04d499fe0decd2dddb9c",
+    "references/coding/stdin_adapter_validation_before_deadline_fix.json": "1eedcad0a06e48aeca31d39472f55e55eb1115931e8711a27240b8db3dae3d89",
+    "references/coding/stdin_adapter_validation_cleanup_failure.json": "d7539e980f9812b05ffaa3ae5460a89938c86d710629bbf958d952c3d48d7c5f",
+    "references/coding/verify_191_250.py": "4159fd5040e15d61ca642fa39a6176d75d96283777a5b50de04093196800b28d",
+    "references/coding/verify_276.py": "8647b681dd72b2e75335bb3efc91f7cf965e9c2d93cb4fc6f728ee1ab5044efc",
+    "references/math/INDEPENDENT_REVIEW.md": "12c0534b0b94f04238bbc4a9fbae74e6aa46f4c4f7f46673606210aa27f2f97f",
+    "references/math/TRIG_INDEPENDENT_REVIEW.md": "f9a71278fb2b3c7bbaebbbe275be1646cd8c41e1199bdf1c3969571255faef0a",
+    "references/math/exclusion-verification-run.json": "758e0f6bc8e349f42d5d7e499a89adebe1d0d83a3e10e48505493aafeff13952",
+    "references/math/grader-qualification.json": "a2d37a2a1d0e035426ad0699868730e60e4c3ba3777e96e8cdcdbb29e48287df",
+    "references/math/independent-exact-run.json": "dd2ef39678653c1b629aa436870fb3c5e95f223460f876f28f710ac36102aa78",
+    "references/math/independent_exact_check.py": "6e98c2dd0f3686f86445ac2c0bdd1397e00c705eee1343b733069e32b1a44852",
+    "references/math/proofs.md": "72e9791723ff0cb407662c6f2da86be5b26d67832090adcdd7d49475efafef4e",
+    "references/math/source_pairs.json": "f547d9408b786ce98acbdd9f3da52ded36bdac434641c91db8df8e4e5ce230a1",
+    "references/math/trig-independent-run.json": "f0b18a03fb1f9bad024d69c42adf3938b1bfa3e94bb7cddf10780ce5198285b9",
+    "references/math/trig-verification-run.json": "b814c5968e4311b235f9c95c113660941126638f6c91c4a8b21a19dca4be447e",
+    "references/math/trig_certifier.py": "b51bf740869a2a976b9b1cb5fd46a8455eea9d882ab7939dc7f3d1b22cfdb235",
+    "references/math/trig_independent_check.py": "ab6d30f5e541da280a459a3dec343c0b2d1267b0bc1bab5a9119b5f42825e69f",
+    "references/math/verification-run.json": "2a44670a738b7a58f5072116e0ae2db992cfa4b6a0c7bce35a4373b8f73b8dc3",
+    "references/math/verify_exact.py": "3cec98c75cce3f6cf753017d379a82da6959048b0afd470e0acb3f7dba9d5cb6",
+    "references/math/verify_exclusions.py": "32b79d1f890b87b4e694068f29087b6e09dbb4d040216b11890b983a8ea93083",
+    "src/native_pilot/__init__.py": "3a85346489f8c54141d76c8c2ead68ff50507ce8ed03ee63ecf36fef265c857d",
+    "src/native_pilot/__main__.py": "79ee6f134c5c5193377cf9b189cbdcc3e2095e49ba9cec310114441c15a917c4",
+    "src/native_pilot/analysis.py": "ba126d33f085e3b528dd271ce921bb4437c9e127d35af4092f3f56bef84c802c",
+    "src/native_pilot/assets.py": "6e3d02724df34c49bbeb840f23d4963c3510ccccef9017656ba6586b84cc7c76",
+    "src/native_pilot/budget.py": "bb0cccc1b0e819a5c2c13b887018cb18dc61f07bc54d7676b41fdc119af96b3e",
+    "src/native_pilot/cli.py": "32f16ea08a67f9fc8693cc98dbcaa13e966cdbc0368d9eace25fb4f94c1cae9b",
+    "src/native_pilot/data.py": "e3d6c12e857a7f9383e6378a3d2d1e13c3fa971397751f0eadfe2a3020beb045",
+    "src/native_pilot/design.py": "650b129a849d965c24208aaf27a0ae5d86179b52484c5fa8c30da56b024da8cd",
+    "src/native_pilot/exact_math.py": "4ac4db37082eaa2ef095f3ec6e28c87e32c28d0a4f933ae3a26cc3452fd29edc",
+    "src/native_pilot/exploratory.py": "cf386a25edb556087ee009ce7fd30f4349be0be693cc397c370345e34e37dd0d",
+    "src/native_pilot/feasibility.py": "4d9b5a5646d2cc012326047b358fe8f5ff4f845bc839be75943da64405ed82be",
+    "src/native_pilot/gold_qualification.py": "22dac36264780a71949edc0473b2f19455ea61e81bd7a9c3c5609284d72bf1b6",
+    "src/native_pilot/grading.py": "4c070009f150e5e8def27bc883a740018456802cb48fbf990e23cd2d179e2c97",
+    "src/native_pilot/manifest.py": "200b0d8af4a007a6ffe5384448dcb6d8c286b56bac26099e9f807dde465b2c00",
+    "src/native_pilot/provider.py": "59733bc86c744835d61a8d4cadb2aece30dee5cdfca68598e354bb25e7b2ee63",
+    "src/native_pilot/qualification.py": "481fc9b93390308330fe933e4db5cd4a68b915590a93ec9f462419ac8f9c6034",
+    "src/native_pilot/qualification_reuse.py": "031d08e1140e0af26b56e4585f24be57834cc2c40207f0d1edfa71d271b422d4",
+    "src/native_pilot/reference_construction.py": "f160ddfdf2fb6f7e7cc960ac4a069c4f8791f31da6e87666d8e8196352aacf4b",
+    "src/native_pilot/runner.py": "751f3a799edf7771bc032ddf566faf74726f3da76d32ee4f5aeb7fce978f2065",
+    "src/native_pilot/sandbox/__init__.py": "a65b6192d8662cb844b0f084a0a9d351d9aae3b128da9f34e45eb0db1109a041",
+    "src/native_pilot/sandbox/coding_oracles.py": "20b3c4c24c033e5c51055563842a0ed13507acc34f43a64230ed64a06165ebfc",
+    "src/native_pilot/sandbox/coding_oracles_atcoder.py": "0b38683f38f1fd3f9bdd9799596f9e4f81d53215d6e122e479b301610933bfc4",
+    "src/native_pilot/sandbox/function.py": "546d5432a9f136009eb0ec91f985009c07e4d12a37fb7f26e11e2ee746e8d766",
+    "src/native_pilot/sandbox/runner.py": "e898a31402c29b07b25ada0f7849f15ab85846478166b2a586fd057f3c652792",
+    "src/native_pilot/sandbox/stdin.py": "25261541633ad51352276605675e91ec255290e3932d2c6cae21556c45820c43",
+    "src/native_pilot/upstream.py": "0250ef9bd35759303b7df28dcb90aa1c963eba2e6e8de0ed51d6efe08e10180e",
+    "src/native_pilot/util.py": "5cf73f5f6e2b9d336d57f974c4b1b42b4187b0851a7e6963372ed92e2d66aeb4",
+    "tests/test_analysis.py": "40a3f71d3c6afe015794f9b7012737e5de6a0e5a90cfbd15c817c5aedebbdff8",
+    "tests/test_assets.py": "8e12315cf15d5adfdea69a8837e017b9ab0761e54b6cb53135da899e99dedcde",
+    "tests/test_budget_design.py": "477081746ebfb4da7e01bf6ba4c372645bde510ed262624b8f40d30a880a3424",
+    "tests/test_cli_exploratory.py": "4a0f1c2bc9870bed9f927f33b7da3344af3d29f696e53ea6066c24ba35e95f20",
+    "tests/test_cli_smoke_exit.py": "447581b1cf685ef4527f025876044a8445388bf3a93a3545026119bf6e689f8e",
+    "tests/test_data.py": "73009564b5a1ba9d6d68cc341098f6d872e814702572e5ae0530d82ba71ba148",
+    "tests/test_exact_math.py": "ed298bc295a2ea4411fcc362d038665fc41a4c1029fcfb58f91d5e32434d5e55",
+    "tests/test_exploratory_budget.py": "b26714edff339504bb5f4af7c757f624920a34f72dcf95d1f9d59edfb95b11aa",
+    "tests/test_exploratory_manifest.py": "752ffbb1129b3ae5d463c1d893d7258d430fda18e2463d414c53de1c6a2c81d6",
+    "tests/test_exploratory_provider.py": "e836cfd9f8949c418386ca3e13e4a2d08187a3f86ef7f24aa2a472cd6b0f18cf",
+    "tests/test_exploratory_runner.py": "d607ac23b94bd789258072dd0ece21833efc6e77ee4d830683a1eb8ae8072ba8",
+    "tests/test_feasibility.py": "1920c4f0bd461540bb6dc218e727d11f3b552695448d5035aee2d83abad4dbf5",
+    "tests/test_function_grading.py": "af99385eb2a0a767c47c82f6f3f4bd3e0e461a5b4bbb503f34ba7347b2bc36ed",
+    "tests/test_gold_qualification.py": "db04bf6300db874711350fe8898925323324c5caca409ea488f604bdd4795bfc",
+    "tests/test_grading.py": "f2ab1f1cb525432709995048c9cb25b2113b8e839fb5d36e6067db5767bf98d4",
+    "tests/test_manifest.py": "8a4bfa5774c6ce8b5ee5ad8d32249065901e13458bb61c8c32a4c715a6e1e60d",
+    "tests/test_parallel_qualification.py": "e0fb260aee52ea95b378199c42de2593d3278647bf8995b9458fac6f8ea25ccf",
+    "tests/test_provider.py": "c64e3f1a417b1d03f06cb35365d0f32dbad1d95fa69f0ad1d66d6427f247f181",
+    "tests/test_qualification.py": "2d0d869d9518481ea4907aceac84a1b59ba6e3871032912e90411948b8d52395",
+    "tests/test_qualification_reuse.py": "86c5d0e47d391cb04b6d2fbc37ebe6f1e482fcbedd8a352855e1e3297bd117f1",
+    "tests/test_reference_construction.py": "9ea269253a2b5b80f7b89411b5a70d349794464e0f96bd15c0c93ec29d1537f5",
+    "tests/test_runner.py": "91ed402ee3e6591370db5740fa5e82c2eb71e0630a1956a71b559acd76a70fc4",
+    "tests/test_smoke_manifest.py": "d75cd2458bfbd13952342f00ab5558bedba34998a52c54879c2ff22f020afc1e",
+    "tests/test_stdin_grading.py": "f53bea6f604d28219b69c9993a8ff817938de1929abbb644a8191728617c096d",
+    "tests/test_upstream.py": "0c3501b9069d33eb90f59fa19df2fe1babcc0d32ad9f82fd1b2269fdc809c1d6"
+  },
+  "integrated_qualification": {
+    "audit_sha256": "5c39bb414946028a0614042be9bab3c63489039ec599c1d2240dc8ad7a5b3088",
+    "covered_task_ids": [
+      "aime2024:1003",
+      "aime2024:1004",
+      "aime2024:1012",
+      "aime2024:1016",
+      "aime2024:1019",
+      "aime2024:1024",
+      "aime2024:1027",
+      "aime2025:1030",
+      "aime2025:1042",
+      "aime2025:1044",
+      "aime2025:1053",
+      "aime2025:1057",
+      "livecodebench:124",
+      "livecodebench:158",
+      "livecodebench:167",
+      "livecodebench:191",
+      "livecodebench:218",
+      "livecodebench:233",
+      "livecodebench:250",
+      "livecodebench:258",
+      "livecodebench:268",
+      "livecodebench:269",
+      "livecodebench:276",
+      "livecodebench:299",
+      "livecodebench:337"
+    ],
+    "implementation_hashes_sha256": "e35f6298258839252dc43fbe6c56805cba7cba4c857d1dfd675fe5bb89444735",
+    "path": "provenance/integrated_qualification_v6.json",
+    "sha256": "f9e249dd427ce8a5bee1e38f8a55948a1f6f73469c9ebe049c50ed79388d37f9"
+  },
+  "manifest_sha256": "021676718d1d29683b2e1e69e3e5c5eefa8a41f9ed9c3a3d952404c8f14ffb7f",
+  "paid_execution_allowed": false,
+  "planned_counts": {
+    "coding": 2,
+    "initial": 4,
+    "math": 2,
+    "new_smoke": 0,
+    "problems": 4,
+    "responses": 28,
+    "unchanged": 0,
+    "updated_and_fresh": 24
+  },
+  "pricing": {
+    "accounting": "Uncached input=input_tokens-cached_tokens-cache_write_tokens. Cache reads and writes replace the ordinary input charge for those tokens; output_tokens already includes reasoning_tokens. Reserve without expected cache savings; missing usage or uncertain transport charges retain the full reservation.",
+    "cache_policy": {
+      "breakpoints": 0,
+      "expected_cache_write_tokens": 0,
+      "expected_cached_tokens": 0,
+      "mode": "explicit",
+      "ttl": "30m"
+    },
+    "currency": "USD",
+    "endpoint": "https://api.openai.com/v1",
+    "long_context": {
+      "input_and_cache_multiplier": 2.0,
+      "input_threshold_exclusive": 272000,
+      "output_multiplier": 1.5
+    },
+    "model": "gpt-6.1-sol",
+    "provider": "OpenAI",
+    "rates_per_million": {
+      "cache_write_12h": 5.0,
+      "cache_write_30m": 2.5,
+      "cached_input": 0.1,
+      "input": 2.0,
+      "output": 10.0
+    },
+    "reasoning_mode": "standard",
+    "regional_processing_multiplier": 1.1,
+    "schema_version": 1,
+    "service_tier": "default",
+    "source_documents": [
+      {
+        "bytes": 4436,
+        "retrieved_at_utc": "2026-10-24T21:35:05.970422+00:00",
+        "sha256": "acfe91d19882aaf7bb52877898684614035a947de02f2955c9de905a7efb1362",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol.md"
+      },
+      {
+        "bytes": 56544,
+        "retrieved_at_utc": "2026-10-24T21:35:06.070324+00:00",
+        "sha256": "5ef36de765cb4e16fdab153e13799d9f22b46ee1ff0d602375442c4cae2cc379",
+        "url": "https://developers.openai.com/api/docs/guides/prompt-caching.md"
+      },
+      {
+        "bytes": 22449,
+        "retrieved_at_utc": "2026-10-24T21:35:06.135790+00:00",
+        "sha256": "606acc6693f882253e203e30da2fbfd23f28b02540a98f26fce93c5cdc04e9dd",
+        "url": "https://developers.openai.com/api/docs/pricing.md"
+      }
+    ],
+    "unit": "per_1000000_tokens",
+    "usage_fields": {
+      "cache_write": "usage.input_tokens_details.cache_write_tokens",
+      "cached_input": "usage.input_tokens_details.cached_tokens",
+      "input": "usage.input_tokens",
+      "output": "usage.output_tokens",
+      "reasoning_subset_of_output": "usage.output_tokens_details.reasoning_tokens"
+    },
+    "verified_date": "2026-10-24"
+  },
+  "protocol_smoke_authorization": null,
+  "provenance_hashes": {
+    "provenance/audit.json": "fb0866620f6d4d557e0a5e08ab1b79965bdfe780a3272baa28785ae5ecd02c41",
+    "provenance/authentication_recovery_v4.json": "45744c08fb141f1c325a0a1731e39df1e3358e669dd83be616eafd8d45bfbaab",
+    "provenance/coding_independent_review.json": "2defffbe837769387c289ea487dae13c782dac9108c15df6f9a7d1331682c07c",
+    "provenance/coding_review.json": "bd54755a1cf44fec615620b8a42e009f598591bc7a63e650c442a0b37b221bd5",
+    "provenance/continuation_recovery_v5.json": "6304db5c412572003c53d9a8f7b1d63f17d9c0218d281f3a7f961a0d786001a8",
+    "provenance/execution_policy.json": "374d9174e01b6357f06e7257e0118d5df2f2d862c101ed451dacfa8a81caf6fd",
+    "provenance/execution_policy_v2.json": "33c98fc564477d40683aac0132a6824b65b99e0ecec848e0f7864134db0746a5",
+    "provenance/execution_policy_v3.json": "0214e78b737b5f0c25059ea71209b7ad4688e641864bb177e2be4894453af244",
+    "provenance/execution_policy_v4.json": "82968b7f37eff36b21f2344ee9b2657a0415e5d6ad86cf6596adfb0821c42fb0",
+    "provenance/execution_policy_v5.json": "b5def36df6c8f41ef3a8e008347e00ad23b4824175cf0e201fe417510ac118aa",
+    "provenance/exploratory_authorization_v6.json": "3c27c89ee4a794d94dafa695dc8b667862c110b75f42f72a3c5b9dd6a2d32b87",
+    "provenance/integrated_qualification.json": "ffbccceb93ac048c9c64f4dedef87980732446ba6350d3d21cb4e2faad1f4441",
+    "provenance/integrated_qualification_v3.json": "b8e3c0e39e915066ef33a40e71cebe6b597cb64c77f2794d57441c61aaf1dd9c",
+    "provenance/integrated_qualification_v4.json": "3b1fe0ff7feee788859db80d89038541b47e0ea52361a026e5a9b9b6555b54c6",
+    "provenance/integrated_qualification_v5.json": "a906759699a928fb96a036389124242ecb435baea9347ed567f42be1794b972c",
+    "provenance/integrated_qualification_v6.json": "f9e249dd427ce8a5bee1e38f8a55948a1f6f73469c9ebe049c50ed79388d37f9",
+    "provenance/math_review.json": "cd5311369c34680e404e52468c4baa59b63ba7cdfb9a82fa2edc892c97d0e908",
+    "provenance/pricing.json": "ccf370052ed1021cd2dea1abea70344fc05a3b043d0bda368054b9072bafb40c",
+    "provenance/provider_docs.json": "9754a49b805de391f45e5439abf9e9014b6f5567e5f61e1585ff1643c865dafc",
+    "provenance/qualification_audit.json": "5c39bb414946028a0614042be9bab3c63489039ec599c1d2240dc8ad7a5b3088",
+    "provenance/reference_construction_policy.json": "6e58e29c27e8d2207b32763b6bd4ba7503e33a0e184b52995e613c8653843ff6",
+    "provenance/review_inventory.json": "ea408f5449afe644d154a2c063789a62d0420ac171aebe27e8961f55d1846ff8",
+    "provenance/smoke_authorization_v3.json": "2120f8b0e647d5881c89c4f7aee75e8e63c0d937ced810515df9755163e6b5ea",
+    "provenance/source_lock.json": "7ef4249ecc1c3ae361781d67bc80ffa5e809f2e795c39f7a5621e52fbdae7218",
+    "provenance/upstream_tests_lock.json": "52b81cc68fbfc028a0cfd7e78fd3b2e38fd0706590f39678fae2519209b93c33"
+  },
+  "research_question": "Does retained native reasoning impair adaptation beyond prior visible answer?",
+  "schedule": [
+    {
+      "call_id": "aime2025:1042/initial/0",
+      "condition": "initial",
+      "sample": 0,
+      "task_id": "aime2025:1042"
+    },
+    {
+      "call_id": "aime2025:1042/updated_retained/1",
+      "condition": "updated_retained",
+      "sample": 1,
+      "task_id": "aime2025:1042"
+    },
+    {
+      "call_id": "aime2025:1042/updated_dropped/1",
+      "condition": "updated_dropped",
+      "sample": 1,
+      "task_id": "aime2025:1042"
+    },
+    {
+      "call_id": "aime2025:1042/fresh/1",
+      "condition": "fresh",
+      "sample": 1,
+      "task_id": "aime2025:1042"
+    },
+    {
+      "call_id": "aime2025:1042/updated_retained/2",
+      "condition": "updated_retained",
+      "sample": 2,
+      "task_id": "aime2025:1042"
+    },
+    {
+      "call_id": "aime2025:1042/updated_dropped/2",
+      "condition": "updated_dropped",
+      "sample": 2,
+      "task_id": "aime2025:1042"
+    },
+    {
+      "call_id": "aime2025:1042/fresh/2",
+      "condition": "fresh",
+      "sample": 2,
+      "task_id": "aime2025:1042"
+    },
+    {
+      "call_id": "aime2025:1057/initial/0",
+      "condition": "initial",
+      "sample": 0,
+      "task_id": "aime2025:1057"
+    },
+    {
+      "call_id": "aime2025:1057/updated_retained/1",
+      "condition": "updated_retained",
+      "sample": 1,
+      "task_id": "aime2025:1057"
+    },
+    {
+      "call_id": "aime2025:1057/updated_dropped/1",
+      "condition": "updated_dropped",
+      "sample": 1,
+      "task_id": "aime2025:1057"
+    },
+    {
+      "call_id": "aime2025:1057/fresh/1",
+      "condition": "fresh",
+      "sample": 1,
+      "task_id": "aime2025:1057"
+    },
+    {
+      "call_id": "aime2025:1057/updated_retained/2",
+      "condition": "updated_retained",
+      "sample": 2,
+      "task_id": "aime2025:1057"
+    },
+    {
+      "call_id": "aime2025:1057/updated_dropped/2",
+      "condition": "updated_dropped",
+      "sample": 2,
+      "task_id": "aime2025:1057"
+    },
+    {
+      "call_id": "aime2025:1057/fresh/2",
+      "condition": "fresh",
+      "sample": 2,
+      "task_id": "aime2025:1057"
+    },
+    {
+      "call_id": "livecodebench:299/initial/0",
+      "condition": "initial",
+      "sample": 0,
+      "task_id": "livecodebench:299"
+    },
+    {
+      "call_id": "livecodebench:299/updated_retained/1",
+      "condition": "updated_retained",
+      "sample": 1,
+      "task_id": "livecodebench:299"
+    },
+    {
+      "call_id": "livecodebench:299/updated_dropped/1",
+      "condition": "updated_dropped",
+      "sample": 1,
+      "task_id": "livecodebench:299"
+    },
+    {
+      "call_id": "livecodebench:299/fresh/1",
+      "condition": "fresh",
+      "sample": 1,
+      "task_id": "livecodebench:299"
+    },
+    {
+      "call_id": "livecodebench:299/updated_retained/2",
+      "condition": "updated_retained",
+      "sample": 2,
+      "task_id": "livecodebench:299"
+    },
+    {
+      "call_id": "livecodebench:299/updated_dropped/2",
+      "condition": "updated_dropped",
+      "sample": 2,
+      "task_id": "livecodebench:299"
+    },
+    {
+      "call_id": "livecodebench:299/fresh/2",
+      "condition": "fresh",
+      "sample": 2,
+      "task_id": "livecodebench:299"
+    },
+    {
+      "call_id": "livecodebench:276/initial/0",
+      "condition": "initial",
+      "sample": 0,
+      "task_id": "livecodebench:276"
+    },
+    {
+      "call_id": "livecodebench:276/updated_retained/1",
+      "condition": "updated_retained",
+      "sample": 1,
+      "task_id": "livecodebench:276"
+    },
+    {
+      "call_id": "livecodebench:276/updated_dropped/1",
+      "condition": "updated_dropped",
+      "sample": 1,
+      "task_id": "livecodebench:276"
+    },
+    {
+      "call_id": "livecodebench:276/fresh/1",
+      "condition": "fresh",
+      "sample": 1,
+      "task_id": "livecodebench:276"
+    },
+    {
+      "call_id": "livecodebench:276/updated_retained/2",
+      "condition": "updated_retained",
+      "sample": 2,
+      "task_id": "livecodebench:276"
+    },
+    {
+      "call_id": "livecodebench:276/updated_dropped/2",
+      "condition": "updated_dropped",
+      "sample": 2,
+      "task_id": "livecodebench:276"
+    },
+    {
+      "call_id": "livecodebench:276/fresh/2",
+      "condition": "fresh",
+      "sample": 2,
+      "task_id": "livecodebench:276"
+    }
+  ],
+  "schedule_sha256": "7a8feb266af20067a6a4261230c0e4f4ee53e5c4c674df154291476383d4d441",
+  "schema_version": 2,
+  "seed": 20261024,
+  "selection_rule": "Prospective explicit user subset in user-listed order; no experimental outcomes used",
+  "settings": {
+    "max_output_tokens": 32768,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high"
+  },
+  "smoke_task": {
+    "changed_tokens": 2,
+    "correction_prompt": "If removing the i^th element leaves the array with fewer than k strings, answer[i] should be 0.\nRefer to the test cases and specifications outlined here.\n\nExample 1:\n\nInput: words = [\"jump\",\"run\",\"run\",\"jump\",\"run\"], k = 2\nOutput: [3,4,4,3,4]\nExplanation:\n\nRemoving index 0 (\"jump\"):\n\n\t\nwords becomes: [\"run\", \"run\", \"jump\", \"run\"]. \"run\" occurs 3 times. Choosing any two gives the longest common prefix \"run\" (length 3).\n\n\nRemoving index 1 (\"run\"):\n\t\nwords becomes: [\"jump\", \"run\", \"jump\", \"run\"]. \"jump\" occurs twice. Choosing these two gives the longest common prefix \"jump\" (length 4).\n\n\nRemoving index 2 (\"run\"):\n\t\nwords becomes: [\"jump\", \"run\", \"jump\", \"run\"]. \"jump\" occurs twice. Choosing these two gives the longest common prefix \"jump\" (length 4).\n\n\nRemoving index 3 (\"jump\"):\n\t\nwords becomes: [\"jump\", \"run\", \"run\", \"run\"]. \"run\" occurs 3 times. Choosing any two gives the longest common prefix \"run\" (length 3).\n\n\nRemoving index 4 (\"run\"):\n\t\nwords becomes: [\"jump\", \"run\", \"run\", \"jump\"]. \"jump\" occurs twice. Choosing these two gives the longest common prefix \"jump\" (length 4).\n\n\n\nExample 2:\n\nInput: words = [\"dog\",\"racer\",\"car\"], k = 2\nOutput: [0,0,0]\nExplanation:\n\nRemoving any index results in an answer of 0.\n\n\n \nConstraints:\n\n1 <= k <= words.length <= 10^5\n1 <= words[i].length <= 10^4\nwords[i] consists of lowercase English letters.\nThe sum of words[i].length is smaller than or equal 10^5.",
+    "correction_prompt_sha256": "1712a84a04e0d9be997944ab6c1cdbaf46825eb66c71c8f659fe3e934264a237",
+    "domain": "coding",
+    "memory_mb": 768,
+    "original": {
+      "entrypoint": {
+        "class": "Solution",
+        "method": "longestCommonPrefix"
+      },
+      "mode": "function",
+      "reference_asset": {
+        "path": "references/coding/337/original.py",
+        "sha256": "0dd77a0bab286be0a9426c6bdd6719b5698e8c5814482df808686a4bcf31747c"
+      },
+      "test_asset": {
+        "path": "lcb/qualified/337-original.json",
+        "sha256": "250e3748cdca8e44908ab7c5f57b3b01c8a452f5e327d004e24f582ce2dc2f74"
+      },
+      "test_count": 137,
+      "timeout_seconds": 60,
+      "validation_evidence": [
+        {
+          "path": "references/coding/official_validation.json",
+          "scope": "Corrected references passed complete published suites.",
+          "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb"
+        },
+        {
+          "path": "references/coding/independent_validation.json",
+          "scope": "Both references passed independently authored exact oracle suites.",
+          "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6"
+        },
+        {
+          "path": "references/coding/pair_validation.json",
+          "scope": "Both own-variant suites pass and stale-reference cross-grading fails.",
+          "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2"
+        }
+      ]
+    },
+    "original_identity": "70f56925a6a44d5279f3c65cef6e2a52fca03bd2d4c279d2d613dc7aba6b4bb1",
+    "original_prompt": "You are given an array of strings words and an integer k.\nFor each index i in the range [0, words.length - 1], find the length of the longest common prefix among any k strings (selected at distinct indices) from the remaining array after removing the i^th element.\nReturn an array answer, where answer[i] is the answer for i^th element. If removing the i^th element leaves the array with fewer than k strings, answer[i] is -1.\n\nReleased starter code:\nclass Solution:\n    def longestCommonPrefix(self, words: List[str], k: int) -> List[int]:\n        ",
+    "output_instructions": "Return exactly one Python 3.12 code block implementing the released starter interface. Do not call the method yourself; the evaluator invokes it with positional arguments.",
+    "output_limit": 4000000,
+    "published_difficulty": "hard",
+    "qualification_blockers": [],
+    "qualification_evidence_sha256": "cab27dae01fad73a96460f58646c7a8c10dc0176cbbdf7263e8618dacbc6f220",
+    "qualified": true,
+    "released_fields": {
+      "original_problem": "You are given an array of strings words and an integer k.\nFor each index i in the range [0, words.length - 1], find the length of the longest common prefix among any k strings (selected at distinct indices) from the remaining array after removing the i^th element.\nReturn an array answer, where answer[i] is the answer for i^th element. If removing the i^th element leaves the array with fewer than k strings, answer[i] is 0.\n \n",
+      "original_starter_code": "class Solution:\n    def longestCommonPrefix(self, words: List[str], k: int) -> List[int]:\n        ",
+      "revised_problem": "You are given an array of strings words and an integer k.\nFor each index i in the range [0, words.length - 1], find the length of the longest common prefix among any k strings (selected at distinct indices) from the remaining array after removing the i^th element.\nReturn an array answer, where answer[i] is the answer for i^th element. If removing the i^th element leaves the array with fewer than k strings, answer[i] is -1.",
+      "revised_starter_code": "class Solution:\n    def longestCommonPrefix(self, words: List[str], k: int) -> List[int]:\n        ",
+      "update": "If removing the i^th element leaves the array with fewer than k strings, answer[i] should be 0.\nRefer to the test cases and specifications outlined here.\n\nExample 1:\n\nInput: words = [\"jump\",\"run\",\"run\",\"jump\",\"run\"], k = 2\nOutput: [3,4,4,3,4]\nExplanation:\n\nRemoving index 0 (\"jump\"):\n\n\t\nwords becomes: [\"run\", \"run\", \"jump\", \"run\"]. \"run\" occurs 3 times. Choosing any two gives the longest common prefix \"run\" (length 3).\n\n\nRemoving index 1 (\"run\"):\n\t\nwords becomes: [\"jump\", \"run\", \"jump\", \"run\"]. \"jump\" occurs twice. Choosing these two gives the longest common prefix \"jump\" (length 4).\n\n\nRemoving index 2 (\"run\"):\n\t\nwords becomes: [\"jump\", \"run\", \"jump\", \"run\"]. \"jump\" occurs twice. Choosing these two gives the longest common prefix \"jump\" (length 4).\n\n\nRemoving index 3 (\"jump\"):\n\t\nwords becomes: [\"jump\", \"run\", \"run\", \"run\"]. \"run\" occurs 3 times. Choosing any two gives the longest common prefix \"run\" (length 3).\n\n\nRemoving index 4 (\"run\"):\n\t\nwords becomes: [\"jump\", \"run\", \"run\", \"jump\"]. \"jump\" occurs twice. Choosing these two gives the longest common prefix \"jump\" (length 4).\n\n\n\nExample 2:\n\nInput: words = [\"dog\",\"racer\",\"car\"], k = 2\nOutput: [0,0,0]\nExplanation:\n\nRemoving any index results in an answer of 0.\n\n\n \nConstraints:\n\n1 <= k <= words.length <= 10^5\n1 <= words[i].length <= 10^4\nwords[i] consists of lowercase English letters.\nThe sum of words[i].length is smaller than or equal 10^5."
+    },
+    "review_rank": 55,
+    "source": "livecodebench",
+    "source_id": 337,
+    "source_original_prompt_sha256": "9fc6ae60c4447325292b61cefb1253f01c26e74d92de248d66dfd6f1e427b08d",
+    "source_revised_prompt_sha256": "67c83fbea3ff0d3db9eee91000d2f6963e1453698a7c885677b8d5a854fd5c99",
+    "source_row_sha256": "7de87b232d2c090fb3ec0c3056cb5e8fbb65ace1fd124d7e5d920ac7ac5f8c4d",
+    "task_id": "livecodebench:337",
+    "timeout_seconds": 60,
+    "updated": {
+      "entrypoint": {
+        "class": "Solution",
+        "method": "longestCommonPrefix"
+      },
+      "mode": "function",
+      "reference_asset": {
+        "path": "references/coding/337/updated.py",
+        "sha256": "1698cefed116bbbbd4adfd91891fcf51bdb05de7f13e573e4c3a471a887dbbe4"
+      },
+      "test_asset": {
+        "path": "lcb/qualified/337-updated.json",
+        "sha256": "9d6806ef754937b9fd4c21b2ef7768c198c3577b2aba5335524ebae0f78a8bcd"
+      },
+      "test_count": 137,
+      "timeout_seconds": 60,
+      "validation_evidence": [
+        {
+          "path": "references/coding/official_validation.json",
+          "scope": "Corrected references passed complete published suites.",
+          "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb"
+        },
+        {
+          "path": "references/coding/independent_validation.json",
+          "scope": "Both references passed independently authored exact oracle suites.",
+          "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6"
+        },
+        {
+          "path": "references/coding/pair_validation.json",
+          "scope": "Both own-variant suites pass and stale-reference cross-grading fails.",
+          "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2"
+        }
+      ]
+    },
+    "updated_prompt": "You are given an array of strings words and an integer k.\nFor each index i in the range [0, words.length - 1], find the length of the longest common prefix among any k strings (selected at distinct indices) from the remaining array after removing the i^th element.\nReturn an array answer, where answer[i] is the answer for i^th element. If removing the i^th element leaves the array with fewer than k strings, answer[i] is 0.\n \n\n\nReleased starter code:\nclass Solution:\n    def longestCommonPrefix(self, words: List[str], k: int) -> List[int]:\n        \n\nReleased correction and supplemental specifications:\nIf removing the i^th element leaves the array with fewer than k strings, answer[i] should be 0.\nRefer to the test cases and specifications outlined here.\n\nExample 1:\n\nInput: words = [\"jump\",\"run\",\"run\",\"jump\",\"run\"], k = 2\nOutput: [3,4,4,3,4]\nExplanation:\n\nRemoving index 0 (\"jump\"):\n\n\t\nwords becomes: [\"run\", \"run\", \"jump\", \"run\"]. \"run\" occurs 3 times. Choosing any two gives the longest common prefix \"run\" (length 3).\n\n\nRemoving index 1 (\"run\"):\n\t\nwords becomes: [\"jump\", \"run\", \"jump\", \"run\"]. \"jump\" occurs twice. Choosing these two gives the longest common prefix \"jump\" (length 4).\n\n\nRemoving index 2 (\"run\"):\n\t\nwords becomes: [\"jump\", \"run\", \"jump\", \"run\"]. \"jump\" occurs twice. Choosing these two gives the longest common prefix \"jump\" (length 4).\n\n\nRemoving index 3 (\"jump\"):\n\t\nwords becomes: [\"jump\", \"run\", \"run\", \"run\"]. \"run\" occurs 3 times. Choosing any two gives the longest common prefix \"run\" (length 3).\n\n\nRemoving index 4 (\"run\"):\n\t\nwords becomes: [\"jump\", \"run\", \"run\", \"jump\"]. \"jump\" occurs twice. Choosing these two gives the longest common prefix \"jump\" (length 4).\n\n\n\nExample 2:\n\nInput: words = [\"dog\",\"racer\",\"car\"], k = 2\nOutput: [0,0,0]\nExplanation:\n\nRemoving any index results in an answer of 0.\n\n\n \nConstraints:\n\n1 <= k <= words.length <= 10^5\n1 <= words[i].length <= 10^4\nwords[i] consists of lowercase English letters.\nThe sum of words[i].length is smaller than or equal 10^5."
+  },
+  "source_audit_sha256": "5c39bb414946028a0614042be9bab3c63489039ec599c1d2240dc8ad7a5b3088",
+  "source_qualified": true,
+  "status": "frozen",
+  "tasks": [
+    {
+      "changed_tokens": 4,
+      "correction_prompt": "Change the name to Alex. Draw 25 additional line segments instead of 31. For each segment, choose two perimeter points in different quadrants (not restricted to adjacent quadrants). The total number of line segments is 27 instead of 33.",
+      "correction_prompt_sha256": "bb1bd67ec00bc52abf94c6bd1d5b5b91c6b2e0e341985e3835df586826d0aba9",
+      "domain": "math",
+      "original": {
+        "answer": "1923/8"
+      },
+      "original_identity": "f1f6a6c4f0c73bba62b663e91288cea7afde372a3a2f9a38ef823e0d8ce9bcef",
+      "original_prompt": "Blair divides a disk into four quadrants with two perpendicular diameters intersecting at the center of the disk. He draws $31$ more lines segments through the disk, drawing each segment by selecting two points at random on the perimeter of the disk in adjacent quadrants and connecting these two points. Find the expected number of regions into which these $33$ line segments divide the disk.",
+      "output_instructions": "Solve the stated problem. End with an exact final answer in \\boxed{...}. Integers, exact rational arithmetic and square roots of nonnegative rational numbers are accepted. Use sqrt(...) or \\sqrt{...}; do not replace an exact value by a decimal approximation.",
+      "published_difficulty": null,
+      "qualification_blockers": [],
+      "qualification_evidence_sha256": "0110b3d78e3797e2a91e444c3f515e43895d419626aa9adbfb7fb63cb66f7ffd",
+      "qualified": true,
+      "reference_qualification": {
+        "changed_answer": true,
+        "original_equivalent": true,
+        "original_reference": true,
+        "original_wrong_rejected": true,
+        "stale_rejected": true,
+        "updated_equivalent": true,
+        "updated_reference": true,
+        "updated_wrong_rejected": true
+      },
+      "released_fields": {
+        "original_problem": "Alex divides a disk into four quadrants with two perpendicular diameters intersecting at the center of the disk. He draws $25$ more lines segments through the disk, drawing each segment by selecting two points at random on the perimeter of the disk in different quadrants and connecting these two points. Find the expected number of regions into which these $27$ line segments divide the disk.",
+        "revised_problem": "Blair divides a disk into four quadrants with two perpendicular diameters intersecting at the center of the disk. He draws $31$ more lines segments through the disk, drawing each segment by selecting two points at random on the perimeter of the disk in adjacent quadrants and connecting these two points. Find the expected number of regions into which these $33$ line segments divide the disk.",
+        "update": "Change the name to Alex. Draw 25 additional line segments instead of 31. For each segment, choose two perimeter points in different quadrants (not restricted to adjacent quadrants). The total number of line segments is 27 instead of 33."
+      },
+      "review_rank": 14,
+      "source": "aime2025",
+      "source_id": 1042,
+      "source_original_prompt_sha256": "f1f6a6c4f0c73bba62b663e91288cea7afde372a3a2f9a38ef823e0d8ce9bcef",
+      "source_revised_prompt_sha256": "ca89e4a598ac25eb8964a57725a22e1f8f8875999a0b801aa183be2ab95438e3",
+      "source_row_sha256": "0a0f5f9e7e741c4b2687e5ea7df8b40e3fac25e6f109ce33e30a38f06de8199f",
+      "task_id": "aime2025:1042",
+      "unchanged_control": false,
+      "updated": {
+        "answer": "204"
+      },
+      "updated_prompt": "Alex divides a disk into four quadrants with two perpendicular diameters intersecting at the center of the disk. He draws $25$ more lines segments through the disk, drawing each segment by selecting two points at random on the perimeter of the disk in different quadrants and connecting these two points. Find the expected number of regions into which these $27$ line segments divide the disk."
+    },
+    {
+      "changed_tokens": 4,
+      "correction_prompt": "The initial term should be x1 = 25/11. Update the recurrence to x_{k+1} = (1/3)(x_k + 1/x_k - 1). Compute x_{2025} (express it as m/n) and find the remainder when m + n is divided by 1000.",
+      "correction_prompt_sha256": "84a4a1b3dccf36f788edf4d8030e605b40cfb7f2d9355137a9a054707d962416",
+      "domain": "math",
+      "original": {
+        "answer": "809"
+      },
+      "original_identity": "b7e93c177f8150682444ac0f26c1edce7d25a5c91a90375bf28c231e1623fd8f",
+      "original_prompt": "Let the sequence of rationals $x_1,x_2,\\dots$ be defined such that $x_1=\\frac{26}{11}$ and\\[x_{k+1}=\\frac{1}{2}\\left(x_k+\\frac{1}{x_k}+1\\right).\\]$x_{2026}$ can be expressed as $\frac{m}{n}$ for relatively prime positive integers $m$ and $n$. Find the remainder when $m+n$ is divided by $1000$.",
+      "output_instructions": "Solve the stated problem. End with an exact final answer in \\boxed{...}. Integers, exact rational arithmetic and square roots of nonnegative rational numbers are accepted. Use sqrt(...) or \\sqrt{...}; do not replace an exact value by a decimal approximation.",
+      "published_difficulty": null,
+      "qualification_blockers": [],
+      "qualification_evidence_sha256": "73fe092525ffec4ebee6314cd46779c46566d80a47f04f8349e9f2fa3fcb0429",
+      "qualified": true,
+      "reference_qualification": {
+        "changed_answer": true,
+        "original_equivalent": true,
+        "original_reference": true,
+        "original_wrong_rejected": true,
+        "stale_rejected": true,
+        "updated_equivalent": true,
+        "updated_reference": true,
+        "updated_wrong_rejected": true
+      },
+      "released_fields": {
+        "original_problem": "Let the sequence of rationals $x_1,x_2,\\dots$ be defined such that $x_1=\\frac{25}{11}$ and\\[x_{k+1}=\\frac{1}{3}\\left(x_k+\\frac{1}{x_k}-1\\right).\\]$x_{2025}$ can be expressed as $\frac{m}{n}$ for relatively prime positive integers $m$ and $n$. Find the remainder when $m+n$ is divided by $1000$.",
+        "revised_problem": "Let the sequence of rationals $x_1,x_2,\\dots$ be defined such that $x_1=\\frac{26}{11}$ and\\[x_{k+1}=\\frac{1}{2}\\left(x_k+\\frac{1}{x_k}+1\\right).\\]$x_{2026}$ can be expressed as $\frac{m}{n}$ for relatively prime positive integers $m$ and $n$. Find the remainder when $m+n$ is divided by $1000$.",
+        "update": "The initial term should be x1 = 25/11. Update the recurrence to x_{k+1} = (1/3)(x_k + 1/x_k - 1). Compute x_{2025} (express it as m/n) and find the remainder when m + n is divided by 1000."
+      },
+      "review_rank": 20,
+      "source": "aime2025",
+      "source_id": 1057,
+      "source_original_prompt_sha256": "bbd97ab65075c4b2eece0f7e41cc964f59dcab04f3242274cb377d47eebcae27",
+      "source_revised_prompt_sha256": "01954e46c1ac8fcd53625e12ca65debe9589bde29d50ce26315a7484c936bed8",
+      "source_row_sha256": "400b98b47cd55cd6e3e30b6c8149578aca5ae3d15d6e895eb5fa3f5cb29c9da1",
+      "task_id": "aime2025:1057",
+      "unchanged_control": false,
+      "updated": {
+        "answer": "248"
+      },
+      "updated_prompt": "Let the sequence of rationals $x_1,x_2,\\dots$ be defined such that $x_1=\\frac{25}{11}$ and\\[x_{k+1}=\\frac{1}{3}\\left(x_k+\\frac{1}{x_k}-1\\right).\\]$x_{2025}$ can be expressed as $\frac{m}{n}$ for relatively prime positive integers $m$ and $n$. Find the remainder when $m+n$ is divided by $1000$."
+    },
+    {
+      "changed_tokens": 1,
+      "correction_prompt": "The turn direction was misstated. It should be a clockwise 90-degree turn (not counterclockwise).\nPlease consult the following test cases and specifications.\n\nExample 1:\n\nInput: grid = [[2,2,1,2,2],[2,0,2,2,0],[2,0,1,1,0],[1,0,2,2,2],[2,0,0,2,2]]\nOutput: 5\nExplanation:\n\nThe longest V-shaped diagonal segment has a length of 5 and follows these coordinates: (0,2) → (1,3) → (2,4), takes a 90-degree clockwise turn at (2,4), and continues as (3,3) → (4,2).\n\nExample 2:\n\nInput: grid = [[2,2,2,2,2],[2,0,2,2,0],[2,0,1,1,0],[1,0,2,2,2],[2,0,0,2,2]]\nOutput: 4\nExplanation:\n\nThe longest V-shaped diagonal segment has a length of 4 and follows these coordinates: (2,3) → (3,2), takes a 90-degree clockwise turn at (3,2), and continues as (2,1) → (1,0).\n\nExample 3:\n\nInput: grid = [[1,2,2,2,2],[2,2,2,2,0],[2,0,0,0,0],[0,0,2,2,2],[2,0,0,2,0]]\nOutput: 5\nExplanation:\n\nThe longest V-shaped diagonal segment has a length of 5 and follows these coordinates: (0,0) → (1,1) → (2,2) → (3,3) → (4,4).\n\nExample 4:\n\nInput: grid = [[1]]\nOutput: 1\nExplanation:\nThe longest V-shaped diagonal segment has a length of 1 and follows these coordinates: (0,0).\n\n \nConstraints:\n\nn == grid.length\nm == grid[i].length\n1 <= n, m <= 500\ngrid[i][j] is either 0, 1 or 2.",
+      "correction_prompt_sha256": "9c4fcae5afbacdac0bd9c60afe3872fd76a4fffd7182ea4d328b788a33f39573",
+      "domain": "coding",
+      "memory_mb": 768,
+      "original": {
+        "entrypoint": {
+          "class": "Solution",
+          "method": "lenOfVDiagonal"
+        },
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/299/original.py",
+          "sha256": "8cb92f8880fdb05d794f0372bc74257b2b2b9e36b0bec9ce01f37ef40154bc1e"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/299-original.json",
+          "sha256": "55e3c9e9b79644ea68bff916ec30fd2c6a6ee4d94473dc8b85f7d221db4341d6"
+        },
+        "test_count": 245,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "scope": "Corrected references passed complete published suites.",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb"
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "scope": "Both references passed independently authored exact oracle suites.",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6"
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails.",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2"
+          }
+        ]
+      },
+      "original_identity": "6ec585fb6ca09ea90ba9e9462022dbf4d10e3f2181d49ad21e348151f9b1166f",
+      "original_prompt": "You are given a 2D integer matrix grid of size n x m, where each element is either 0, 1, or 2.\nA V-shaped diagonal segment is defined as:\n\nThe segment starts with 1.\nThe subsequent elements follow this infinite sequence: 2, 0, 2, 0, ....\nThe segment:\n    \nStarts along a diagonal direction (top-left to bottom-right, bottom-right to top-left, top-right to bottom-left, or bottom-left to top-right).\nContinues the sequence in the same diagonal direction.\nMakes at most one counterclockwise 90-degree turn to another diagonal direction while maintaining the sequence.\n\nReturn the length of the longest V-shaped diagonal segment. If no valid segment exists, return 0.\n\nReleased starter code:\nclass Solution:\n    def lenOfVDiagonal(self, grid: List[List[int]]) -> int:\n        ",
+      "output_instructions": "Return exactly one Python 3.12 code block implementing the released starter interface. Do not call the method yourself; the evaluator invokes it with positional arguments.",
+      "output_limit": 4000000,
+      "published_difficulty": "hard",
+      "qualification_blockers": [],
+      "qualification_evidence_sha256": "62a27b275fcff97fa6a9bb4b65eebfac750c08233a8fcafc3fe558c49793f3a7",
+      "qualified": true,
+      "released_fields": {
+        "original_problem": "You are given a 2D integer matrix grid of size n x m, where each element is either 0, 1, or 2.\nA V-shaped diagonal segment is defined as:\n\nThe segment starts with 1.\nThe subsequent elements follow this infinite sequence: 2, 0, 2, 0, ....\nThe segment:\n\t\nStarts along a diagonal direction (top-left to bottom-right, bottom-right to top-left, top-right to bottom-left, or bottom-left to top-right).\nContinues the sequence in the same diagonal direction.\nMakes at most one clockwise 90-degree turn to another diagonal direction while maintaining the sequence.\n\n\n\n\nReturn the length of the longest V-shaped diagonal segment. If no valid segment exists, return 0.\n ",
+        "original_starter_code": "class Solution:\n    def lenOfVDiagonal(self, grid: List[List[int]]) -> int:\n        ",
+        "revised_problem": "You are given a 2D integer matrix grid of size n x m, where each element is either 0, 1, or 2.\nA V-shaped diagonal segment is defined as:\n\nThe segment starts with 1.\nThe subsequent elements follow this infinite sequence: 2, 0, 2, 0, ....\nThe segment:\n    \nStarts along a diagonal direction (top-left to bottom-right, bottom-right to top-left, top-right to bottom-left, or bottom-left to top-right).\nContinues the sequence in the same diagonal direction.\nMakes at most one counterclockwise 90-degree turn to another diagonal direction while maintaining the sequence.\n\nReturn the length of the longest V-shaped diagonal segment. If no valid segment exists, return 0.",
+        "revised_starter_code": "class Solution:\n    def lenOfVDiagonal(self, grid: List[List[int]]) -> int:\n        ",
+        "update": "The turn direction was misstated. It should be a clockwise 90-degree turn (not counterclockwise).\nPlease consult the following test cases and specifications.\n\nExample 1:\n\nInput: grid = [[2,2,1,2,2],[2,0,2,2,0],[2,0,1,1,0],[1,0,2,2,2],[2,0,0,2,2]]\nOutput: 5\nExplanation:\n\nThe longest V-shaped diagonal segment has a length of 5 and follows these coordinates: (0,2) → (1,3) → (2,4), takes a 90-degree clockwise turn at (2,4), and continues as (3,3) → (4,2).\n\nExample 2:\n\nInput: grid = [[2,2,2,2,2],[2,0,2,2,0],[2,0,1,1,0],[1,0,2,2,2],[2,0,0,2,2]]\nOutput: 4\nExplanation:\n\nThe longest V-shaped diagonal segment has a length of 4 and follows these coordinates: (2,3) → (3,2), takes a 90-degree clockwise turn at (3,2), and continues as (2,1) → (1,0).\n\nExample 3:\n\nInput: grid = [[1,2,2,2,2],[2,2,2,2,0],[2,0,0,0,0],[0,0,2,2,2],[2,0,0,2,0]]\nOutput: 5\nExplanation:\n\nThe longest V-shaped diagonal segment has a length of 5 and follows these coordinates: (0,0) → (1,1) → (2,2) → (3,3) → (4,4).\n\nExample 4:\n\nInput: grid = [[1]]\nOutput: 1\nExplanation:\nThe longest V-shaped diagonal segment has a length of 1 and follows these coordinates: (0,0).\n\n \nConstraints:\n\nn == grid.length\nm == grid[i].length\n1 <= n, m <= 500\ngrid[i][j] is either 0, 1 or 2."
+      },
+      "review_rank": 31,
+      "source": "livecodebench",
+      "source_id": 299,
+      "source_original_prompt_sha256": "14655460a1a4d219e9ebd34a1e2d5978a8beaa958323e42fa9c46c4bcdbe0dd0",
+      "source_revised_prompt_sha256": "9d5d8f2230e381d079ec52afbecc5db84770c61e6c6a41bd09565d9beb59834e",
+      "source_row_sha256": "67f3f9a26b282442d45f803e4fa0db153f468e0635b52648660202b2efb415ee",
+      "task_id": "livecodebench:299",
+      "timeout_seconds": 60,
+      "unchanged_control": false,
+      "updated": {
+        "entrypoint": {
+          "class": "Solution",
+          "method": "lenOfVDiagonal"
+        },
+        "mode": "function",
+        "reference_asset": {
+          "path": "references/coding/299/updated.py",
+          "sha256": "8eccfd4a3040e228c183535a7eb5c770f256f3070e10125fde891236e9af3c3d"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/299-updated.json",
+          "sha256": "277a9e7b0655c7d8b7316b91a06b28b8d1498b2939f6faaf2b9fbd8c5e105706"
+        },
+        "test_count": 245,
+        "timeout_seconds": 60,
+        "validation_evidence": [
+          {
+            "path": "references/coding/official_validation.json",
+            "scope": "Corrected references passed complete published suites.",
+            "sha256": "665afc16672bc6e170c2277764b004191297582ff6aa64675886a554803134eb"
+          },
+          {
+            "path": "references/coding/independent_validation.json",
+            "scope": "Both references passed independently authored exact oracle suites.",
+            "sha256": "c976f8c1b2a9d079fc0400b888f420e93c881073f01f513647ffd44549e3f3d6"
+          },
+          {
+            "path": "references/coding/pair_validation.json",
+            "scope": "Both own-variant suites pass and stale-reference cross-grading fails.",
+            "sha256": "da6ab8b90e29b825a58cb0c178a8ee23895c96ecd03ed552ff71e81cc53713e2"
+          }
+        ]
+      },
+      "updated_prompt": "You are given a 2D integer matrix grid of size n x m, where each element is either 0, 1, or 2.\nA V-shaped diagonal segment is defined as:\n\nThe segment starts with 1.\nThe subsequent elements follow this infinite sequence: 2, 0, 2, 0, ....\nThe segment:\n\t\nStarts along a diagonal direction (top-left to bottom-right, bottom-right to top-left, top-right to bottom-left, or bottom-left to top-right).\nContinues the sequence in the same diagonal direction.\nMakes at most one clockwise 90-degree turn to another diagonal direction while maintaining the sequence.\n\n\n\n\nReturn the length of the longest V-shaped diagonal segment. If no valid segment exists, return 0.\n \n\nReleased starter code:\nclass Solution:\n    def lenOfVDiagonal(self, grid: List[List[int]]) -> int:\n        \n\nReleased correction and supplemental specifications:\nThe turn direction was misstated. It should be a clockwise 90-degree turn (not counterclockwise).\nPlease consult the following test cases and specifications.\n\nExample 1:\n\nInput: grid = [[2,2,1,2,2],[2,0,2,2,0],[2,0,1,1,0],[1,0,2,2,2],[2,0,0,2,2]]\nOutput: 5\nExplanation:\n\nThe longest V-shaped diagonal segment has a length of 5 and follows these coordinates: (0,2) → (1,3) → (2,4), takes a 90-degree clockwise turn at (2,4), and continues as (3,3) → (4,2).\n\nExample 2:\n\nInput: grid = [[2,2,2,2,2],[2,0,2,2,0],[2,0,1,1,0],[1,0,2,2,2],[2,0,0,2,2]]\nOutput: 4\nExplanation:\n\nThe longest V-shaped diagonal segment has a length of 4 and follows these coordinates: (2,3) → (3,2), takes a 90-degree clockwise turn at (3,2), and continues as (2,1) → (1,0).\n\nExample 3:\n\nInput: grid = [[1,2,2,2,2],[2,2,2,2,0],[2,0,0,0,0],[0,0,2,2,2],[2,0,0,2,0]]\nOutput: 5\nExplanation:\n\nThe longest V-shaped diagonal segment has a length of 5 and follows these coordinates: (0,0) → (1,1) → (2,2) → (3,3) → (4,4).\n\nExample 4:\n\nInput: grid = [[1]]\nOutput: 1\nExplanation:\nThe longest V-shaped diagonal segment has a length of 1 and follows these coordinates: (0,0).\n\n \nConstraints:\n\nn == grid.length\nm == grid[i].length\n1 <= n, m <= 500\ngrid[i][j] is either 0, 1 or 2."
+    },
+    {
+      "changed_tokens": 2,
+      "correction_prompt": "Correction: Find the maximum possible total score obtained, not the minimum.\nKindly review the test cases and specifications provided below.\n\nConstraints\n\n- 2 \\le N \\le 3 \\times 10^5\n- 1 \\le A_i \\le 10^9\n- All input values are integers.\n\n\nSample Input 1\n\n4\n1 2 5 3\n\nSample Output 1\n\n5\n\nFirst, remove A_2 and A_3. The score obtained is |A_2 - A_3| = 3.\nNext, remove A_1 and A_4. Note that, because of the previous operation, these two numbers are now adjacent. The score obtained is |A_1 - A_4| = 2.\nHence, the total score obtained is 5.\nIt is impossible to achieve a total score of 6 or greater, so print 5.\n\nSample Input 2\n\n7\n3 1 4 1 5 9 2\n\nSample Output 2\n\n14\n\nSample Input 3\n\n5\n1 1 1 1 1\n\nSample Output 3\n\n0",
+      "correction_prompt_sha256": "861aedc1e5e6d27dc954cd1c41c49957cbee076a804e4202ad51eac12ccafba1",
+      "domain": "coding",
+      "memory_mb": 768,
+      "original": {
+        "gold_asset": {
+          "path": "references/coding/276/compiled/gold_outputs.json",
+          "sha256": "7c2a8dfaa4d907a9b0b0096af99340e3689487013cd9869f47cc594a9c2f7170"
+        },
+        "mode": "stdin",
+        "offline_reference": {
+          "certificate_asset": {
+            "path": "references/coding/276/compiled/certificate.json",
+            "sha256": "30c34fe85aebf06ec6996229e861214a6225ef54cea642977b208899751b85e1"
+          },
+          "kind": "compiled_gold_v1",
+          "source_asset": {
+            "path": "references/coding/276/compiled/reference.cpp",
+            "sha256": "3628ae7ebbeba3f413128bd78adb41de071d943ce445d59788e5de11faf07324"
+          }
+        },
+        "test_asset": {
+          "path": "lcb/qualified/276-original.json",
+          "sha256": "814bb1d0ad1ee81b9773af0fa7ba5c865cb106ba90abb951dff39d4cfc622501"
+        }
+      },
+      "original_identity": "b92f20023c12899a7666397dfd6a329f712dd570689f4f3457dba4c4aa0f7338",
+      "original_prompt": "You are given a length-N sequence A = (A_1, A_2, \\ldots, A_N).\nYou will repeatedly perform the following operation until the sequence has length at most 1: choose two adjacent numbers and remove both from the sequence.\nThe score obtained in one operation is the absolute difference of the two chosen numbers.\nFind the minimum possible total score obtained.\n\nInput\n\nThe input is given from Standard Input in the following format:\nN\nA_1 A_2 \\ldots A_N\n\nOutput\n\nPrint the minimum possible total score obtained.",
+      "output_instructions": "Return exactly one complete Python 3.12 program that reads standard input and writes the requested standard output.",
+      "output_limit": 4000000,
+      "published_difficulty": "hard",
+      "qualification_blockers": [],
+      "qualification_evidence_sha256": "04031f57d8f8dd2d1f8b5a71e150090bd282e5adfcd19b04bbda4260e42c3b94",
+      "qualified": true,
+      "released_fields": {
+        "original_problem": "You are given a length-N sequence A = (A_1, A_2, \\ldots, A_N).\nYou will repeatedly perform the following operation until the sequence has length at most 1: choose two adjacent numbers and remove both from the sequence.\nThe score obtained in one operation is the absolute difference of the two chosen numbers.\nFind the maximum possible total score obtained.\n\nInput\n\nThe input is given from Standard Input in the following format:\nN\nA_1 A_2 \\ldots A_N\n\nOutput\n\nPrint the maximum possible total score obtained.\n",
+        "original_starter_code": "",
+        "revised_problem": "You are given a length-N sequence A = (A_1, A_2, \\ldots, A_N).\nYou will repeatedly perform the following operation until the sequence has length at most 1: choose two adjacent numbers and remove both from the sequence.\nThe score obtained in one operation is the absolute difference of the two chosen numbers.\nFind the minimum possible total score obtained.\n\nInput\n\nThe input is given from Standard Input in the following format:\nN\nA_1 A_2 \\ldots A_N\n\nOutput\n\nPrint the minimum possible total score obtained.",
+        "revised_starter_code": "",
+        "update": "Correction: Find the maximum possible total score obtained, not the minimum.\nKindly review the test cases and specifications provided below.\n\nConstraints\n\n- 2 \\le N \\le 3 \\times 10^5\n- 1 \\le A_i \\le 10^9\n- All input values are integers.\n\n\nSample Input 1\n\n4\n1 2 5 3\n\nSample Output 1\n\n5\n\nFirst, remove A_2 and A_3. The score obtained is |A_2 - A_3| = 3.\nNext, remove A_1 and A_4. Note that, because of the previous operation, these two numbers are now adjacent. The score obtained is |A_1 - A_4| = 2.\nHence, the total score obtained is 5.\nIt is impossible to achieve a total score of 6 or greater, so print 5.\n\nSample Input 2\n\n7\n3 1 4 1 5 9 2\n\nSample Output 2\n\n14\n\nSample Input 3\n\n5\n1 1 1 1 1\n\nSample Output 3\n\n0"
+      },
+      "review_rank": 45,
+      "source": "livecodebench",
+      "source_id": 276,
+      "source_original_prompt_sha256": "e20fdcf9d1bf66c6d740b20a792dd996a38a6a7f4f7fadc5ce908abb08b5dfc3",
+      "source_revised_prompt_sha256": "d7f1a9911c76afa45ec7d55daaa93d7f753056bf110e5a2b769fd775cfe0afcd",
+      "source_row_sha256": "ef7326ff43fac98d6e0dff30ea30fc2a7ba11a6519b24baadc95f6febe6b9fcf",
+      "task_id": "livecodebench:276",
+      "timeout_seconds": 60,
+      "unchanged_control": false,
+      "updated": {
+        "mode": "stdin",
+        "reference_asset": {
+          "path": "references/coding/276/updated.py",
+          "sha256": "a4685759a65552c8ca70ba79f640111325c146a8e7a1ca1cabdc915500ae89ac"
+        },
+        "test_asset": {
+          "path": "lcb/qualified/276-updated.json",
+          "sha256": "2dfb8e79f6ce28b5d740b743be9f204ce91646c072d0fef94442a049e1168b9e"
+        }
+      },
+      "updated_prompt": "You are given a length-N sequence A = (A_1, A_2, \\ldots, A_N).\nYou will repeatedly perform the following operation until the sequence has length at most 1: choose two adjacent numbers and remove both from the sequence.\nThe score obtained in one operation is the absolute difference of the two chosen numbers.\nFind the maximum possible total score obtained.\n\nInput\n\nThe input is given from Standard Input in the following format:\nN\nA_1 A_2 \\ldots A_N\n\nOutput\n\nPrint the maximum possible total score obtained.\n\n\nReleased correction and supplemental specifications:\nCorrection: Find the maximum possible total score obtained, not the minimum.\nKindly review the test cases and specifications provided below.\n\nConstraints\n\n- 2 \\le N \\le 3 \\times 10^5\n- 1 \\le A_i \\le 10^9\n- All input values are integers.\n\n\nSample Input 1\n\n4\n1 2 5 3\n\nSample Output 1\n\n5\n\nFirst, remove A_2 and A_3. The score obtained is |A_2 - A_3| = 3.\nNext, remove A_1 and A_4. Note that, because of the previous operation, these two numbers are now adjacent. The score obtained is |A_1 - A_4| = 2.\nHence, the total score obtained is 5.\nIt is impossible to achieve a total score of 6 or greater, so print 5.\n\nSample Input 2\n\n7\n3 1 4 1 5 9 2\n\nSample Output 2\n\n14\n\nSample Input 3\n\n5\n1 1 1 1 1\n\nSample Output 3\n\n0"
+    }
+  ],
+  "tasks_sha256": "54e20ab9df721dae219c19a6654859e6af5a99db175b1ad5247a288f26f657a4",
+  "version": "pilot-v6"
+}

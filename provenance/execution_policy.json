@@ -1,17 +1,22 @@
 {
-  "paid_execution_allowed": false,
-  "protocol_smoke": {
+  "exploratory_pilot": {
+    "additional_budget_usd": 5,
     "allowed": true,
-    "authorization_id": "user-2026-10-24-continuation-recovery-smoke-v5",
-    "initial_generation_allowed": false,
-    "manifest_version": "pilot-v5",
-    "max_continuation_recoveries": 1,
-    "max_logical_calls": 2,
+    "authorization_id": "user-2026-10-24-exploratory-four-case-v6",
+    "manifest_version": "pilot-v6",
+    "max_logical_calls": 28,
     "max_transport_retries_per_call": 1,
     "shared_budget_usd": 40,
-    "task_id": "livecodebench:337"
+    "soft_dispatch_deadline_seconds": 1800,
+    "task_ids": [
+      "aime2025:1042",
+      "aime2025:1057",
+      "livecodebench:299",
+      "livecodebench:276"
+    ]
   },
-  "reason": "Only two continuations from the pinned successful v4 initial checkpoint are authorized. No new initial, no full pilot, no ledger reset or release of historical reservations. Existing bounded transport retries remain.",
-  "recorded_date": "2026-10-24",
-  "schema_version": 4
+  "paid_execution_allowed": false,
+  "protocol_smoke": null,
+  "reason": "Only the prospectively frozen four-case feasibility screen is authorized under an additional persistent $5 charged-plus-reserved cap and 30-minute soft dispatch deadline. The full 200-response pilot remains blocked.",
+  "schema_version": 5
 }

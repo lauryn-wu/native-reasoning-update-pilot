@@ -229,31 +229,43 @@ def load_manifest(path, *, verify_files=True, root=ROOT):
     if digest(manifest['tasks']) != manifest['tasks_sha256'] or digest(manifest['schedule']) != manifest['schedule_sha256']:
         raise ValueError('Frozen task/schedule hash mismatch')
     if manifest['status'] == 'frozen':
-        validate_design(manifest['tasks'],manifest['schedule'])
+        if manifest.get('execution_scope') == 'exploratory_pilot':
+            from .exploratory import validate_design as validate_exploratory
+            validate_exploratory(manifest['tasks'], manifest['schedule'])
+        else:
+            validate_design(manifest['tasks'],manifest['schedule'])
     return manifest
 
 
-def paid_preflight(manifest, qualification, *, smoke=False):
-    # A command flag cannot widen the explicit authorization. This version of the
-    # executable exposes only the three-call smoke; future pilot work needs a new
-    # authorization and immutable manifest.
+def paid_preflight(manifest, qualification, *, smoke=False, execution_scope=None):
+    # A command flag cannot widen the explicit authorization. The full study
+    # remains blocked even when a bounded exploratory scope is authorized.
     from .provider import SMOKE_AUTHORIZATION
     policy_path = ROOT/'provenance/execution_policy.json'
     policy = json.loads(policy_path.read_text()) if policy_path.is_file() else {}
-    if (not smoke or policy.get('paid_execution_allowed') is not False
-            or policy.get('protocol_smoke') != SMOKE_AUTHORIZATION):
-        raise ValueError('Paid execution blocked by explicit user policy; only the authorized v5 continuations may run')
-    if (manifest.get('protocol_smoke_authorization') != SMOKE_AUTHORIZATION
-            or manifest.get('version') != SMOKE_AUTHORIZATION['manifest_version']
-            or manifest.get('paid_execution_allowed') is not False):
-        raise ValueError('Frozen manifest does not authorize this scoped smoke')
-    recovery = continuation_recovery_descriptor(ROOT)
-    if (manifest.get('continuation_recovery') != recovery
-            or manifest.get('provenance_hashes', {}).get(recovery['path']) != recovery['sha256']):
-        raise ValueError('Frozen manifest lacks the exact continuation recovery binding')
+    exploratory = execution_scope == 'exploratory_pilot'
+    if exploratory:
+        from .exploratory import validate_scope, _record_and_prior, subset_identity_report
+        validate_scope(manifest, policy)
+        _, previous, _ = _record_and_prior(manifest)
+        if qualification.get('exploratory_subset_identity') != subset_identity_report(previous, manifest):
+            raise ValueError('Manifest-bound qualification lacks exact exploratory subset identity')
+    else:
+        if (not smoke or policy.get('paid_execution_allowed') is not False
+                or policy.get('protocol_smoke') != SMOKE_AUTHORIZATION):
+            raise ValueError('Paid execution blocked by explicit user policy; only the currently authorized scope may run')
+        if (manifest.get('protocol_smoke_authorization') != SMOKE_AUTHORIZATION
+                or manifest.get('version') != SMOKE_AUTHORIZATION['manifest_version']
+                or manifest.get('paid_execution_allowed') is not False):
+            raise ValueError('Frozen manifest does not authorize this scoped smoke')
+        recovery = continuation_recovery_descriptor(ROOT)
+        if (manifest.get('continuation_recovery') != recovery
+                or manifest.get('provenance_hashes', {}).get(recovery['path']) != recovery['sha256']):
+            raise ValueError('Frozen manifest lacks the exact continuation recovery binding')
     if manifest['status'] != 'frozen' or manifest['blockers']:
         raise ValueError('Paid execution blocked: ' + '; '.join(manifest['blockers']))
-    validate_design(manifest['tasks'], manifest['schedule'])
+    if not exploratory:
+        validate_design(manifest['tasks'], manifest['schedule'])
     if qualification.get('manifest_sha256') != manifest['manifest_sha256']:
         raise ValueError('Qualification belongs to a different frozen manifest')
     for check in ('offline_passed','docker_passed','source_reference_passed'):

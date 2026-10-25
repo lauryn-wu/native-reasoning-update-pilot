@@ -1,0 +1,60 @@
+{
+  "additional_budget_usd": 5,
+  "additional_charged_usd": 0,
+  "additional_reserved_usd": 0,
+  "assets_verified": 108,
+  "authorization": {
+    "additional_budget_usd": 5,
+    "allowed": true,
+    "authorization_id": "user-2026-10-24-exploratory-four-case-v6",
+    "manifest_version": "pilot-v6",
+    "max_logical_calls": 28,
+    "max_transport_retries_per_call": 1,
+    "shared_budget_usd": 40,
+    "soft_dispatch_deadline_seconds": 1800,
+    "task_ids": [
+      "aime2025:1042",
+      "aime2025:1057",
+      "livecodebench:299",
+      "livecodebench:276"
+    ]
+  },
+  "blocked": {
+    "full_pilot": true,
+    "new_smoke": true
+  },
+  "docker_checks": 24,
+  "existing_smoke_protocol_readonly_check": true,
+  "full_study_significance_gate_applied": false,
+  "known_shared_charges_usd": 0.041284,
+  "manifest_bound_qualification_sha256": "c613dcfaaaa017260df9129f17890684aff3c6bc43626fa925c362e5d178e398",
+  "manifest_file_sha256": "3b42679b5044e4c63fdab77fb0e050473289484f27b5d2d6b99f95d8b4c2554c",
+  "manifest_sha256": "021676718d1d29683b2e1e69e3e5c5eefa8a41f9ed9c3a3d952404c8f14ffb7f",
+  "outstanding_shared_reservations_usd": 0.88063,
+  "paid_calls_this_work": 0,
+  "prefreeze_qualification_sha256": "f9e249dd427ce8a5bee1e38f8a55948a1f6f73469c9ebe049c50ed79388d37f9",
+  "prior_ledger_file_sha256_preserved": "96efa1937d2aef6154365bc18608246ed568c9baf70f716dd43c2aea22e4ac7d",
+  "reference_checks_reused": 200,
+  "references_executed_this_work": false,
+  "remaining_shared_unreserved_usd": 39.078086,
+  "scope_not_started": true,
+  "subset_identity": {
+    "full_study_significance_gate_applied": false,
+    "passed": true,
+    "schedule_sha256": "7a8feb266af20067a6a4261230c0e4f4ee53e5c4c674df154291476383d4d441",
+    "settings_sha256": "599b8d771f3d070abf9d1c4aac985eee92a316ce255a260d2006d49b8e00dacf",
+    "task_ids": [
+      "aime2025:1042",
+      "aime2025:1057",
+      "livecodebench:299",
+      "livecodebench:276"
+    ],
+    "task_records_sha256": {
+      "aime2025:1042": "18d3cf3f91a55d3b7d41ee10b2786070f5e0062f8377f4c2f9639d041eff75bc",
+      "aime2025:1057": "28fba376e51d503652cbd6b1dfde3fa17874019f5f1571dbe262c04e2e8c813d",
+      "livecodebench:276": "2bafc287f26efae208069fc7cbce0a7c39676998d694fd4da903a7a07a014686",
+      "livecodebench:299": "658fe9992a27a9ed94606bf7bf524997f9a91c59c8841ca373928b7bf5ed3ca3"
+    }
+  },
+  "unit_tests": 259
+}

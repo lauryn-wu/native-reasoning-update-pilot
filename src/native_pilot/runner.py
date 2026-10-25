@@ -105,6 +105,8 @@ def outcomes_from_ledger(ledger, manifest, schedule=None):
 
 def _provider_stop_reason(outcome, error_kind=None):
     """A safe, persistent failure reason; never include a provider error body."""
+    if outcome.get('scope_limit_reason'):
+        return outcome['scope_limit_reason']
     error = outcome.get('provider_error') or {}
     kind = (outcome.get('error_kind') or error_kind or
             ('protocol_failure' if outcome.get('status') == 'protocol_failure' else 'provider_failure'))
@@ -335,6 +337,12 @@ def _execute(manifest, ledger, provider, *, schedule=None, tasks=None, grader=No
         require_campaign_lock(campaign_guard, ledger)
         provider.authorize_schedule(manifest, ledger, schedule, tasks,
                                     execution_scope=execution_scope, campaign_guard=campaign_guard)
+    scope_id = None
+    if execution_scope == 'exploratory_pilot':
+        from .exploratory import AUTHORIZATION
+        scope_id = AUTHORIZATION['authorization_id']
+        ledger.bind_scope(scope_id, manifest['manifest_sha256'],
+                          cap_micro_usd=5_000_000, duration_seconds=1800)
     inherited_initial = None
     if manifest.get('continuation_recovery'):
         if (execution_scope != 'protocol_smoke'
@@ -377,13 +385,18 @@ def _execute(manifest, ledger, provider, *, schedule=None, tasks=None, grader=No
         while True:
             try:
                 bounds = reservation(request, checkpoint)
+                kind = ('exploratory_pilot' if scope_id else
+                        'smoke' if call['call_id'].startswith('smoke/') else 'pilot')
                 attempt = ledger.reserve(call_id, manifest['manifest_sha256'], request,
-                                         bounds['micro_usd'], 'smoke' if call['call_id'].startswith('smoke/') else 'pilot')
+                                         bounds['micro_usd'], kind,
+                                         **({'scope_id':scope_id} if scope_id else {}))
             except BudgetRefused as exc:
                 stop_reason = str(exc)
                 break
             ledger.dispatched(call_id,attempt)
             try:
+                if scope_id:
+                    ledger.assert_scope_dispatch(scope_id, manifest['manifest_sha256'], call_id, attempt)
                 if scoped_provider:
                     response = provider.create(request, execution_context={
                         'manifest_sha256':manifest['manifest_sha256'],
@@ -392,6 +405,14 @@ def _execute(manifest, ledger, provider, *, schedule=None, tasks=None, grader=No
                         'attempt':attempt})
                 else:
                     response = provider.create(request)
+            except BudgetRefused as exc:
+                # A deadline can pass after reservation but before the SDK call.
+                # Preserve that reservation and a terminal stop; never retry it.
+                stop_reason = str(exc)
+                failure = dict(call, status='budget_stopped', protocol_valid=False,
+                               error_kind='exploratory_scope_limit', scope_limit_reason=stop_reason)
+                ledger.provider_failure(call_id, attempt, 'exploratory_scope_limit', failure)
+                break
             except ProviderFailure as exc:
                 if exc.retryable:
                     ledger.uncertain(call_id,attempt,exc.kind)
@@ -451,4 +472,11 @@ def _execute(manifest, ledger, provider, *, schedule=None, tasks=None, grader=No
         result['protocol_report'] = smoke_protocol_report(ledger, manifest)
         if not result['protocol_report']['protocol_passed'] and not result['stop_reason']:
             result['stop_reason'] = 'protocol_smoke_incomplete'
+    if execution_scope == 'exploratory_pilot':
+        from .feasibility import describe_exploratory, ledger_accounting
+        result['feasibility_report'] = describe_exploratory(
+            manifest, outcomes, accounting=ledger_accounting(ledger, manifest), stop_reason=stop_reason)
+        if not result['feasibility_report']['all_planned_calls_completed'] and not result['stop_reason']:
+            result['stop_reason'] = 'exploratory_pilot_incomplete'
+            result['feasibility_report']['stop_reason'] = result['stop_reason']
     return result

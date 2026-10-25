@@ -3,7 +3,9 @@ import json
 import math
 import os
 import sqlite3
+import time
 from contextlib import contextmanager
+from datetime import datetime, timezone
 from pathlib import Path
 from .util import canonical, utcnow
 
@@ -12,6 +14,15 @@ CAP_MICRO_USD = 40_000_000
 RATES = {"input": 2, "cached_input": 0.10, "cache_write_30m": 2.50,
          "cache_write_12h": 5, "output": 10}
 MAX_INPUT_TOKENS = 272000
+EXPLORATORY_SCOPE_ID = 'user-2026-10-24-exploratory-four-case-v6'
+EXPLORATORY_CAP_MICRO_USD = 5_000_000
+EXPLORATORY_DURATION_SECONDS = 1800
+_SCOPE_KEY = 'budget_scope/' + EXPLORATORY_SCOPE_ID
+
+
+def _wall_time():
+    """Wall time is patchable in tests; persisted timestamps survive resumes."""
+    return time.time()
 
 
 class BudgetRefused(RuntimeError):
@@ -111,25 +122,184 @@ class Ledger:
         row = self.db.execute('SELECT * FROM attempts WHERE call_id=? ORDER BY attempt DESC LIMIT 1', (call_id,)).fetchone()
         return dict(row) if row else None
 
-    def reserve(self, call_id, manifest_hash, request, amount, kind='pilot'):
+    def _scope(self, scope_id, manifest_hash=None):
+        if scope_id != EXPLORATORY_SCOPE_ID:
+            raise BudgetRefused('Unknown exploratory budget scope; a new label cannot reset limits')
+        row = self.db.execute('SELECT value FROM meta WHERE key=?', (_SCOPE_KEY,)).fetchone()
+        if row is None:
+            raise BudgetRefused('Exploratory budget scope must be bound before reservation')
+        try:
+            scope = json.loads(row[0])
+            required = {'schema_version', 'scope_id', 'manifest_hash', 'cap_micro_usd',
+                        'duration_seconds', 'started_at', 'deadline_at', 'last_observed_at', 'halted_reason'}
+            if (not isinstance(scope, dict) or set(scope) != required or scope['schema_version'] != 1
+                    or scope['scope_id'] != EXPLORATORY_SCOPE_ID
+                    or type(scope['cap_micro_usd']) is not int or scope['cap_micro_usd'] != EXPLORATORY_CAP_MICRO_USD
+                    or type(scope['duration_seconds']) is not int or scope['duration_seconds'] != EXPLORATORY_DURATION_SECONDS
+                    or not isinstance(scope['manifest_hash'], str) or not scope['manifest_hash']
+                    or scope['halted_reason'] not in (None, 'deadline_elapsed', 'clock_moved_backwards', 'invalid_clock')):
+                raise ValueError('Invalid scope record')
+            timestamps = [scope[key] for key in ('started_at', 'deadline_at', 'last_observed_at')]
+            if timestamps != [None, None, None]:
+                if (not all(type(value) in (int, float) and math.isfinite(value) and value > 0 for value in timestamps)
+                        or scope['deadline_at'] != scope['started_at'] + scope['duration_seconds']
+                        or scope['last_observed_at'] < scope['started_at']):
+                    raise ValueError('Invalid scope timestamps')
+        except (ValueError, TypeError, KeyError):
+            raise BudgetRefused('Exploratory budget scope record is invalid') from None
+        if manifest_hash is not None and scope['manifest_hash'] != manifest_hash:
+            raise BudgetRefused('Exploratory budget scope already bound to another manifest')
+        return scope
+
+    def _save_scope(self, scope):
+        self.db.execute('UPDATE meta SET value=? WHERE key=?', (canonical(scope).decode(), _SCOPE_KEY))
+
+    def bind_scope(self, scope_id, manifest_hash, *, cap_micro_usd=EXPLORATORY_CAP_MICRO_USD,
+                   duration_seconds=EXPLORATORY_DURATION_SECONDS):
+        """Bind the one authorization persistently; do not start its clock."""
+        if (scope_id != EXPLORATORY_SCOPE_ID or type(cap_micro_usd) is not int
+                or cap_micro_usd != EXPLORATORY_CAP_MICRO_USD or type(duration_seconds) is not int
+                or duration_seconds != EXPLORATORY_DURATION_SECONDS):
+            raise BudgetRefused('Exploratory authorization fixes one scope, an additional $5, and 1800 seconds')
+        if not isinstance(manifest_hash, str) or not manifest_hash:
+            raise ValueError('A manifest hash is required')
+        with self.transaction():
+            exists = self.db.execute('SELECT value FROM meta WHERE key=?', (_SCOPE_KEY,)).fetchone()
+            if exists:
+                self._scope(scope_id, manifest_hash)
+            else:
+                if self.db.execute('SELECT 1 FROM attempts WHERE manifest_hash=? LIMIT 1', (manifest_hash,)).fetchone():
+                    raise BudgetRefused('Cannot bind an exploratory scope after unscoped attempts exist')
+                scope = {'schema_version': 1, 'scope_id': scope_id, 'manifest_hash': manifest_hash,
+                         'cap_micro_usd': cap_micro_usd, 'duration_seconds': duration_seconds,
+                         'started_at': None, 'deadline_at': None, 'last_observed_at': None,
+                         'halted_reason': None}
+                self.db.execute('INSERT INTO meta VALUES (?,?)', (_SCOPE_KEY, canonical(scope).decode()))
+
+    def _scope_accounting(self, scope):
+        row = self.db.execute('''SELECT COUNT(*) AS attempts,
+            COALESCE(SUM(charged),0) AS known,
+            COALESCE(SUM(CASE WHEN charged IS NULL THEN reserved ELSE 0 END),0) AS outstanding
+            FROM attempts WHERE manifest_hash=?''', (scope['manifest_hash'],)).fetchone()
+        return row['attempts'], row['known'], row['outstanding']
+
+    @staticmethod
+    def _observe_scope(scope, now):
+        """Return a reason and latch clock violations, including failed checks."""
+        if scope['halted_reason']:
+            return scope['halted_reason']
+        if type(now) not in (int, float) or not math.isfinite(now) or now <= 0:
+            scope['halted_reason'] = 'invalid_clock'
+        elif scope['started_at'] is not None:
+            if now < scope['last_observed_at']:
+                scope['halted_reason'] = 'clock_moved_backwards'
+            else:
+                scope['last_observed_at'] = now
+                if now >= scope['deadline_at']:
+                    scope['halted_reason'] = 'deadline_elapsed'
+        return scope['halted_reason']
+
+    @staticmethod
+    def _scope_refusal(reason):
+        return {'deadline_elapsed': 'Exploratory scope dispatch deadline elapsed',
+                'clock_moved_backwards': 'Exploratory scope clock moved backwards; dispatch blocked',
+                'invalid_clock': 'Exploratory scope clock is invalid; dispatch blocked'}[reason]
+
+    def scope_status(self, scope_id):
+        """Read-only accounting and timing; never bind, start, or extend a scope."""
+        if scope_id != EXPLORATORY_SCOPE_ID:
+            raise BudgetRefused('Unknown exploratory budget scope')
+        if not self.db.execute('SELECT 1 FROM meta WHERE key=?', (_SCOPE_KEY,)).fetchone():
+            return None
+        scope = self._scope(scope_id)
+        now = _wall_time()
+        reason = self._observe_scope(scope, now)  # Only the in-memory copy changes.
+        attempts, known, outstanding = self._scope_accounting(scope)
+        accounted, shared = known + outstanding, self.total()
+        elapsed = (max(0, now - scope['started_at']) if scope['started_at'] is not None
+                   and type(now) in (int, float) and math.isfinite(now) else 0)
+        def timestamp(value):
+            return datetime.fromtimestamp(value, timezone.utc).isoformat() if value is not None else None
+        return {'scope_id': scope_id, 'manifest_hash': scope['manifest_hash'],
+                'cap_micro_usd': scope['cap_micro_usd'], 'duration_seconds': scope['duration_seconds'],
+                'started_at': timestamp(scope['started_at']), 'deadline_at': timestamp(scope['deadline_at']),
+                'started_at_epoch_seconds': scope['started_at'], 'deadline_epoch_seconds': scope['deadline_at'],
+                'elapsed_seconds': elapsed, 'remaining_seconds': max(0, scope['duration_seconds'] - elapsed),
+                'status': reason or ('active' if scope['started_at'] is not None else 'not_started'),
+                'dispatch_allowed': not reason and accounted <= scope['cap_micro_usd'] and shared <= CAP_MICRO_USD,
+                'reservation_available': not reason and accounted < scope['cap_micro_usd'] and shared < CAP_MICRO_USD,
+                'attempts': attempts, 'known_charges_micro_usd': known, 'known_charges_usd': known/1e6,
+                'outstanding_reservations_micro_usd': outstanding, 'outstanding_reservations_usd': outstanding/1e6,
+                'accounted_micro_usd': accounted, 'accounted_usd': accounted/1e6,
+                'remaining_unreserved_micro_usd': max(0, scope['cap_micro_usd'] - accounted),
+                'remaining_unreserved_usd': max(0, scope['cap_micro_usd'] - accounted)/1e6,
+                'shared_accounted_micro_usd': shared, 'shared_accounted_usd': shared/1e6,
+                'shared_remaining_unreserved_micro_usd': max(0, CAP_MICRO_USD - shared),
+                'shared_remaining_unreserved_usd': max(0, CAP_MICRO_USD - shared)/1e6}
+
+    def assert_scope_dispatch(self, scope_id, manifest_hash, call_id, attempt):
+        """Recheck the persistent deadline immediately before an actual send.
+
+        Refusal preserves the reservation. A clock violation is committed before
+        raising, so a later clock change or resume cannot reopen an expired scope.
+        """
+        refusal = None
+        with self.transaction():
+            scope = self._scope(scope_id, manifest_hash)
+            row = self.latest(call_id)
+            if (not row or row['attempt'] != attempt or row['manifest_hash'] != manifest_hash
+                    or row['state'] != 'dispatched' or scope['started_at'] is None):
+                raise BudgetRefused('Exploratory dispatch requires its current reserved and dispatched attempt')
+            reason = self._observe_scope(scope, _wall_time())
+            self._save_scope(scope)
+            if reason:
+                refusal = self._scope_refusal(reason)
+            elif self.db.execute("SELECT value FROM meta WHERE key='halted'").fetchone():
+                refusal = 'Ledger halted after accounting invariant failure'
+            elif sum(self._scope_accounting(scope)[1:]) > scope['cap_micro_usd'] or self.total() > CAP_MICRO_USD:
+                refusal = 'Exploratory scope or shared budget cap exceeded'
+        if refusal:
+            raise BudgetRefused(refusal)
+
+    def reserve(self, call_id, manifest_hash, request, amount, kind='pilot', *, scope_id=None):
         if type(amount) is not int or amount <= 0:
             raise ValueError('Positive integer reservation required')
+        refusal = None
         with self.transaction():
+            scope = self._scope(scope_id, manifest_hash) if scope_id is not None else None
+            if scope is None:
+                bound = self.db.execute('SELECT value FROM meta WHERE key=?', (_SCOPE_KEY,)).fetchone()
+                if bound and self._scope(EXPLORATORY_SCOPE_ID)['manifest_hash'] == manifest_hash:
+                    raise BudgetRefused('Bound exploratory manifest requires its scope on every reservation')
             if self.db.execute("SELECT value FROM meta WHERE key='halted'").fetchone():
                 raise BudgetRefused('Ledger halted after accounting invariant failure')
             previous = self.latest(call_id)
             if previous:
-                if previous['state'] != 'transport_uncertain' or previous['attempt'] >= 2:
+                if (previous['state'] != 'transport_uncertain' or previous['attempt'] >= 2
+                        or previous['manifest_hash'] != manifest_hash):
                     raise BudgetRefused('Call already assigned/completed or retry exhausted')
                 attempt = previous['attempt'] + 1
             else:
                 attempt = 1
-            if self.total() + amount > CAP_MICRO_USD:
-                raise BudgetRefused('Insufficient unreserved budget under hard $40 cap')
-            self.db.execute('''INSERT INTO attempts
-              (call_id,attempt,manifest_hash,kind,state,reserved,started,request)
-              VALUES (?,?,?,?,?,?,?,?)''',
-              (call_id, attempt, manifest_hash, kind, 'reserved', amount, utcnow(), canonical(request).decode()))
+            now = _wall_time() if scope is not None else None
+            reason = self._observe_scope(scope, now) if scope is not None else None
+            if reason:
+                refusal = self._scope_refusal(reason)
+            elif self.total() + amount > CAP_MICRO_USD:
+                refusal = 'Insufficient unreserved budget under hard $40 cap'
+            elif scope is not None and sum(self._scope_accounting(scope)[1:]) + amount > scope['cap_micro_usd']:
+                refusal = 'Insufficient unreserved budget under additional $5 scope cap'
+            if scope is not None:
+                if refusal is None and scope['started_at'] is None:
+                    scope.update(started_at=now, deadline_at=now + scope['duration_seconds'], last_observed_at=now)
+                self._save_scope(scope)
+            if refusal is None:
+                self.db.execute('''INSERT INTO attempts
+                  (call_id,attempt,manifest_hash,kind,state,reserved,started,request)
+                  VALUES (?,?,?,?,?,?,?,?)''',
+                  (call_id, attempt, manifest_hash, kind, 'reserved', amount, utcnow(), canonical(request).decode()))
+        if refusal:
+            raise BudgetRefused(refusal)
         return attempt
 
     def dispatched(self, call_id, attempt):

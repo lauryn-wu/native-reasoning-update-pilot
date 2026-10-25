@@ -534,16 +534,169 @@ def _verify_continuation_recovery(manifest, ledger) -> str:
     return "continuation_recovery/" + recovery["failed_call_id"] + "/" + str(recovery["failed_attempt"])
 
 
+def _read_frozen_exploratory_manifest() -> dict:
+    """Load the sole current exploratory manifest and its bound qualification."""
+    from .manifest import load_manifest, paid_preflight
+    try:
+        manifest = load_manifest(ROOT / "manifests/pilot-v6.json")
+        qualification = json.loads((ROOT / "runs" /
+            ("qualification-" + manifest["manifest_sha256"] + ".json")).read_text())
+        paid_preflight(manifest, qualification, execution_scope="exploratory_pilot")
+        return manifest
+    except (OSError, ValueError, KeyError, TypeError):
+        raise ProviderFailure("frozen_exploratory_qualification_unverified", uncertain_charge=False) from None
+
+
+def _require_exploratory_execution(*, policy, manifest, ledger, campaign_guard,
+                                   request=None, execution_context=None) -> None:
+    """Enforce the prospective 28-call prefix and one persistent budget scope."""
+    from .budget import CAP_MICRO_USD, Ledger, reservation
+    from .exploratory import AUTHORIZATION, validate_scope, verify_prior_smoke
+    from .runner import require_campaign_lock
+    from .util import canonical
+    # Check the policy before opening any frozen files or binding ledger state.
+    if (policy.get("paid_execution_allowed") is not False or
+            policy.get("protocol_smoke") is not None or
+            policy.get("exploratory_pilot") != AUTHORIZATION):
+        raise ProviderFailure("paid_execution_policy_hold", uncertain_charge=False)
+    frozen = _read_frozen_exploratory_manifest()
+    try:
+        if not isinstance(manifest, Mapping) or manifest != frozen or frozen.get("hard_budget_usd") != 40:
+            raise ValueError("Not the canonical frozen exploratory manifest")
+        validate_scope(frozen, policy)
+    except (OSError, ValueError, KeyError, TypeError):
+        raise ProviderFailure("exploratory_manifest_not_authorized", uncertain_charge=False) from None
+    if not isinstance(ledger, Ledger) or ledger.path.resolve() != SHARED_LEDGER_PATH.resolve():
+        raise ProviderFailure("shared_budget_ledger_required", uncertain_charge=False)
+    try:
+        require_campaign_lock(campaign_guard, ledger)
+    except RuntimeError:
+        raise ProviderFailure("active_campaign_lock_required", uncertain_charge=False) from None
+    databases = ledger.db.execute("PRAGMA database_list").fetchall()
+    if not any(row[1] == "main" and Path(row[2]).resolve() == SHARED_LEDGER_PATH.resolve()
+               for row in databases):
+        raise ProviderFailure("shared_budget_ledger_required", uncertain_charge=False)
+    try:
+        verify_prior_smoke(frozen, ledger)
+    except (OSError, ValueError, KeyError, TypeError):
+        raise ProviderFailure("prior_smoke_protocol_unverified", uncertain_charge=False) from None
+    manifest_hash = frozen["manifest_sha256"]
+    scope_id = AUTHORIZATION["authorization_id"]
+    ledger.bind_scope(scope_id, manifest_hash, cap_micro_usd=5_000_000, duration_seconds=1800)
+    binding = "execution_authorization/" + scope_id
+    with ledger.transaction():
+        ledger.db.execute("INSERT OR IGNORE INTO meta VALUES (?,?)", (binding, manifest_hash))
+        if ledger.db.execute("SELECT value FROM meta WHERE key=?", (binding,)).fetchone()[0] != manifest_hash:
+            raise ProviderFailure("exploratory_authorization_already_bound", uncertain_charge=False)
+    if request is None:
+        return
+    required = {"manifest_sha256", "task_id", "call_id", "condition", "sample", "attempt"}
+    if not isinstance(execution_context, Mapping) or set(execution_context) != required:
+        raise ProviderFailure("scoped_dispatch_metadata_required", uncertain_charge=False)
+    context = execution_context
+    schedule = frozen["schedule"]
+    allowed = {manifest_hash + "/" + call["call_id"]: call for call in schedule}
+    call = allowed.get(context["call_id"])
+    if (call is None or context["manifest_sha256"] != manifest_hash or
+            any(context[key] != call[key] for key in ("task_id", "condition", "sample")) or
+            type(context["sample"]) is not int or type(context["attempt"]) is not int or
+            context["attempt"] not in (1, 2)):
+        raise ProviderFailure("exploratory_call_not_authorized", uncertain_charge=False)
+    call_index = schedule.index(call)
+    prior_rows = ledger.rows(manifest_hash)
+    grouped = {}
+    for prior in prior_rows:
+        if (prior["call_id"] not in allowed or prior["kind"] != "exploratory_pilot" or
+                type(prior["attempt"]) is not int or prior["attempt"] not in (1, 2)):
+            raise ProviderFailure("exploratory_ledger_contains_unauthorized_calls", uncertain_charge=False)
+        if schedule.index(allowed[prior["call_id"]]) > call_index:
+            raise ProviderFailure("exploratory_schedule_not_a_prefix", uncertain_charge=False)
+        grouped.setdefault(prior["call_id"], []).append(prior)
+        try:
+            outcome = json.loads(prior["outcome"]) if prior["outcome"] else {}
+            if not isinstance(outcome, dict):
+                raise ValueError("Invalid outcome")
+        except (TypeError, ValueError):
+            raise ProviderFailure("exploratory_history_unverified", uncertain_charge=False) from None
+        if prior["state"] == "provider_failure" or outcome.get("status") == "provider_failure":
+            raise ProviderFailure("exploratory_stopped_after_provider_failure", uncertain_charge=False)
+        if outcome.get("status") == "protocol_failure":
+            raise ProviderFailure("exploratory_stopped_after_protocol_failure", uncertain_charge=False)
+    for attempts in grouped.values():
+        attempts.sort(key=lambda row: row["attempt"])
+        if ([row["attempt"] for row in attempts] != list(range(1, len(attempts) + 1)) or
+                (len(attempts) == 2 and attempts[0]["state"] != "transport_uncertain")):
+            raise ProviderFailure("exploratory_transport_retry_not_authorized", uncertain_charge=False)
+    tasks = {task["task_id"]:task for task in frozen["tasks"]}
+    checkpoints = {}
+    # Validate earlier assignments from their stored responses, including the
+    # exact request. Incorrect/refused/incomplete answers do not trigger retries
+    # or suppress later calls; an unusable initial cannot supply a checkpoint.
+    for earlier in schedule[:call_index]:
+        key = manifest_hash + "/" + earlier["call_id"]
+        history = grouped.get(key, [])
+        previous = history[-1] if history else None
+        if not previous or previous["state"] != "completed":
+            raise ProviderFailure("exploratory_schedule_not_a_prefix", uncertain_charge=False)
+        try:
+            value = json.loads(previous["response"])
+            outcome = json.loads(previous["outcome"])
+            branch = earlier["condition"]
+            checkpoint = None if branch in ("initial", "fresh") else checkpoints[earlier["task_id"]]
+            expected = build_request(tasks[earlier["task_id"]], branch, checkpoint, frozen["settings"])
+            if (outcome.get("protocol_valid") is not True or value.get("status") in ("failed", "cancelled") or
+                    not validate_response(value, expected["reasoning"]["context"],
+                                          require_checkpoint=branch == "initial")["valid"] or
+                    any(row["request"] != canonical(expected).decode() for row in history)):
+                raise ValueError("Invalid prior response or request")
+            for row in history:
+                claim = ledger.db.execute("SELECT value FROM meta WHERE key=?", (
+                    "provider_dispatch/" + key + "/" + str(row["attempt"]),)).fetchone()
+                if not claim or claim[0] != manifest_hash:
+                    raise ValueError("Prior attempt lacks a dispatch claim")
+            if branch == "initial":
+                checkpoints[earlier["task_id"]] = {"request":expected, "response":value}
+        except (TypeError, ValueError, KeyError, AttributeError):
+            raise ProviderFailure("exploratory_history_unverified", uncertain_charge=False) from None
+    checkpoint = None if call["condition"] in ("initial", "fresh") else checkpoints.get(call["task_id"])
+    expected = build_request(tasks[call["task_id"]], call["condition"], checkpoint, frozen["settings"])
+    if request != expected:
+        raise ProviderFailure("exploratory_request_not_frozen", uncertain_charge=False)
+    history = grouped.get(context["call_id"], [])
+    row = history[-1] if history else None
+    if (not row or row["state"] != "dispatched" or row["attempt"] != context["attempt"] or
+            any(attempt["request"] != canonical(request).decode() for attempt in history) or
+            row["reserved"] < reservation(request, checkpoint)["micro_usd"] or ledger.total() > CAP_MICRO_USD):
+        raise ProviderFailure("exploratory_dispatch_reservation_required", uncertain_charge=False)
+    if context["attempt"] == 2:
+        retry_claim = ledger.db.execute("SELECT value FROM meta WHERE key=?", (
+            "provider_dispatch/" + context["call_id"] + "/1",)).fetchone()
+        if not retry_claim or retry_claim[0] != manifest_hash:
+            raise ProviderFailure("exploratory_transport_retry_not_authorized", uncertain_charge=False)
+    # The scope check commits any elapsed/backward-clock stop before raising.
+    # BudgetRefused intentionally reaches the runner without becoming a retry.
+    ledger.assert_scope_dispatch(scope_id, manifest_hash, context["call_id"], context["attempt"])
+    claim = "provider_dispatch/" + context["call_id"] + "/" + str(context["attempt"])
+    with ledger.transaction():
+        if ledger.db.execute("SELECT value FROM meta WHERE key=?", (claim,)).fetchone():
+            raise ProviderFailure("exploratory_attempt_already_dispatched", uncertain_charge=False)
+        ledger.db.execute("INSERT INTO meta VALUES (?,?)", (claim, manifest_hash))
+
+
 def _require_paid_execution_policy(*, execution_scope=None, manifest=None,
                                    ledger=None, campaign_guard=None,
                                    request=None, execution_context=None) -> None:
-    """Authorize only two remaining forks from the pinned v4 initial checkpoint.
+    """Authorize only the current explicitly scoped immutable campaign.
 
-    A stable authorization is durably bound to one verified manifest and the
+    Historical smoke recovery remains verifiable; current policy decides which
+    scope can dispatch. A stable authorization binds one verified manifest and the
     repository-wide ledger. Each dispatched attempt gets a unique claim before
     contacting the SDK, including when a client was injected by a caller.
     """
     policy = _read_execution_policy()
+    if execution_scope == "exploratory_pilot":
+        return _require_exploratory_execution(policy=policy, manifest=manifest, ledger=ledger,
+            campaign_guard=campaign_guard, request=request, execution_context=execution_context)
     if (execution_scope != "protocol_smoke" or
             policy.get("paid_execution_allowed") is not False or
             policy.get("protocol_smoke") != SMOKE_AUTHORIZATION):
@@ -668,8 +821,30 @@ class OpenAIProvider:
 
     def authorize_schedule(self, manifest, ledger, schedule, tasks, *, execution_scope,
                            campaign_guard=None):
-        """Reject new initial/fresh calls or changed forks before reserving a call."""
+        """Authorize only the exact schedule of the current scoped manifest."""
         from .runner import continuation_schedule
+        if execution_scope == "exploratory_pilot":
+            from .exploratory import make_schedule, TASK_IDS
+            if (self.execution_scope != execution_scope or manifest != self.manifest or
+                    ledger is not self.ledger or campaign_guard is not self.campaign_guard or
+                    schedule != make_schedule(manifest["tasks"]) or
+                    [task.get("task_id") for task in tasks] != list(TASK_IDS)):
+                raise ProviderFailure("exploratory_schedule_not_authorized", uncertain_charge=False)
+            # Asset hydration adds only checked test/reference contents; it must
+            # not alter prompts, descriptors, grading settings or task identity.
+            for task, frozen_task in zip(tasks, manifest["tasks"]):
+                identity = copy.deepcopy(task)
+                for variant in ("original", "updated"):
+                    spec, frozen_spec = identity.get(variant, {}), frozen_task.get(variant, {})
+                    for asset_key, loaded_key in (("test_asset", "tests"),
+                                                  ("reference_asset", "reference_solution")):
+                        if asset_key in frozen_spec and loaded_key not in frozen_spec:
+                            spec.pop(loaded_key, None)
+                if identity != frozen_task:
+                    raise ProviderFailure("exploratory_task_not_frozen", uncertain_charge=False)
+            _require_paid_execution_policy(execution_scope=self.execution_scope,
+                manifest=self.manifest, ledger=self.ledger, campaign_guard=self.campaign_guard)
+            return
         if (execution_scope != "protocol_smoke" or execution_scope != self.execution_scope or
                 manifest != self.manifest or ledger is not self.ledger or
                 campaign_guard is not self.campaign_guard or

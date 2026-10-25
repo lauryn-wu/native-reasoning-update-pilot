@@ -1,0 +1,787 @@
+{
+  "accounting": {
+    "attempts_this_manifest": 0,
+    "scope": {
+      "accounted_micro_usd": 0,
+      "accounted_usd": 0,
+      "attempts": 0,
+      "bound": false,
+      "cap_micro_usd": 5000000,
+      "deadline_at": null,
+      "deadline_epoch_seconds": null,
+      "dispatch_allowed": false,
+      "duration_seconds": 1800,
+      "elapsed_seconds": 0,
+      "known_charges_micro_usd": 0,
+      "known_charges_usd": 0,
+      "manifest_hash": "021676718d1d29683b2e1e69e3e5c5eefa8a41f9ed9c3a3d952404c8f14ffb7f",
+      "outstanding_reservations_micro_usd": 0,
+      "outstanding_reservations_usd": 0,
+      "remaining_seconds": 1800,
+      "remaining_unreserved_micro_usd": 5000000,
+      "remaining_unreserved_usd": 5,
+      "scope_id": "user-2026-10-24-exploratory-four-case-v6",
+      "started_at": null,
+      "started_at_epoch_seconds": null,
+      "status": "not_started"
+    },
+    "shared_accounted_usd": 0.921914,
+    "shared_known_charges_usd": 0.041284,
+    "shared_outstanding_reservations_usd": 0.88063,
+    "transport_retries_this_manifest": 0
+  },
+  "all_planned_calls_completed": false,
+  "all_selected_tasks": {
+    "by_condition": {
+      "fresh": {
+        "accuracy": null,
+        "completed_response_n": 0,
+        "correct_n": 0,
+        "graded_n": 0,
+        "missing_n": 8,
+        "planned_n": 8,
+        "returned_grade_counts": {},
+        "unavailable_or_protocol_invalid_n": 0
+      },
+      "initial": {
+        "accuracy": null,
+        "completed_response_n": 0,
+        "correct_n": 0,
+        "graded_n": 0,
+        "missing_n": 4,
+        "planned_n": 4,
+        "returned_grade_counts": {},
+        "unavailable_or_protocol_invalid_n": 0
+      },
+      "updated_dropped": {
+        "accuracy": null,
+        "completed_response_n": 0,
+        "correct_n": 0,
+        "graded_n": 0,
+        "missing_n": 8,
+        "planned_n": 8,
+        "returned_grade_counts": {},
+        "unavailable_or_protocol_invalid_n": 0
+      },
+      "updated_retained": {
+        "accuracy": null,
+        "completed_response_n": 0,
+        "correct_n": 0,
+        "graded_n": 0,
+        "missing_n": 8,
+        "planned_n": 8,
+        "returned_grade_counts": {},
+        "unavailable_or_protocol_invalid_n": 0
+      }
+    },
+    "completed_retained_dropped_sample_pairs": 0,
+    "completed_task_blocks": 0,
+    "n_tasks": 4,
+    "planned_retained_dropped_sample_pairs": 8,
+    "task_ids": [
+      "aime2025:1042",
+      "aime2025:1057",
+      "livecodebench:299",
+      "livecodebench:276"
+    ]
+  },
+  "calls": [
+    {
+      "attempt": null,
+      "call_id": "aime2025:1042/initial/0",
+      "condition": "initial",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 0,
+      "status": "unassigned",
+      "task_id": "aime2025:1042"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1042/updated_retained/1",
+      "condition": "updated_retained",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "aime2025:1042"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1042/updated_dropped/1",
+      "condition": "updated_dropped",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "aime2025:1042"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1042/fresh/1",
+      "condition": "fresh",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "aime2025:1042"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1042/updated_retained/2",
+      "condition": "updated_retained",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "aime2025:1042"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1042/updated_dropped/2",
+      "condition": "updated_dropped",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "aime2025:1042"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1042/fresh/2",
+      "condition": "fresh",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "aime2025:1042"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1057/initial/0",
+      "condition": "initial",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 0,
+      "status": "unassigned",
+      "task_id": "aime2025:1057"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1057/updated_retained/1",
+      "condition": "updated_retained",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "aime2025:1057"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1057/updated_dropped/1",
+      "condition": "updated_dropped",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "aime2025:1057"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1057/fresh/1",
+      "condition": "fresh",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "aime2025:1057"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1057/updated_retained/2",
+      "condition": "updated_retained",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "aime2025:1057"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1057/updated_dropped/2",
+      "condition": "updated_dropped",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "aime2025:1057"
+    },
+    {
+      "attempt": null,
+      "call_id": "aime2025:1057/fresh/2",
+      "condition": "fresh",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "aime2025:1057"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:299/initial/0",
+      "condition": "initial",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 0,
+      "status": "unassigned",
+      "task_id": "livecodebench:299"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:299/updated_retained/1",
+      "condition": "updated_retained",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "livecodebench:299"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:299/updated_dropped/1",
+      "condition": "updated_dropped",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "livecodebench:299"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:299/fresh/1",
+      "condition": "fresh",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "livecodebench:299"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:299/updated_retained/2",
+      "condition": "updated_retained",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "livecodebench:299"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:299/updated_dropped/2",
+      "condition": "updated_dropped",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "livecodebench:299"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:299/fresh/2",
+      "condition": "fresh",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "livecodebench:299"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:276/initial/0",
+      "condition": "initial",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 0,
+      "status": "unassigned",
+      "task_id": "livecodebench:276"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:276/updated_retained/1",
+      "condition": "updated_retained",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "livecodebench:276"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:276/updated_dropped/1",
+      "condition": "updated_dropped",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "livecodebench:276"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:276/fresh/1",
+      "condition": "fresh",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 1,
+      "status": "unassigned",
+      "task_id": "livecodebench:276"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:276/updated_retained/2",
+      "condition": "updated_retained",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "livecodebench:276"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:276/updated_dropped/2",
+      "condition": "updated_dropped",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "livecodebench:276"
+    },
+    {
+      "attempt": null,
+      "call_id": "livecodebench:276/fresh/2",
+      "condition": "fresh",
+      "error_kind": null,
+      "grade_status": null,
+      "protocol_valid": false,
+      "provider_error": null,
+      "response_status": null,
+      "sample": 2,
+      "status": "unassigned",
+      "task_id": "livecodebench:276"
+    }
+  ],
+  "completed_protocol_valid_responses": 0,
+  "completed_retained_dropped_sample_pairs": 0,
+  "completed_task_blocks": 0,
+  "completed_task_ids": [],
+  "execution_scope": "exploratory_pilot",
+  "full_pilot_blocked": true,
+  "full_study_significance_gate_applied": false,
+  "initial_correct_subset": {
+    "by_condition": {
+      "fresh": {
+        "accuracy": null,
+        "completed_response_n": 0,
+        "correct_n": 0,
+        "graded_n": 0,
+        "missing_n": 0,
+        "planned_n": 0,
+        "returned_grade_counts": {},
+        "unavailable_or_protocol_invalid_n": 0
+      },
+      "initial": {
+        "accuracy": null,
+        "completed_response_n": 0,
+        "correct_n": 0,
+        "graded_n": 0,
+        "missing_n": 0,
+        "planned_n": 0,
+        "returned_grade_counts": {},
+        "unavailable_or_protocol_invalid_n": 0
+      },
+      "updated_dropped": {
+        "accuracy": null,
+        "completed_response_n": 0,
+        "correct_n": 0,
+        "graded_n": 0,
+        "missing_n": 0,
+        "planned_n": 0,
+        "returned_grade_counts": {},
+        "unavailable_or_protocol_invalid_n": 0
+      },
+      "updated_retained": {
+        "accuracy": null,
+        "completed_response_n": 0,
+        "correct_n": 0,
+        "graded_n": 0,
+        "missing_n": 0,
+        "planned_n": 0,
+        "returned_grade_counts": {},
+        "unavailable_or_protocol_invalid_n": 0
+      }
+    },
+    "completed_retained_dropped_sample_pairs": 0,
+    "completed_task_blocks": 0,
+    "n_tasks": 0,
+    "planned_retained_dropped_sample_pairs": 0,
+    "task_ids": []
+  },
+  "interpretation": [
+    "Descriptive feasibility on four selected cases; no significance test, continuation gate, or null-effect conclusion.",
+    "Accuracy is correct_n / graded_n. Missing and protocol-invalid calls are excluded from that denominator and reported separately.",
+    "Returned invalid or truncated answers remain unsuccessful graded returns; a complete task block requires seven protocol-valid completed responses.",
+    "The initial-correct subset is reported separately; all selected tasks remain in the primary descriptive counts.",
+    "Elapsed seconds are measured at report time from the first successful scope reservation, including resume downtime; they are not summed request latency.",
+    "Partial task blocks remain visible if the fixed budget, deadline, or an execution failure stops the schedule."
+  ],
+  "manifest_sha256": "021676718d1d29683b2e1e69e3e5c5eefa8a41f9ed9c3a3d952404c8f14ffb7f",
+  "new_live_calls": 0,
+  "per_task": [
+    {
+      "by_condition": {
+        "fresh": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "initial": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 1,
+          "planned_n": 1,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "updated_dropped": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "updated_retained": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        }
+      },
+      "completed_retained_dropped_sample_pairs": 0,
+      "domain": "math",
+      "initial_correct": null,
+      "initial_correct_eligible": false,
+      "initial_grade": null,
+      "planned_retained_dropped_sample_pairs": 2,
+      "task_block_complete": false,
+      "task_id": "aime2025:1042"
+    },
+    {
+      "by_condition": {
+        "fresh": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "initial": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 1,
+          "planned_n": 1,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "updated_dropped": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "updated_retained": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        }
+      },
+      "completed_retained_dropped_sample_pairs": 0,
+      "domain": "math",
+      "initial_correct": null,
+      "initial_correct_eligible": false,
+      "initial_grade": null,
+      "planned_retained_dropped_sample_pairs": 2,
+      "task_block_complete": false,
+      "task_id": "aime2025:1057"
+    },
+    {
+      "by_condition": {
+        "fresh": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "initial": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 1,
+          "planned_n": 1,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "updated_dropped": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "updated_retained": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        }
+      },
+      "completed_retained_dropped_sample_pairs": 0,
+      "domain": "coding",
+      "initial_correct": null,
+      "initial_correct_eligible": false,
+      "initial_grade": null,
+      "planned_retained_dropped_sample_pairs": 2,
+      "task_block_complete": false,
+      "task_id": "livecodebench:299"
+    },
+    {
+      "by_condition": {
+        "fresh": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "initial": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 1,
+          "planned_n": 1,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "updated_dropped": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        },
+        "updated_retained": {
+          "accuracy": null,
+          "completed_response_n": 0,
+          "correct_n": 0,
+          "graded_n": 0,
+          "missing_n": 2,
+          "planned_n": 2,
+          "returned_grade_counts": {},
+          "unavailable_or_protocol_invalid_n": 0
+        }
+      },
+      "completed_retained_dropped_sample_pairs": 0,
+      "domain": "coding",
+      "initial_correct": null,
+      "initial_correct_eligible": false,
+      "initial_grade": null,
+      "planned_retained_dropped_sample_pairs": 2,
+      "task_block_complete": false,
+      "task_id": "livecodebench:276"
+    }
+  ],
+  "planned_calls": 28,
+  "planned_retained_dropped_sample_pairs": 8,
+  "planned_task_blocks": 4,
+  "prior_ledger_file_sha256_preserved": "96efa1937d2aef6154365bc18608246ed568c9baf70f716dd43c2aea22e4ac7d",
+  "protocol": {
+    "duplicate_outcome_call_ids": [],
+    "invalid_call_ids": [],
+    "unexpected_outcome_call_ids": []
+  },
+  "recorded_at": "2026-10-25T01:59:10.753713+00:00",
+  "report_type": "descriptive_feasibility",
+  "reported_at": "2026-10-25T01:59:10.752958+00:00",
+  "sample_pairs": [
+    {
+      "completed": false,
+      "sample": 1,
+      "task_id": "aime2025:1042"
+    },
+    {
+      "completed": false,
+      "sample": 2,
+      "task_id": "aime2025:1042"
+    },
+    {
+      "completed": false,
+      "sample": 1,
+      "task_id": "aime2025:1057"
+    },
+    {
+      "completed": false,
+      "sample": 2,
+      "task_id": "aime2025:1057"
+    },
+    {
+      "completed": false,
+      "sample": 1,
+      "task_id": "livecodebench:299"
+    },
+    {
+      "completed": false,
+      "sample": 2,
+      "task_id": "livecodebench:299"
+    },
+    {
+      "completed": false,
+      "sample": 1,
+      "task_id": "livecodebench:276"
+    },
+    {
+      "completed": false,
+      "sample": 2,
+      "task_id": "livecodebench:276"
+    }
+  ],
+  "scope_not_started": true,
+  "status": "ready_for_user_terminal_start_or_resume",
+  "stop_reason": null
+}

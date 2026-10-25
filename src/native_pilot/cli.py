@@ -60,6 +60,17 @@ def dry_run(manifest):
     for task in manifest['tasks']:
         request=build_request(task,'initial',settings=manifest['settings'])
         initials.append({'task_id':task['task_id'],**reservation(request)})
+    if manifest.get('execution_scope') == 'exploratory_pilot':
+        from .exploratory import AUTHORIZATION
+        return {'manifest_sha256':manifest['manifest_sha256'], 'status':manifest['status'],
+                'execution_scope':'exploratory_pilot','planned_counts':manifest['planned_counts'],
+                'assignments':manifest['schedule'], 'initial_reservations':initials,
+                'analysis':'descriptive_feasibility', 'authorization':AUTHORIZATION,
+                'budget':{'hard_total_usd':40,'additional_scope_usd':5,
+                          'dispatch_deadline_seconds_from_first_reservation':1800,
+                          'elapsed_time_includes_resume_downtime':True,
+                          'every_attempt_requires_full_reservation':True,
+                          'completion_not_guaranteed':True}}
     return {'manifest_sha256':manifest['manifest_sha256'],'status':manifest['status'],
             'blockers':manifest['blockers'],'execution_blockers':manifest.get('execution_blockers',[]),
             'paid_execution_allowed':manifest.get('paid_execution_allowed',False),'planned_counts':manifest['planned_counts'],
@@ -76,22 +87,34 @@ def dry_run(manifest):
 
 
 def report(manifest, ledger_path):
-    from .analysis import analyze
     from .budget import Ledger
     from .runner import outcomes_from_ledger
+    exploratory = manifest.get('execution_scope') == 'exploratory_pilot'
     if ledger_path.exists():
         ledger=Ledger(ledger_path)
         try:
             outcomes=outcomes_from_ledger(ledger,manifest)
-            accounting={'total_accounted_usd_all_campaign_versions':ledger.total()/1e6,
+            if exploratory:
+                from .feasibility import ledger_accounting
+                accounting = ledger_accounting(ledger, manifest)
+            else:
+                accounting={'total_accounted_usd_all_campaign_versions':ledger.total()/1e6,
                         'attempts_this_manifest':len(ledger.rows(manifest['manifest_sha256'])),
                         'transport_retries_this_manifest':sum(r['attempt']==2 for r in ledger.rows(manifest['manifest_sha256']))}
         finally:
             ledger.close()
     else:
         outcomes=[]
-        accounting={'total_accounted_usd_all_campaign_versions':0,'attempts_this_manifest':0,
-                    'transport_retries_this_manifest':0}
+        if exploratory:
+            from .feasibility import empty_accounting
+            accounting = empty_accounting(manifest)
+        else:
+            accounting={'total_accounted_usd_all_campaign_versions':0,'attempts_this_manifest':0,
+                        'transport_retries_this_manifest':0}
+    if exploratory:
+        from .feasibility import describe_exploratory
+        return describe_exploratory(manifest, outcomes, accounting=accounting)
+    from .analysis import analyze
     return {'manifest_sha256':manifest['manifest_sha256'],'source_blockers':manifest['blockers'],
             'accounting':accounting,'analysis':analyze(manifest,outcomes)}
 
@@ -121,7 +144,7 @@ def main(argv=None):
     child.add_argument('--selected-only',action='store_true',
                        help='Qualify exactly the deterministic 24-task selection and separate smoke task')
     sub.add_parser('dry-run')
-    for name in ('smoke','run'):
+    for name in ('smoke','run','explore'):
         child=sub.add_parser(name)
         child.add_argument('--allow-paid',action='store_true',help='Explicit permission; does not bypass qualification')
     sub.add_parser('report')
@@ -186,11 +209,14 @@ def main(argv=None):
                     else 2 if result['offline_passed'] and result['docker_passed'] else 1)
         if args.command=='dry-run':
             show(dry_run(manifest)); return 0
-        if args.command in ('smoke','run'):
+        if args.command in ('smoke','run','explore'):
             if not args.allow_paid:
                 raise ValueError('Paid execution requires explicit --allow-paid')
             q=read_json(qpath) if qpath.exists() else {}
-            paid_preflight(manifest,q,smoke=args.command=='smoke')
+            if args.command == 'explore':
+                paid_preflight(manifest,q,execution_scope='exploratory_pilot')
+            else:
+                paid_preflight(manifest,q,smoke=args.command=='smoke')
             from .budget import Ledger
             from .runner import campaign_lock, execute, smoke_schedule, continuation_schedule, outcomes_from_ledger
             from .provider import OpenAIProvider
@@ -198,12 +224,13 @@ def main(argv=None):
                 ledger=Ledger(ledger_path)
                 try:
                     smoke_calls=(continuation_schedule(manifest['smoke_task'])
-                        if manifest.get('continuation_recovery') else smoke_schedule(manifest['smoke_task']))
+                        if manifest.get('continuation_recovery') else smoke_schedule(manifest['smoke_task'])) if args.command != 'explore' else None
                     if args.command=='run':
                         smoke_outcomes=outcomes_from_ledger(ledger,manifest,smoke_calls)
                         if any(o.get('protocol_valid') is not True for o in smoke_outcomes):
                             raise ValueError('Run/resume the separately labeled three-call protocol smoke first')
-                    execution_scope='protocol_smoke' if args.command=='smoke' else 'pilot'
+                    execution_scope=('protocol_smoke' if args.command=='smoke' else
+                                     'exploratory_pilot' if args.command=='explore' else 'pilot')
                     provider=OpenAIProvider(allow_paid=True,execution_scope=execution_scope,
                                             manifest=manifest,ledger=ledger,campaign_guard=campaign_guard)
                     from .assets import hydrate_tasks
@@ -226,17 +253,28 @@ def main(argv=None):
                                        continuation_recovery_prior_failure=protocol.get('continuation_recovery_prior_failure'),
                                        replay_normalization=protocol.get('replay_normalization'),
                                        logical_calls=protocol.get('logical_calls'))
+                    elif args.command == 'explore':
+                        summary['feasibility'] = result.get('feasibility_report', {})
                     show(summary)
                 finally:
                     ledger.close()
             success=not result['stop_reason']
             if args.command=='smoke':
                 success=success and result.get('protocol_report',{}).get('protocol_passed') is True
+            elif args.command == 'explore':
+                success=success and result.get('feasibility_report',{}).get('all_planned_calls_completed') is True
             return 0 if success else 1
         result=report(manifest,ledger_path)
         target=run_dir/f"report-{manifest['manifest_sha256']}.json"
         atomic_json(target,result)
-        md=(f"# Pilot analysis\n\nDecision: **{result['analysis']['decision']}**.\n\n"
+        if manifest.get('execution_scope') == 'exploratory_pilot':
+            md=("# Exploratory feasibility\n\n"
+                f"Completed task blocks: {result['completed_task_blocks']} / {result['planned_task_blocks']}.\n\n"
+                f"Completed protocol-valid responses: {result['completed_protocol_valid_responses']} / {result['planned_calls']}.\n\n"
+                "Descriptive results only; missing calls remain separate from incorrect answers.\n\n"
+                "```json\n"+json.dumps(result,indent=2,sort_keys=True)+"\n```\n")
+        else:
+            md=(f"# Pilot analysis\n\nDecision: **{result['analysis']['decision']}**.\n\n"
             f"Frozen tasks: {len(manifest['tasks'])}; planned responses: 200.\n\n"
             f"Accounted spend: ${result['accounting']['total_accounted_usd_all_campaign_versions']:.6f}.\n\n"
             "## Source blockers\n\n" + '\n'.join('- '+b for b in manifest['blockers']) +

@@ -1,0 +1,12 @@
+{
+  "api_calls": 0,
+  "campaign_ledger_writes": 0,
+  "checks": [
+    "hidden-key prompt reaches mocked CLI with exact v6 manifest/cache/explore command",
+    "non-Terminal exits before prompt or CLI",
+    "empty key exits before CLI",
+    "real offline dry-run verifies frozen manifest and exact28assignments"
+  ],
+  "document": "docs/EXPLORATORY_V6.md",
+  "passed": true
+}
